@@ -4,7 +4,7 @@
 
 .btn {
     padding: 8px 20px;
-    border-radius: 20px;
+    border-radius: 50px;
     outline: none;
     border: none;
     cursor: pointer;
@@ -40,7 +40,7 @@
 
 .btn--large {
     padding: 12px 26px;
-    font-size: 20px;
+    font-size: 25px;
 }
 
 .btn--medium:hover, .btn--large:hover {

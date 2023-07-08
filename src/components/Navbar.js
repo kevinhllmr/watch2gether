@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import './Navbar.css';
 import { Button } from './Button';
 
@@ -23,6 +23,8 @@ function Navbar() {
   }, []);
 
   window.addEventListener('resize', showButton);
+  
+  const location = useLocation();
 
   return (
     <>
@@ -33,9 +35,10 @@ function Navbar() {
             <i class="far fa-play-circle"></i>
           </Link>
 
+          {location.pathname !=="/" && 
           <div className='menu-icon' onClick={handleClick}>
             <i className={click ? 'fas fa-caret-up' : 'fas fa-caret-down'} />
-          </div>
+          </div>}
 
           <ul className={click ? 'nav-menu active' : 'nav-menu'}>
             <li className='nav-item'>
