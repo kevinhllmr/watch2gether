@@ -8,7 +8,7 @@ function HeroSection() {
 
   return (
     <div className='hero-container'>
-        <img src={process.env.PUBLIC_URL + './images/homebg.jpg'} alt='background home projector cinema'/>
+        <img src={process.env.PUBLIC_URL + '/images/homebg.jpg'} alt='background home projector cinema'/>
         <h2>Create or join a room to get started!</h2>
         <div className='hero-btns'>
             <Button 
