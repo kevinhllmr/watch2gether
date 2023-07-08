@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <Router>
-      <Navigate from="/watch2gether" to="/" />
+      <Navigate from="*/watch2gether" to="/" />
         <Navbar />
         <Routes>
           <Route path='/' exact Component={Home} />
