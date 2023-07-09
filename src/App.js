@@ -11,8 +11,8 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
-          <Route path='/watch2gether' exact Component={Home} />
-          <Route path='/room-list' exact Component={RoomList} />
+          <Route path='/watch2gether/' exact Component={Home} />
+          <Route path='/room-list/' exact Component={RoomList} />
         </Routes>
       </Router>
     </>

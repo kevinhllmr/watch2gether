@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../../App.css';
 import { useNavigate } from "react-router-dom";
 import './RoomList.css';
 import Axios from 'axios';
+import AddUserPopup from '../AddUserPopup';
 
 function RoomList() {
+    const [buttonPopup, setButtonPopup] = useState(false);
 
     let navigate = useNavigate(); 
 
@@ -18,21 +20,33 @@ function RoomList() {
                 document.getElementById("btns").innerHTML = "";
 
                 for (let i = 0; i < roomName.length; i++) {
-                    document.getElementById("btns").innerHTML += "<button class='btn' style='color:#242424;background:#4ed451;padding:8px 24px;font-size: 20px;border-radius:50px;border:0px;margin:10px;'>" + roomName[i].name + "</button>";
+                    document.getElementById("btns").innerHTML += "<button class='roombtns' style='cursor:pointer;color:#242424;background:#4ed451;padding:8px 24px;font-size: 20px;border-radius:50px;border:0px;margin:10px;'>" + roomName[i].name + "</button>";
                 }
 
-                const buttons = document.querySelectorAll(".btn");
+                const buttons = document.querySelectorAll(".roombtns");
                 buttons.forEach(button => button.addEventListener("click", function() {
-                    navigate(`/` + button.innerText)
-                }));
-             
+                    if(localStorage.getItem("username") != null) {
+                        navigate(`/` + button.innerText + `/`);
+
+                    } else {
+                        setButtonPopup(true);  
+                    }    
+
+                    document.getElementById('roomname').innerHTML = button.innerText; 
+                    document.getElementById("username").innerHTML = localStorage.getItem("username");
+                }));          
         }
 
         } catch (e) {
             return e;
         }
     }
+
     loadRooms();
+
+    window.addEventListener("DOMContentLoaded", (event) => {
+        document.getElementById("username").innerHTML = localStorage.getItem("username");
+    });
 
     return (
         <div className='roomlist-container'>
@@ -40,6 +54,7 @@ function RoomList() {
             <center>
                 <div id="btns">
                 </div>
+                <AddUserPopup trigger={buttonPopup} setTrigger={setButtonPopup}></AddUserPopup>
             </center>
         </div>
     )
