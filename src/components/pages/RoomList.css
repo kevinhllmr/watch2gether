@@ -1,0 +1,43 @@
+.roomlist-container {
+    height: 110vh;
+    width: 100%;
+    background-color: rgb(48, 48, 48);
+    display: flex;
+    flex-direction: column;
+    object-fit: cover;
+    overflow-x: hidden;
+    position: fixed;
+}
+
+#rooms {
+    font-size: 35px;
+    color: rgb(255, 255, 255);
+    margin-top: 75px;
+    margin-left: 150px;
+    margin-bottom: 40px;
+}
+
+#btns {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+@media screen and (max-width: 960px) {
+    .roomlist-container {
+        position: relative;
+    }
+
+    #btns {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    #rooms {
+        font-size: 30px;
+        color: rgb(255, 255, 255);
+        margin-top: 20px;
+        margin-left: 20px;
+        margin-right: 40px;
+        margin-bottom: 20px;
+    }
+}

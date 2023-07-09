@@ -94,7 +94,7 @@
     }
 
     .nav-menu.active {
-        background: rgb(36, 36, 36);;
+        background: rgb(36, 36, 36);
         left: 0;
         opacity: 1;
         transition: all 0s ease;
@@ -103,7 +103,7 @@
 
     .nav-links {
         text-align: center;
-        padding: 2rem;
+        padding: 1.5rem;
         width: 100%;
         display: table;
     }
