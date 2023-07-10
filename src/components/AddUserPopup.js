@@ -4,19 +4,16 @@ import { useNavigate } from "react-router-dom";
 import Axios from 'axios';
 
 function AddUserPopup(props) {
-    let input = document.getElementById("userInput");
 
-    if (input != null) {
-        input.addEventListener("keypress", ({ key }) => {
-            if (key === "Enter") {
-                getInput();
-            }
-        })
-    }
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter' && document.getElementById("userInput") != null) {
+            getInput();
+        }
+    };
 
     let navigate = useNavigate();
 
-    function getInput() {
+    async function getInput() {
         let input = document.getElementById("userInput");
         let inputVal = 0;
         if (input != null) {
@@ -24,59 +21,86 @@ function AddUserPopup(props) {
         }
 
         if (inputVal.length > 0) {
-            createUser(inputVal);
+            closePopup();
+            // createUserID(inputVal);
             localStorage.setItem("username", inputVal);
-            document.getElementById("username").innerHTML = inputVal;
-            let roomname = document.getElementById("roomname");
-            if (roomname != null) {
-                navigate(`/` + roomname.innerHTML + `/`);
+            await Axios.post(`https://gruppe8.toni-barth.com/users`, { name: inputVal });
+            const users = await Axios.get(`https://gruppe8.toni-barth.com/users`);
+            const lastUserID = users.data.users[users.data.users.length-1].id;
+            localStorage.setItem("userID", lastUserID);
+
+            let roomname = localStorage.getItem("roomname");
+
+            if(roomname != null) {
+                navigate(`/` + roomname + `/`);
+
+                try {
+                    await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + roomname + `/users`, {"user": localStorage.getItem("userID")});
+                
+                } catch (e) {
+                    alert(false);
+                    return e;
+                }
+
             } else {
                 joinCreatedRoom();
             }
         }
     }
 
-    const createUser = async (user) => {
-        let username = user;
-        try {
-            const res = await Axios.post(`https://gruppe8.toni-barth.com/users`, { name: username });
-            return res;
+    // const createUserID = async (user) => {
+    //     let username = user;
 
-        } catch (e) {
-            return e;
-        }
-    }
+    //         try {
+    //             const res = await Axios.post(`https://gruppe8.toni-barth.com/users`, { name: username });
+    //             const users = await Axios.get(`https://gruppe8.toni-barth.com/users`);
+    //             const lastUserID = users.data.users[users.data.users.length-1].id;
+    //             localStorage.setItem("userID", lastUserID);
+
+    //             return res;
+
+    //         } catch (e) {
+    //             return e;
+    //         }
+    // }
 
     const createRoom = async () => {
         try {
-            // const rooms = await Axios.get(`https://gruppe8.toni-barth.com/rooms`);
-            // const roomID = rooms.data.rooms.length + 1;
-            // const res = await Axios.post(`https://gruppe8.toni-barth.com/rooms` + { id: roomID });
             const res = await Axios.post(`https://gruppe8.toni-barth.com/rooms`);
             return res;
 
         } catch (e) {
+            alert(false);
             return e;
         }
     }
 
     const joinCreatedRoom = async () => {
         createRoom();
+
         try {
             const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms`);
             const lastRoomName = res.data.rooms[res.data.rooms.length - 1].name;
-            document.getElementById("roomname").innerHTML = lastRoomName;
+            localStorage.setItem("roomname", lastRoomName);
             navigate(`/` + lastRoomName + `/`);
+            
+            try {
+                await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + lastRoomName + `/users`, {"user": localStorage.getItem("userID")});
+            } catch (e) {
+                return e;
+            }
 
         } catch (e) {
             return e;
-
         }
     }
 
     function closePopup() {
         props.setTrigger(false);
-        document.getElementById("roomname").innerHTML = "";
+
+        if(document.getElementById("roomname") != null) {
+            document.getElementById("roomname").innerHTML = "";
+        }
     }
 
     return (props.trigger) ? (
@@ -85,7 +109,12 @@ function AddUserPopup(props) {
                 <button className='closebtn' onClick={() => closePopup()}>&times;</button>
                 {props.children}
                 <label>Username:</label><br />
-                <input id='userInput' placeholder='Enter your name here' maxLength="24"></input><i id='confirm' class="fas fa-check" onClick={() => getInput()}></i>
+                <input 
+                    id='userInput' 
+                    placeholder='Enter your name here' 
+                    maxLength="24"
+                    onKeyDown={handleKeyDown}
+                ></input><i id='confirm' className="fas fa-check" onClick={() => getInput()}></i>
             </div>
         </div>
     ) : "";

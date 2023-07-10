@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../App.css';
 import { useNavigate } from "react-router-dom";
 import './RoomList.css';
@@ -7,6 +7,15 @@ import AddUserPopup from '../AddUserPopup';
 
 function RoomList() {
     const [buttonPopup, setButtonPopup] = useState(false);
+
+    useEffect(() => {
+        const roomname = document.getElementById("roomname");
+        if(roomname) {
+            document.getElementById("roomname").innerHTML = localStorage.getItem("roomname");
+            document.getElementById("username").innerHTML = localStorage.getItem("username");
+            document.getElementById("joinroombtn").style.color = 'transparent';
+        }
+    }, []);
 
     let navigate = useNavigate(); 
 
@@ -24,9 +33,21 @@ function RoomList() {
                 }
 
                 const buttons = document.querySelectorAll(".roombtns");
-                buttons.forEach(button => button.addEventListener("click", function() {
+                buttons.forEach(button => button.addEventListener("click", async function() {
+                    localStorage.setItem("roomname", button.innerText);
+
                     if(localStorage.getItem("username") != null) {
                         navigate(`/` + button.innerText + `/`);
+
+                        if(button.innerText !== localStorage.getItem("roomname")) {
+                            try {
+                                await Axios.delete(`https://gruppe8.toni-barth.com/rooms/` + localStorage.getItem("roomname") + `/users`, {data:{"user": localStorage.getItem("userID")}});
+                                await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + button.innerText + `/users`, {"user": localStorage.getItem("userID")});                               
+
+                            } catch (e) {
+                                return e;
+                            }
+                        }
 
                     } else {
                         setButtonPopup(true);  

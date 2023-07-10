@@ -1,0 +1,61 @@
+.container {
+    background-color: rgb(36, 36, 36);
+    height: 91vh;
+}
+
+#urlinput {
+    width: 55%;
+    margin: 20px;
+    height: 40px;
+    border-radius: 25px;
+    font-size: 20px;
+    text-align: left;
+    padding-left: 20px;
+}
+
+#submitbtn {
+    margin-left: -10px;
+    border-radius: 25px;
+    height: 41px;
+    width: 80px;
+    font-size: 20px;
+    border: 0px solid transparent;
+    background-color: white;
+    color: rgb(36, 36, 36); 
+    cursor: pointer;
+}
+
+.video-container {
+    background-color: black;
+    margin: 20px;
+    margin-top: 0;
+    width: 60%;
+    height: 66.667vh;
+    border-radius: 25px;
+    overflow: hidden;
+}
+
+@media screen and (max-width: 1400px) {
+    #urlinput {
+        width: 74%;
+        font-size: 15px;
+    }
+
+    #submitbtn {
+        width: 41px;
+        font-size: 15px;
+        border: 0px solid transparent;
+        background-color: white;
+        color: rgb(36, 36, 36); 
+        cursor: pointer;
+    }
+
+    .video-container {
+        width: 89vw;
+        min-height: 21.2vh;        
+        max-height: 33vh;
+        padding-top: -50px;
+        border-radius: 25px;
+        overflow: hidden;
+    }
+}

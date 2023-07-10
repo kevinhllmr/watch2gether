@@ -50,15 +50,23 @@ function Navbar() {
       setButtonPopup(true); 
 
     } else {
-      // createRoom();
-      try {
-        const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms`);
-        const lastRoomName = res.data.rooms[res.data.rooms.length-1].name;
+      if(localStorage.getItem("roomname") == null) {
+        createRoom();
 
-        navigate(`/` + lastRoomName + `/`);
-        
-      } catch (e) {
-        return e;
+        try {
+          const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms`);
+          const lastRoomName = res.data.rooms[res.data.rooms.length-1].name;
+          await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + lastRoomName + `/users`, {"user": localStorage.getItem("userID")});
+          localStorage.setItem("roomname", lastRoomName);
+
+          navigate(`/` + lastRoomName + `/`);
+          
+        } catch (e) {
+          return e;
+        }
+
+      } else {
+        alert("You already joined a room: " + localStorage.getItem("roomname"));
       }
   }
 }
@@ -70,7 +78,7 @@ function Navbar() {
           <AddUserPopup trigger={buttonPopup} setTrigger={setButtonPopup}></AddUserPopup>
           <Link to="/watch2gether/" className="navbar-logo">
             Watch2Gether
-            <i class="far fa-play-circle"></i>
+            <i className="far fa-play-circle"></i>
           </Link>
 
           {location.pathname !=="/watch2gether/" && location.pathname !=="/watch2gether" && 
@@ -90,16 +98,17 @@ function Navbar() {
               </div>
             </li>
 
-            {location.pathname !=="/room-list/" && location.pathname !=="/room-list" &&
+            {/* {location.pathname !=="/room-list/" && location.pathname !=="/room-list" && */}
             <li className='nav-item'>
               <Link
                 to='/room-list/'
+                id='joinroombtn'
                 className='nav-links'
                 onClick={closeMobileMenu}
               >
                 Join Room
               </Link>
-            </li>}
+            </li>
 
             <li>
               <Link

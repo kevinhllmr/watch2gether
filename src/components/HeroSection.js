@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import '../App.css'
 import { useNavigate } from "react-router-dom";
 import { Button } from './Button'
@@ -8,6 +8,14 @@ import Axios from 'axios';
 import AddUserPopup from './AddUserPopup';
 
 function HeroSection() {
+
+  useEffect(() => {
+    if(document.getElementById("logoutbtn") != null && localStorage.getItem("username") != null) {
+        document.getElementById("logoutbtn").style.display = 'block';
+      } else {
+        document.getElementById("logoutbtn").style.display = 'none';
+      }
+  }, []);
 
   let navigate = useNavigate();
 
@@ -25,34 +33,45 @@ function HeroSection() {
 
   const joinCreatedRoom = async () => {
     if (localStorage.getItem("username") == null) {
-
-      //await Axios.put(`https://gruppe8.toni-barth.com/rooms/ancient-rich-diamond/users`, {"user": 48});
-      //await Axios.delete(`https://gruppe8.toni-barth.com/rooms/ancient-rich-diamond/users`, {data:{"user": 45}});
-
       setButtonPopup(true);
 
     } else {
-      if(document.getElementById("username") != null) {
-        document.getElementById("username").innerHTML = localStorage.getItem("username");
-      }
+      if(localStorage.getItem("roomname") == null) {
+        createRoom();
 
-      // createRoom();
+        try {
+          const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms`);
+          const lastRoomName = res.data.rooms[res.data.rooms.length-1].name;
+          await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + lastRoomName + `/users`, {"user": localStorage.getItem("userID")});
+          localStorage.setItem("roomname", lastRoomName);
 
-      try {
-        const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms`);
-        const lastRoomName = res.data.rooms[res.data.rooms.length - 1].name;
-        navigate(`/` + lastRoomName + `/`);
+          navigate(`/` + lastRoomName + `/`);
 
-      } catch (e) {
-        return e;
+        } catch (e) {
+          return e;
+        }
+
+      } else {
+        alert("You already joined a room: " + localStorage.getItem("roomname"));
       }
     }
   }
 
-  function logOutUser() {
-    localStorage.removeItem("username");
-    document.getElementById("logoutbtn").style.display = "none";
-    alert("logged out!");
+  async function logOutUser() {
+    try {
+      await Axios.delete(`https://gruppe8.toni-barth.com/rooms/` + localStorage.getItem("roomname") + `/users`, {data:{"user": localStorage.getItem("userID")}});
+      await Axios.delete(`https://gruppe8.toni-barth.com/users/` + localStorage.getItem("userID"));
+
+    } catch (e) {
+        return e;
+
+    } finally {
+      localStorage.removeItem("username");
+      localStorage.removeItem("userID");
+      localStorage.removeItem("roomname");
+      document.getElementById("logoutbtn").style.display = "none";
+      alert("logged out!");
+    }
   }
 
   window.addEventListener("DOMContentLoaded", (event) => {
