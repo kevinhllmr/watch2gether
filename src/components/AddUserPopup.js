@@ -49,6 +49,9 @@ function AddUserPopup(props) {
 
     const createRoom = async () => {
         try {
+            // const rooms = await Axios.get(`https://gruppe8.toni-barth.com/rooms`);
+            // const roomID = rooms.data.rooms.length + 1;
+            // const res = await Axios.post(`https://gruppe8.toni-barth.com/rooms` + { id: roomID });
             const res = await Axios.post(`https://gruppe8.toni-barth.com/rooms`);
             return res;
 

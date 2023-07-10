@@ -26,19 +26,10 @@ function HeroSection() {
   const joinCreatedRoom = async () => {
     if (localStorage.getItem("username") == null) {
 
+      //await Axios.put(`https://gruppe8.toni-barth.com/rooms/ancient-rich-diamond/users`, {"user": 48});
+      //await Axios.delete(`https://gruppe8.toni-barth.com/rooms/ancient-rich-diamond/users`, {data:{"user": 45}});
 
-      const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms`);
-      const lastRoom = res.data.rooms[res.data.rooms.length - 1].name;
-      console.log(lastRoom);
-      await Axios.delete(`https://gruppe8.toni-barth.com/rooms`,{
-        params: {
-          name: res.data.rooms[res.data.rooms.length - 1].name
-        }
-      });
-
-
-
-      // setButtonPopup(true);
+      setButtonPopup(true);
 
     } else {
       if(document.getElementById("username") != null) {
