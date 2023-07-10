@@ -7,7 +7,7 @@ function AddUserPopup(props) {
     let input = document.getElementById("userInput");
 
     if (input != null) {
-        input.addEventListener("keyup", ({ key }) => {
+        input.addEventListener("keypress", ({ key }) => {
             if (key === "Enter") {
                 getInput();
             }

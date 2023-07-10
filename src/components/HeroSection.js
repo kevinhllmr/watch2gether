@@ -26,11 +26,26 @@ function HeroSection() {
   const joinCreatedRoom = async () => {
     if (localStorage.getItem("username") == null) {
 
-      setButtonPopup(true);
+
+      const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms`);
+      const lastRoom = res.data.rooms[res.data.rooms.length - 1].name;
+      console.log(lastRoom);
+      await Axios.delete(`https://gruppe8.toni-barth.com/rooms`,{
+        params: {
+          name: res.data.rooms[res.data.rooms.length - 1].name
+        }
+      });
+
+
+
+      // setButtonPopup(true);
 
     } else {
-      document.getElementById("username").innerHTML = localStorage.getItem("username");
-      createRoom();
+      if(document.getElementById("username") != null) {
+        document.getElementById("username").innerHTML = localStorage.getItem("username");
+      }
+
+      // createRoom();
 
       try {
         const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms`);

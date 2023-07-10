@@ -50,7 +50,7 @@ function Navbar() {
       setButtonPopup(true); 
 
     } else {
-      createRoom();
+      // createRoom();
       try {
         const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms`);
         const lastRoomName = res.data.rooms[res.data.rooms.length-1].name;
@@ -73,12 +73,12 @@ function Navbar() {
             <i class="far fa-play-circle"></i>
           </Link>
 
-          {location.pathname !=="/watch2gether/" && 
+          {location.pathname !=="/watch2gether/" && location.pathname !=="/watch2gether" && 
           <div className='menu-icon' onClick={handleClick}>
             <i className={click ? 'fas fa-caret-up' : 'fas fa-caret-down'} />
           </div>}
 
-          {location.pathname !=="/watch2gether/" && 
+          {location.pathname !=="/watch2gether/" && location.pathname !=="/watch2gether" &&
           <ul className={click ? 'nav-menu active' : 'nav-menu'}>
             <li className='nav-item' onClick={closeMobileMenu}>
               <div id='roomname'>
@@ -90,7 +90,7 @@ function Navbar() {
               </div>
             </li>
 
-            {location.pathname !=="/room-list/" && 
+            {location.pathname !=="/room-list/" && location.pathname !=="/room-list" &&
             <li className='nav-item'>
               <Link
                 to='/room-list/'
@@ -110,7 +110,7 @@ function Navbar() {
               </Link>
             </li>
           </ul>}
-          {location.pathname !=="/watch2gether/" && button && <Button buttonStyle='btn--create' onClick={joinCreatedRoom}>Create Room</Button>}
+          {location.pathname !=="/watch2gether/" && location.pathname !=="/watch2gether" && button && <Button buttonStyle='btn--create' onClick={joinCreatedRoom}>Create Room</Button>}
         </div>
       </nav>
     </>
