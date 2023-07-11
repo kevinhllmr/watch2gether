@@ -43,7 +43,8 @@
     font-size: 25px;
 }
 
-.btn--medium:hover, .btn--large:hover {
+.btn--medium:hover,
+.btn--large:hover {
     border: 1px solid transparent;
     background: #fff;
     color: rgb(36, 36, 36);

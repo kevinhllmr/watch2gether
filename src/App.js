@@ -26,7 +26,6 @@ function App() {
 
           await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + room.name + `/users`, { "user": lastUserID });
           await Axios.delete(`https://gruppe8.toni-barth.com/rooms/` + room.name + `/users`, { data: { "user": lastUserID } });
-          await Axios.delete(`https://gruppe8.toni-barth.com/rooms/` + room.name + `/users`, { data: { "user": 198 } });
 
           await Axios.delete(`https://gruppe8.toni-barth.com/users/` + lastUserID);
         }

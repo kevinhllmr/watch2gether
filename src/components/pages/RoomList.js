@@ -5,21 +5,32 @@ import './RoomList.css';
 import Axios from 'axios';
 import AddUserPopup from '../AddUserPopup';
 
+//page for room list
 function RoomList() {
+
+    //use state for popup
     const [buttonPopup, setButtonPopup] = useState(false);
 
+    //as soon as site loads, roomname and username in navbar will be set according to local storage value;
+    //join room button gets removed
     useEffect(() => {
         const roomname = document.getElementById("roomname");
+
         if(roomname) {
             document.getElementById("roomname").innerHTML = localStorage.getItem("roomname");
             document.getElementById("username").innerHTML = localStorage.getItem("username");
-            document.getElementById("joinroombtn").style.color = 'transparent';
+            document.getElementById("joinroombtn").style.display = 'none';
         }
     }, []);
 
+    //sets variable for react routing
     let navigate = useNavigate(); 
 
+    //gets rooms from API and creates button for each room;
+    //each button gets onClick event which either joins room if username not null
+    //or opens create user popup
     const loadRooms = async () => {
+
         try {
             const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms`);
             const roomName = res.data.rooms;
@@ -52,9 +63,6 @@ function RoomList() {
                     } else {
                         setButtonPopup(true);  
                     }    
-
-                    document.getElementById('roomname').innerHTML = button.innerText; 
-                    document.getElementById("username").innerHTML = localStorage.getItem("username");
                 }));          
         }
 
@@ -63,11 +71,8 @@ function RoomList() {
         }
     }
 
+    //calls loadRooms() function
     loadRooms();
-
-    window.addEventListener("DOMContentLoaded", (event) => {
-        document.getElementById("username").innerHTML = localStorage.getItem("username");
-    });
 
     return (
         <div className='roomlist-container'>

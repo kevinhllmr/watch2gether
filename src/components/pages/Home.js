@@ -2,7 +2,8 @@ import React from 'react'
 import '../../App.css';
 import HeroSection from '../HeroSection';
 
-function Home () {
+//loads hero section component
+function Home() {
     return (
         <>
             <HeroSection />
