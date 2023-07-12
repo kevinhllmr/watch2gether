@@ -58,15 +58,16 @@ const PrettoSlider = withStyles({
     },
 })(Slider);
 
-export default forwardRef(({ 
-    onPlayPause, 
-    playing, 
-    onRewind, 
-    onFastForward, 
-    onToggleFullScreen, 
-    played, 
-    onSeek, 
-    onSeekMouseDown, 
+export default forwardRef(({
+    onPlayPause,
+    playing,
+    onRewind,
+    onFastForward,
+    onToggleFullScreen,
+    fullscreen,
+    played,
+    onSeek,
+    onSeekMouseDown,
     onSeekMouseUp,
     elapsedTime,
     totalDuration
@@ -125,10 +126,10 @@ export default forwardRef(({
                         className='posSlider'
                         min={0}
                         max={100}
-                        value={played*100}
+                        value={played * 100}
                         ValueLabelComponent={(props) => (
                             <ValueLabelComponent {...props} value={elapsedTime} />
-                            )}
+                        )}
                         onChange={onSeek}
                         onMouseDown={onSeekMouseDown}
                         onChangeCommitted={onSeekMouseUp}
@@ -187,8 +188,8 @@ export default forwardRef(({
                                     </Popover> */}
 
                     <IconButton onClick={onToggleFullScreen} className='classes.bottomIcons'>
-                    {onToggleFullScreen ? <FullScreenIcon fontSize="large" style={{ color: "#fff", marginRight: 20 }} /> : <FullscreenExitIcon fontSize="large" style={{ color: "#fff", marginRight: 20 }} />}
-                        
+                        {fullscreen ? <FullscreenExitIcon fontSize="large" style={{ color: "#fff", marginRight: 20 }} /> : <FullScreenIcon fontSize="large" style={{ color: "#fff", marginRight: 20 }} />}
+
                     </IconButton>
                 </Grid>
             </Grid>

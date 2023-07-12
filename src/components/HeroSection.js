@@ -11,7 +11,7 @@ import AddUserPopup from './AddUserPopup';
 function HeroSection() {
 
   //as soon as site loads, check if username local storage is null,
-  //if not null, show log out button, otherwise show it
+  //if not null, show log out button, otherwise hide it
   useEffect(() => {
     if (document.getElementById("logoutbtn") != null && localStorage.getItem("username") != null) {
       document.getElementById("logoutbtn").style.display = 'block';

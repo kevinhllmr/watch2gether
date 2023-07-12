@@ -72,6 +72,7 @@ function Room() {
 
     const onToggleFullScreen = () => {
         screenfull.toggle(playerContainerRef.current);
+        setState({ ...StaticRange, fullscreen: !state.fullscreen });
     }
 
     const handleProgress = (changeState) => {
@@ -228,6 +229,7 @@ function Room() {
                             onRewind={handleRewind}
                             onFastForward={handleFastForward}
                             onToggleFullScreen={onToggleFullScreen}
+                            fullscreen={fullscreen}
                             played={played}
                             onSeek={handleSeekChange}
                             onSeekMouseDown={handleSeekMouseDown}

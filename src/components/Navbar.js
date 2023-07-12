@@ -146,13 +146,13 @@ function Navbar() {
                 </Link>
               </li>}
 
-              {window.innerWidth <= 1400 &&
+              {window.innerWidth <= 1400 && localStorage.getItem('roomname') !== null &&
               <li className='nav-item'>
                 <Link
-                  to='/room-list/'
+                  // to='/room-list/'
                   id='leaveroombtn'
                   className='nav-links'
-                  onClick={closeMobileMenu}
+                  onClick={leaveRoom}
                 >
                   Leave Room
                 </Link>
