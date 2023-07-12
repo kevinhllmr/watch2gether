@@ -2,7 +2,7 @@ import React from 'react';
 import './Button.css';
 
 //pre-defined style and size parameters for buttons
-const STYLES = ['btn--primary', 'btn--outline', 'btn--create'];
+const STYLES = ['btn--primary', 'btn--outline', 'btn--create', 'btn--leave'];
 const SIZES = ['btn--medium', 'btn--large'];
 
 //button component with parameters

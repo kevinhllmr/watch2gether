@@ -35,6 +35,12 @@
     overflow: hidden;
 }
 
+.player-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
 @media screen and (max-width: 1400px) {
     #urlinput {
         width: 74%;
@@ -57,5 +63,12 @@
         padding-top: -50px;
         border-radius: 25px;
         overflow: hidden;
+    }
+}
+
+@media screen and (max-height: 500px) {
+    .video-container {
+        min-height: 60vh;
+        width: 37vw;
     }
 }

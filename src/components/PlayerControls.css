@@ -1,0 +1,58 @@
+#controls-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 1;
+    transition: background-color 0.2s ease;
+}
+
+.MuiIconButton-root.control-icons {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 3rem;
+    transform: scale(0.9);
+}
+
+.MuiIconButton-root.control-icons:hover {
+    color: #fff;
+    transform: scale(1);
+}
+
+.bottomIcons {
+    color: "#999";
+}
+
+.bottomIcons:hover {
+    color: "#fff";
+}
+
+.posSlider {
+    left: -5%;
+}
+
+.volumeSlider {
+    width: 100;
+}
+
+#rewindff {
+    margin-right: 80%;
+}
+
+@media screen and (max-width: 1400px) {
+    .control-icons {
+        font-size: 1rem;
+    }
+
+    #rewindff {
+        margin-right: 50%;
+    }
+
+    .posSlider {
+        left: 0%;
+    }
+}

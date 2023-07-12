@@ -55,7 +55,7 @@
     display: flex;
     align-items: center;
     text-decoration: none;
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 1rem;
     height: 100%;
 }
 
@@ -98,11 +98,11 @@
     display: block;
 }
 
-@media screen and (max-width: 1400px) {
-    .navbar {
-        height: 10vh;
-    }
+#leaveroombtn {
+    padding-right: 20px;
+}
 
+@media screen and (max-width: 1400px) {
     .NavbarItems {
         position: relative;
     }
@@ -111,9 +111,9 @@
         display: flex;
         flex-direction: column;
         width: 100%;
-        height: 43vh;
+        height: 45vh;
         position: absolute;
-        top: 80px;
+        top: 9vh;
         left: -100%;
         opacity: 1;
         transition: all 0s ease;
@@ -130,7 +130,7 @@
     .nav-links,
     #username,
     #roomname {
-        font-size: 20px;
+        font-size: 1.5rem;
         text-align: center;
         padding: 1.5rem;
         width: 100%;
@@ -191,5 +191,15 @@
     #username,
     #roomname {
         color: rgb(175, 175, 175);
+    }
+}
+
+@media screen and (max-height: 500px) {
+    .navbar {
+        height: 17.5vh;
+    }
+    .nav-menu {
+        height: 82.5vh;
+        top: 17.5vh;
     }
 }

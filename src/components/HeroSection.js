@@ -12,7 +12,6 @@ function HeroSection() {
 
   //as soon as site loads, check if username local storage is null,
   //if not null, show log out button, otherwise show it
-  //sets roomname element in navbar to localstorage value
   useEffect(() => {
     if (document.getElementById("logoutbtn") != null && localStorage.getItem("username") != null) {
       document.getElementById("logoutbtn").style.display = 'block';
@@ -21,8 +20,14 @@ function HeroSection() {
       document.getElementById("logoutbtn").style.display = 'none';
     }
 
-    if (document.getElementById("roomname")) {
+    if (document.getElementById("leaveroombtn")) {
       document.getElementById("roomname").innerHTML = localStorage.getItem("roomname");
+
+      if (document.getElementById("roomname").innerHTML != null) {
+        document.getElementById("leaveroombtn").style.display = 'block';
+      } else {
+        document.getElementById("leaveroombtn").style.display = 'none';
+      }
     }
   }, []);
 

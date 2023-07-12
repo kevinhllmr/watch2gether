@@ -12,14 +12,25 @@ function RoomList() {
     const [buttonPopup, setButtonPopup] = useState(false);
 
     //as soon as site loads, roomname and username in navbar will be set according to local storage value;
-    //join room button gets removed
+    //join room button gets removed;
+    //sets roomname element in navbar to localstorage value and shows/hide leave room button
     useEffect(() => {
-        const roomname = document.getElementById("roomname");
 
-        if(roomname) {
+        if(document.getElementById("joinroombtn")) {
+            document.getElementById("joinroombtn").style.display = 'none';
+        }
+
+        if(document.getElementById("username")) {
             document.getElementById("roomname").innerHTML = localStorage.getItem("roomname");
             document.getElementById("username").innerHTML = localStorage.getItem("username");
-            document.getElementById("joinroombtn").style.display = 'none';
+        }
+
+        if(document.getElementById("leaveroombtn")) {
+            if (document.getElementById("roomname").innerHTML != null) {
+                document.getElementById("leaveroombtn").style.display = 'block';
+            } else {
+                document.getElementById("leaveroombtn").style.display = 'none';
+            }
         }
     }, []);
 
@@ -49,6 +60,7 @@ function RoomList() {
 
                     if(localStorage.getItem("username") != null) {
                         navigate(`/` + button.innerText + `/`);
+                        document.getElementById("roomname").innerHTML = button.innerText;
 
                         if(button.innerText !== localStorage.getItem("roomname")) {
                             try {

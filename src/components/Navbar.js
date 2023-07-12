@@ -85,6 +85,27 @@ function Navbar() {
     }
   }
 
+  //closes mobile menu;
+  //removes user from current room and roomname from local storage;
+  //hides leave room button
+  const leaveRoom = async () => {
+
+    closeMobileMenu();
+
+    try {
+      await Axios.delete(`https://gruppe8.toni-barth.com/rooms/` + localStorage.getItem("roomname") + `/users`, { data: { "user": localStorage.getItem("userID") } });
+
+    } catch (e) {
+      return e;
+
+    } finally {
+      localStorage.removeItem("roomname");
+      document.getElementById("leaveroombtn").style.display = "none";
+      document.getElementById("roomname").style.display = "none";
+      navigate(`/room-list/`);
+    }
+  }
+
   return (
     <>
       <nav className='navbar'>
@@ -113,7 +134,7 @@ function Navbar() {
                 </div>
               </li>
 
-              {/* {location.pathname !=="/room-list/" && location.pathname !=="/room-list" && */}
+              {location.pathname !=="/room-list/" && location.pathname !=="/room-list" &&
               <li className='nav-item'>
                 <Link
                   to='/room-list/'
@@ -123,7 +144,19 @@ function Navbar() {
                 >
                   Join Room
                 </Link>
-              </li>
+              </li>}
+
+              {window.innerWidth <= 1400 &&
+              <li className='nav-item'>
+                <Link
+                  to='/room-list/'
+                  id='leaveroombtn'
+                  className='nav-links'
+                  onClick={closeMobileMenu}
+                >
+                  Leave Room
+                </Link>
+              </li>}
 
               <li>
                 <Link
@@ -135,8 +168,17 @@ function Navbar() {
               </li>
             </ul>}
 
+          {location.pathname !== "/watch2gether/" && location.pathname !== "/watch2gether" && button && localStorage.getItem("roomname") !== null &&
+            <div id='leaveroombtn'>
+              <Button buttonStyle='btn--leave'
+                onClick={leaveRoom}>
+                Leave Room
+              </Button>
+            </div>}
+
           {location.pathname !== "/watch2gether/" && location.pathname !== "/watch2gether" && button &&
-            <Button buttonStyle='btn--create'
+            <Button 
+              buttonStyle='btn--create'
               onClick={joinCreatedRoom}>
               Create Room
             </Button>}

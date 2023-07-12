@@ -33,6 +33,14 @@
     transition: all 0.3s ease-out;
 }
 
+.btn--leave {
+    background-color: #ee4f4f;
+    color: rgb(36, 36, 36);
+    padding: 8px 20px;
+    border: 1px solid transparent;
+    transition: all 0.3s ease-out;
+}
+
 .btn--medium {
     padding: 8px 24px;
     font-size: 20px;
