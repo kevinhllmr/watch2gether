@@ -158,6 +158,7 @@ function Navbar() {
                 </Link>
               </li>}
 
+              {location.pathname!== '/' + localStorage.getItem('roomname') + '/' &&
               <li>
                 <Link
                   className='nav-links-mobile'
@@ -165,7 +166,7 @@ function Navbar() {
                 >
                   Create Room
                 </Link>
-              </li>
+              </li>}
             </ul>}
 
           {location.pathname !== "/watch2gether/" && location.pathname !== "/watch2gether" && button && localStorage.getItem("roomname") !== null &&
@@ -176,7 +177,7 @@ function Navbar() {
               </Button>
             </div>}
 
-          {location.pathname !== "/watch2gether/" && location.pathname !== "/watch2gether" && button &&
+          {location.pathname !== "/watch2gether/" && location.pathname !== "/watch2gether" && button && location.pathname!== '/' + localStorage.getItem('roomname') + '/' &&
             <Button 
               buttonStyle='btn--create'
               onClick={joinCreatedRoom}>

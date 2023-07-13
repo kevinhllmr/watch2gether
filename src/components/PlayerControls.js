@@ -1,7 +1,6 @@
 import React, { forwardRef } from 'react'
 import '../App.css';
 import './PlayerControls.css';
-import Axios from 'axios';
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import { Grid, Typography } from '@material-ui/core';
@@ -12,12 +11,11 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
 import Slider from "@material-ui/core/Slider";
 import Tooltip from "@material-ui/core/Tooltip";
-import VolumeUpIcon from "@material-ui/icons/VolumeUp";
 import FullScreenIcon from "@material-ui/icons/Fullscreen";
 import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
-import Popover from "@material-ui/core/Popover";
 
 
+//label for elapsed time
 function ValueLabelComponent(props) {
     const { children, open, value } = props;
 
@@ -28,6 +26,7 @@ function ValueLabelComponent(props) {
     );
 }
 
+//seekbar/slider
 const PrettoSlider = withStyles({
     root: {
         color: "#4ed451",
@@ -58,9 +57,9 @@ const PrettoSlider = withStyles({
     },
 })(Slider);
 
+//export references to room class
 export default forwardRef(({
     onPlayPause,
-    playing,
     onRewind,
     onFastForward,
     onToggleFullScreen,
@@ -70,21 +69,9 @@ export default forwardRef(({
     onSeekMouseDown,
     onSeekMouseUp,
     elapsedTime,
-    totalDuration
+    totalDuration,
+    videoStatus,
 }, ref) => {
-
-    const [anchorEl, setAnchorEl] = React.useState(null);
-
-    const handlePopover = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    const open = Boolean(anchorEl);
-    const id = open ? "playbackrate-popover" : undefined;
 
     return (
         <div id='controls-wrapper' ref={ref}>
@@ -109,8 +96,12 @@ export default forwardRef(({
                 alignItems="center"
                 style={{ padding: 10 }}
             >
-                <IconButton onClick={onPlayPause} className='control-icons' aria-label='play'>
-                    {playing ? <PauseIcon fontSize='inherit' /> : <PlayArrowIcon fontSize='inherit' />}
+                <IconButton onClick={onPlayPause} className="control-icons" aria-label="play">
+                    {videoStatus === "playing" ? (
+                        <PauseIcon fontSize="inherit" />
+                    ) : (
+                        <PlayArrowIcon fontSize="inherit" />
+                    )}
                 </IconButton>
 
                 {/* <IconButton className='control-icons' aria-label='pause'>
@@ -121,7 +112,7 @@ export default forwardRef(({
                     <Typography>{elapsedTime}/{totalDuration}</Typography>
                 </Button>
 
-                <Grid item xs={8} style={{ marginLeft: 50 }}  >
+                <Grid item xs={7} style={{ marginLeft: 50 }}  >
                     <PrettoSlider
                         className='posSlider'
                         min={0}

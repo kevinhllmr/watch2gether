@@ -6,36 +6,43 @@ import Axios from 'axios';
 import PlayerControls from '../PlayerControls';
 import screenfull from 'screenfull';
 
+//count variable for UI fade out
 let count = 0;
 
+//formats the time of the video into hours, minutes and seconds and returns string
 const format = (seconds) => {
-    if(isNaN(seconds)) {
+    if (isNaN(seconds)) {
         return '00:00';
     }
 
     const date = new Date(seconds * 1000);
     const hh = date.getUTCHours();
     const mm = date.getUTCMinutes();
-    const ss = date.getUTCSeconds().toString().padStart(2,'0');
+    const ss = date.getUTCSeconds().toString().padStart(2, '0');
 
-    if(hh) {
+    if (hh) {
         return `${hh}:${mm.toString().padStart(2, '0')}:${ss}`;
     }
 
     return `${mm}:${ss}`;
 }
 
-//room page for video player and chat
+//room page for video player
 function Room() {
 
-    //use state for URL and status
+    //use state for URL, status and position
     const [videoURL, setVideoURL] = useState('');
+    const [videoPlaying, setVideoPlaying] = useState(false);
+    const [videoPosition, setVideoPosition] = useState(0.0);
+
+    //multiple states for synchronize handling
     const [state, setState] = useState({
         playing: false,
         muted: false,
         played: 0,
         seeking: false,
-        fullscreen: false
+        fullscreen: false,
+        duration: 0,
     });
 
     const { playing, muted, played, seeking, fullscreen } = state;
@@ -44,65 +51,110 @@ function Room() {
     const playerContainerRef = useRef(null);
     const controlsRef = useRef(null);
 
+
+    //update status and position on play/pause
     const handlePlayPause = async () => {
-        setState({ ...StaticRange, playing: !state.playing });
+
+        const newPlayingState = !state.playing;
 
         try {
-            let roomname = localStorage.getItem("roomname");
+            let roomname = localStorage.getItem('roomname');
+            const user = localStorage.getItem('userID');
+            const status = newPlayingState ? 'playing' : 'paused';
+            const position = playerRef.current.getCurrentTime();
 
-            if (state.playing !== true) {
-                await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + roomname + `/status`, { "user": localStorage.getItem("userID"), "status": "playing" });
+            await Promise.all([
+                Axios.put(`https://gruppe8.toni-barth.com/rooms/${roomname}/status`, {
+                    user: user,
+                    status: status,
+                }),
+                Axios.put(`https://gruppe8.toni-barth.com/rooms/${roomname}/position`, {
+                    user: user,
+                    position: position,
+                }),
+            ]);
 
-            } else {
-                await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + roomname + `/status`, { "user": localStorage.getItem("userID"), "status": "paused" });
+            setState((prevState) => ({ ...prevState, playing: newPlayingState }));
+            setVideoPlaying(newPlayingState);
+
+            // Auto-start video on URL change with a delay
+            if (videoURL !== playerRef.current.props.url) {
+                setTimeout(() => {
+                    setVideoPlaying(true);
+                }, 3000); // Adjust the delay as needed
             }
-
-        } catch (e) {
-            return e;
+        } catch (error) {
+            console.error('Error:', error);
         }
     }
 
-    const handleRewind = () => {
-        playerRef.current.seekTo(playerRef.current.getCurrentTime() - 5)
+    //seeks to new positon and updates video position in API
+    const handleRewind = async () => {
+        const currentTime = playerRef.current.getCurrentTime();
+        playerRef.current.seekTo(currentTime - 5);
+        updateVideoPosition(currentTime - 5);
     }
 
-    const handleFastForward = () => {
-        playerRef.current.seekTo(playerRef.current.getCurrentTime() + 5)
+    //seeks to new positon and updates video position in API
+    const handleFastForward = async () => {
+        const currentTime = playerRef.current.getCurrentTime();
+        playerRef.current.seekTo(currentTime + 5);
+        updateVideoPosition(currentTime + 5);
     }
 
+    //updates position in API
+    const updateVideoPosition = async (position) => {
+        try {
+            const roomname = localStorage.getItem('roomname');
+            const user = localStorage.getItem('userID');
+
+            await Axios.put(`https://gruppe8.toni-barth.com/rooms/${roomname}/position`, {
+                user: user,
+                position: position,
+            });
+
+        } catch (e) {
+            console.error('Error:', e);
+        }
+    };
+
+    //toggle fullscreen
     const onToggleFullScreen = () => {
         screenfull.toggle(playerContainerRef.current);
-        setState({ ...StaticRange, fullscreen: !state.fullscreen });
+        setState({ ...state, fullscreen: !state.fullscreen });
     }
 
+    //handle for fading UI out after 3 seconds
     const handleProgress = (changeState) => {
-        if(count >= 1) {
+        if (count >= 3) {
             controlsRef.current.style.visibility = 'hidden';
             document.getElementById('controls-wrapper').style.backgroundColor = 'rgba(0, 0, 0, 0)';
             count = 0;
         }
 
-        if(controlsRef.current.style.visibility === 'visible') {
-            count+=1;
+        if (controlsRef.current.style.visibility === 'visible') {
+            count += 1;
         }
-        
-        if(!seeking) {
+
+        if (!seeking) {
             setState({ ...state, ...changeState });
         }
     }
 
-    const handleSeekChange=(e, newValue) => {
-        setState({...state,played:parseFloat(newValue / 100)});
+    //multiple events for seek bar and mouse movement
+
+    const handleSeekChange = (e, newValue) => {
+        setState({ ...state, played: parseFloat(newValue / 100) });
     }
 
-    const handleSeekMouseDown=(e) => {
-        setState({...state,seeking:true});
+    const handleSeekMouseDown = (e) => {
+        setState({ ...state, seeking: true });
     }
 
-    const handleSeekMouseUp=(e, newValue) => {
-        setState({...state,seeking:false});
+    const handleSeekMouseUp = (e, newValue) => {
+        setState({ ...state, seeking: false });
         playerRef.current.seekTo(newValue / 100);
-    }
+    };
 
     const handleMouseMove = () => {
         controlsRef.current.style.visibility = 'visible';
@@ -110,15 +162,102 @@ function Room() {
         count = 0;
     }
 
+    //new duration on URL change
+    const handleDuration = (duration) => {
+        setState({ ...state, duration });
+    };
+
     const currentTime = playerRef.current ? playerRef.current.getCurrentTime() : '00:00';
     const duration = playerRef.current ? playerRef.current.getDuration() : '00:00';
 
     const elapsedTime = format(currentTime);
     const totalDuration = format(duration);
 
+    //polling for new URL, position and status
+    const longPolling = async () => {
+        try {
+            let roomname = localStorage.getItem('roomname');
+            let lastStatus = '';
+            let lastPosition = 0;
+            let lastURL = '';
+
+            while (true) {
+                const [statusResponse, positionResponse, urlResponse] = await Promise.all([
+                    Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/status`),
+                    Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/position`),
+                    Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/video`),
+                ]);
+
+                const currentStatus = statusResponse.data.status;
+                const currentPosition = positionResponse.data.position;
+                const currentURL = urlResponse.data.url;
+
+                if (currentStatus !== lastStatus) {
+                    setVideoPlaying(currentStatus === 'playing');
+                    lastStatus = currentStatus;
+
+                    if (currentStatus === 'playing') {
+                        playerRef.current.play(); // Start playing the video
+                    } else {
+                        playerRef.current.pause(); // Pause the video
+                    }
+                }
+
+                if (currentURL !== lastURL) {
+                    setVideoURL(currentURL);
+                    lastURL = currentURL;
+                }
+
+                if (playerRef.current && currentPosition !== lastPosition) {
+                    playerRef.current.seekTo(currentPosition);
+                    lastPosition = currentPosition;
+                }
+
+                // Delay between polling requests
+                await new Promise((resolve) => setTimeout(resolve, 100));
+            }
+        } catch (error) {
+            console.error('Long polling error:', error);
+        }
+    };
+
+    //every second, video synchronizes additionally to polling function in case of lags/stuttering
+    const synchronizeVideoPosition = async () => {
+        try {
+            let roomname = localStorage.getItem("roomname");
+            let lastPosition = videoPosition;
+
+            while (true) {
+                const response = await Axios.get(
+                    `https://gruppe8.toni-barth.com/rooms/${roomname}/position`
+                );
+
+                const currentPosition = response.data.position;
+
+                if (playerRef.current && currentPosition !== lastPosition) {
+                    playerRef.current.seekTo(currentPosition);
+                    lastPosition = currentPosition;
+                }
+
+                // Delay between polling requests
+                await new Promise((resolve) => setTimeout(resolve, 1000));
+            }
+        } catch (error) {
+            console.error("Video position synchronization error:", error);
+        }
+    };
+
+    //handle for when video is ready
+    const handleReady = () => {
+        if (videoPlaying) {
+            setVideoPlaying(true);
+        } else {
+            setVideoPlaying(false);
+        }
+    };
     //as soon as site loads, roomname and username in navbar will be set according to local storage value;
     //shows join/leave room buttons
-    //calls getCurrentURL() function
+    //calls getCurrentURL, longPolling and synchronizeVideoPosition function
     useEffect(() => {
 
         if (document.getElementById("username")) {
@@ -136,27 +275,30 @@ function Room() {
         }
 
         getCurrentURL();
+        longPolling();
+        // setState((prevState) => ({ ...prevState, duration: 0 }));
+        synchronizeVideoPosition();
 
-    }, []);
+    }, [videoURL]);
 
     //reads URL value from API
     //if no URL is saved, default URL will be set
     async function getCurrentURL() {
-
         try {
             let roomname = localStorage.getItem("roomname");
-            const url = (await Axios.get(`https://gruppe8.toni-barth.com/rooms/` + roomname + `/video`)).data.url;
+            const { url, position } = (await Axios.get(
+                `https://gruppe8.toni-barth.com/rooms/${roomname}/video`
+            )).data;
 
             if (url.length !== 0) {
                 setVideoURL(url);
+                setVideoPosition(position);
                 document.getElementById("urlinput").placeholder = url;
-
             } else {
-                setVideoURL('https://www.dailymotion.com/video/x82hnx2');
+                setVideoURL("https://www.dailymotion.com/video/x82hnx2");
             }
-
         } catch (e) {
-            return e;
+            console.error("Error:", e);
         }
     }
 
@@ -164,6 +306,9 @@ function Room() {
     const handleKeyDown = (event) => {
         if (event.key === 'Enter' && document.getElementById("urlinput") != null) {
             getInput();
+        }
+        if (event.key === 'Escape') {
+            alert(true);
         }
     };
 
@@ -220,6 +365,12 @@ function Room() {
                             playing={playing}
                             muted={muted}
                             onProgress={handleProgress}
+                            onDuration={handleDuration}
+                            style={{ pointerEvents: 'none' }}
+                            onContextMenu={(e) => e.preventDefault()}
+                            controls={false}
+                            onReady={handleReady}
+                            preload="auto"
                         />
 
                         <PlayerControls
@@ -236,6 +387,7 @@ function Room() {
                             onSeekMouseUp={handleSeekMouseUp}
                             elapsedTime={elapsedTime}
                             totalDuration={totalDuration}
+                            videoStatus={videoPlaying ? "playing" : "paused"}
                         />
                     </div>
                 </div>
