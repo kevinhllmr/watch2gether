@@ -12,7 +12,7 @@ function App() {
   //empty room gets deleted after 10 minutes
   window.setInterval(function () {
     checkRoomEmpty();
-  }, 600000);
+  }, 60000);
 
   const checkRoomEmpty = async () => {
     try {
@@ -25,6 +25,7 @@ function App() {
           const lastUserID = users.data.users[users.data.users.length - 1].id;
 
           await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + room.name + `/users`, { "user": lastUserID });
+          // await new Promise((resolve) => setTimeout(resolve, 1000));
           await Axios.delete(`https://gruppe8.toni-barth.com/rooms/` + room.name + `/users`, { data: { "user": lastUserID } });
 
           await Axios.delete(`https://gruppe8.toni-barth.com/users/` + lastUserID);

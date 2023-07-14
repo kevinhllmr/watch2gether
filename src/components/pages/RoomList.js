@@ -62,7 +62,7 @@ function RoomList() {
                         navigate(`/` + button.innerText + `/`);
                         document.getElementById("roomname").innerHTML = button.innerText;
 
-                        // if(button.innerText !== localStorage.getItem("roomname")) {
+                        if(button.innerText !== localStorage.getItem("roomname")) {
                             try {
                                 await Axios.delete(`https://gruppe8.toni-barth.com/rooms/` + localStorage.getItem("roomname") + `/users`, {data:{"user": localStorage.getItem("userID")}});
                             } catch {}
@@ -73,7 +73,7 @@ function RoomList() {
                             } catch (e) {
                                 return e;
                             }
-                        // }
+                        }
 
                     } else {
                         setButtonPopup(true);  
