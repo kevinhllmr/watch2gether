@@ -184,6 +184,11 @@ function Navbar() {
               Create Room
             </Button>}
 
+            <div id="langs">
+                <span class="flag" id="btn_en"><img src={process.env.PUBLIC_URL + '/images/gb.svg'} alt="English" width="40px" height="30px"></img></span>
+                <span class="flag" id="btn_de"><img src={process.env.PUBLIC_URL + '/images/de.svg'} alt="Deutsch" width="40px" height="30px"></img></span>
+            </div>
+
         </div>
       </nav>
     </>
