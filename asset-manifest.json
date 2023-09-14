@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/watch2gether/static/css/main.60930976.css",
-    "main.js": "/watch2gether/static/js/main.2cabed69.js",
+    "main.css": "/watch2gether/static/css/main.85d27744.css",
+    "main.js": "/watch2gether/static/js/main.eb2b3eca.js",
     "index.html": "/watch2gether/index.html",
-    "main.60930976.css.map": "/watch2gether/static/css/main.60930976.css.map",
-    "main.2cabed69.js.map": "/watch2gether/static/js/main.2cabed69.js.map"
+    "main.85d27744.css.map": "/watch2gether/static/css/main.85d27744.css.map",
+    "main.eb2b3eca.js.map": "/watch2gether/static/js/main.eb2b3eca.js.map"
   },
   "entrypoints": [
-    "static/css/main.60930976.css",
-    "static/js/main.2cabed69.js"
+    "static/css/main.85d27744.css",
+    "static/js/main.eb2b3eca.js"
   ]
 }
