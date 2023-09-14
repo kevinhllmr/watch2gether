@@ -5,6 +5,8 @@ import { Button } from './Button';
 import { useNavigate } from "react-router-dom";
 import Axios from 'axios';
 import AddUserPopup from './AddUserPopup';
+import { lang_de } from './langs/lang_de.js';
+import { lang_en } from './langs/lang_en.js';
 
 //navigation bar component
 function Navbar() {
@@ -30,8 +32,45 @@ function Navbar() {
   };
 
   //calls showButton() function on page load
+  //triggers language button and sets language
   useEffect(() => {
     showButton();
+    let userLang = navigator.language || navigator.userLanguage;
+
+    if(document.getElementById("imglng") !== null) {
+      if(localStorage.getItem("lang") === "de") {
+        lang_de();
+        document.getElementById("imglng").src = process.env.PUBLIC_URL + '/images/de.svg';
+    
+      } else if(localStorage.getItem("lang") === "en") {
+        lang_en();
+        document.getElementById("imglng").src = process.env.PUBLIC_URL + '/images/gb.svg';
+
+      } else if(userLang === "de") {
+        lang_de();
+        document.getElementById("imglng").src = process.env.PUBLIC_URL + '/images/de.svg';
+        localStorage.setItem("lang", "de");
+
+      } else  {
+          // lang_en();
+          document.getElementById("imglng").src = process.env.PUBLIC_URL + '/images/gb.svg';
+          localStorage.setItem("lang", "en");
+      }
+    }
+
+     //event listener for language button
+      document.getElementById("btn_lng").addEventListener("click", function (e) {
+        if(localStorage.getItem("lang") === "de") {      
+          lang_en();
+          localStorage.setItem("lang", "en");
+          document.getElementById("imglng").src = process.env.PUBLIC_URL + '/images/gb.svg';
+
+        } else {
+          lang_de();
+          localStorage.setItem("lang", "de");
+          document.getElementById("imglng").src = process.env.PUBLIC_URL + '/images/de.svg';
+        }
+      });
   }, []);
 
   //calls showButton() function on window resize
@@ -177,17 +216,16 @@ function Navbar() {
               </Button>
             </div>}
 
-          {location.pathname !== "/watch2gether/" && location.pathname !== "/watch2gether" && button && location.pathname!== '/' + localStorage.getItem('roomname') + '/' &&
+          {location.pathname !== "/watch2gether/" && location.pathname !== "/watch2gether" && button && location.pathname !== '/' + localStorage.getItem('roomname') + '/' &&
             <Button 
               buttonStyle='btn--create'
               onClick={joinCreatedRoom}>
               Create Room
             </Button>}
 
-            <div id="langs">
-                <span class="flag" id="btn_en"><img src={process.env.PUBLIC_URL + '/images/gb.svg'} alt="English" width="40px" height="30px"></img></span>
-                <span class="flag" id="btn_de"><img src={process.env.PUBLIC_URL + '/images/de.svg'} alt="Deutsch" width="40px" height="30px"></img></span>
-            </div>
+            <span className="flags" id="btn_lng">
+              <img id='imglng' alt="Language Button"></img>
+            </span>
 
         </div>
       </nav>

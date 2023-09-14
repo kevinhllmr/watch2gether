@@ -8,6 +8,7 @@
     position: sticky;
     top: 0;
     z-index: 999;
+    user-select: none;
 }
 
 .navbar-container {
@@ -15,13 +16,16 @@
     justify-content: center;
     align-items: center;
     height: 80px;
-    max-width: 1500px;
+    width: 100%;
+    /* max-width: 1500px; */
 }
 
 .navbar-logo {
     color: #fff;
     justify-self: start;
     /* margin-left: -30px; */
+    left: 40px;
+    position: absolute;
     cursor: pointer;
     text-decoration: none;
     font-size: 2rem;
@@ -40,7 +44,7 @@
     grid-gap: 5px;
     list-style: none;
     text-align: center;
-    width: 60vw;
+    width: 45vw;
     justify-content: end;
     margin-right: 2rem;
 }
@@ -48,6 +52,7 @@
 .nav-item {
     height: 50px;
     white-space: nowrap;
+    user-select: all;
 }
 
 .nav-links {
@@ -91,7 +96,7 @@
 #username {
     color: white;
     padding-top: 8px;
-    padding-right: 300px;
+    padding-right: 2%;
     width: 300px;
     font-size: 25px;
     text-align: center;
@@ -100,6 +105,28 @@
 
 #leaveroombtn {
     padding-right: 20px;
+}
+
+.flags {
+    position: absolute;
+    top: 17.5px;
+    right: 60px;
+    width: 60px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+#imglng {
+    filter: brightness(80%);
+    width: 60px;
+    height: 45px;
+}
+
+.flags:hover {
+    filter: brightness(200%);
 }
 
 @media screen and (max-width: 1400px) {
@@ -147,7 +174,7 @@
     .navbar-logo {
         position: absolute;
         top: -3px;
-        left: 0;
+        left: -20px;
         transform: translate(25%, 50%);
     }
 
@@ -191,6 +218,20 @@
     #username,
     #roomname {
         color: rgb(175, 175, 175);
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .flags {
+        top: 15px;
+        right: 50px;
+    }
+
+    #imglng {
+        filter: brightness(80%);
+        object-fit: contain;
+        width: 40px;
+        height: 30px;
     }
 }
 

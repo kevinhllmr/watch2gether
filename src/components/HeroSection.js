@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import '../App.css'
-import { useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from './Button'
-import { Link } from 'react-router-dom';
 import './HeroSection.css'
 import Axios from 'axios';
 import AddUserPopup from './AddUserPopup';
@@ -31,7 +30,8 @@ function HeroSection() {
     }
   }, []);
 
-  //sets variable for react routing
+  //variables for current location and react routing
+  const location = useLocation();
   let navigate = useNavigate();
 
   //posts new room into API
@@ -115,25 +115,32 @@ function HeroSection() {
 
       <AddUserPopup trigger={buttonPopup} setTrigger={setButtonPopup}></AddUserPopup>
 
-      <h2>Create or join a room to get started!</h2>
+      <h2 id='welcome'>Create or join a room to get started!</h2>
 
       <div className='hero-btns'>
         <Button
+          id='newRoomBtn'
           className='btns'
           buttonStyle='btn--create'
           buttonSize='btn--large'
           onClick={() => joinCreatedRoom()}
         >
-          Create New Room
+          Create Room
         </Button><br /><br />
 
         <Link
           to='/room-list/'
+          id='joinroombtn'
           className='join-room'
         >
           Join Room
         </Link><br /><br />
       </div>
+
+      {(location.pathname === "/watch2gether/" || location.pathname !== "/watch2gether") &&
+        <p id='notice'>Das Projekt ist an der HS Anhalt und unter der Aufsicht von Toni Barth entstanden.</p>
+      }
+
     </div>
   )
 }

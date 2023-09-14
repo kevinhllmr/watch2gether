@@ -1,10 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './AddUserPopUp.css';
 import { useNavigate } from "react-router-dom";
 import Axios from 'axios';
+import { lang_de } from './langs/lang_de.js';
+import { lang_en } from './langs/lang_en.js';
 
 //creates popup for user creation
 function AddUserPopup(props) {
+
+    useEffect(() => {
+        if(localStorage.getItem("lang") === "de") {
+            lang_de();
+        
+        } else {
+            lang_en();
+
+        } 
+    });
 
     //gets input if enter key is pressed
     const handleKeyDown = (event) => {
@@ -106,7 +118,7 @@ function AddUserPopup(props) {
 
                 {props.children}
 
-                <label>Username:</label><br />
+                <label id='usernameLabel'>Username:</label><br />
 
                 <input
                     id='userInput'
