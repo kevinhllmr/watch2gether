@@ -47,7 +47,8 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
-          <Route path='/watch2gether/' exact Component={Home} />
+          <Route path='' exact Component={Home} />
+          <Route path='/home/' exact Component={Home} />
           <Route path='/room-list/' exact Component={RoomList} />
           <Route path='/:roomname/' exact Component={Room} />
         </Routes>

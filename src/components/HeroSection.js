@@ -138,7 +138,7 @@ function HeroSection() {
         </Link><br /><br />
       </div>
 
-      {(location.pathname === "/watch2gether/" || location.pathname !== "/watch2gether") &&
+      {(location.pathname === "/home/" || location.pathname !== "/home") &&
         <p id='notice'>Das Projekt ist an der HS Anhalt und unter der Aufsicht von Toni Barth entstanden.</p>
       }
 

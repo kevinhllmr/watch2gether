@@ -166,17 +166,17 @@ function Navbar() {
         <div className='navbar-container'>
           <AddUserPopup trigger={buttonPopup} setTrigger={setButtonPopup}></AddUserPopup>
 
-          <Link to="/watch2gether/" className="navbar-logo">
+          <Link to="/home/" className="navbar-logo">
             Watch2Gether
             <i className="far fa-play-circle"></i>
           </Link>
 
-          {location.pathname !== "/watch2gether/" && location.pathname !== "/watch2gether" &&
+          {location.pathname !== "/home/" && location.pathname !== "/home" &&
             <div className='menu-icon' onClick={handleClick}>
               <i className={click ? 'fas fa-caret-up' : 'fas fa-caret-down'} />
             </div>}
 
-          {location.pathname !== "/watch2gether/" && location.pathname !== "/watch2gether" &&
+          {location.pathname !== "/home/" && location.pathname !== "/home" &&
             <ul className={click ? 'nav-menu active' : 'nav-menu'}>
               <li className='nav-item' onClick={closeMobileMenu}>
                 <div id='roomname' onClick={() => copyRoomName()}>
@@ -223,7 +223,7 @@ function Navbar() {
               </li>}
             </ul>}
 
-          {location.pathname !== "/watch2gether/" && location.pathname !== "/watch2gether" && button && localStorage.getItem("roomname") !== null &&
+          {location.pathname !== "/home/" && location.pathname !== "/home" && button && localStorage.getItem("roomname") !== null &&
             <div id='leaveroombtn'>
               <Button buttonStyle='btn--leave'
                 onClick={leaveRoom}>
@@ -231,7 +231,7 @@ function Navbar() {
               </Button>
             </div>}
 
-          {location.pathname !== "/watch2gether/" && location.pathname !== "/watch2gether" && button && location.pathname !== '/' + localStorage.getItem('roomname') + '/' &&
+          {location.pathname !== "/home/" && location.pathname !== "/home" && button && location.pathname !== '/' + localStorage.getItem('roomname') + '/' &&
             <Button 
               buttonStyle='btn--create'
               onClick={joinCreatedRoom}>
