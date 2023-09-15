@@ -5,6 +5,7 @@ export function lang_en() {
     const roomElement = document.getElementById('rooms');
     const usernameLabel = document.getElementById('usernameLabel');
     const userInput = document.getElementById('userInput');
+    const copied = document.getElementById('snackbar');
 
     if (welcomeElement) {
         welcomeElement.innerHTML = "Create or join a room<br> to get started!";
@@ -28,5 +29,9 @@ export function lang_en() {
 
     if (userInput) {
         userInput.placeholder = "Enter your name here";
+    }
+
+    if (copied) {
+        copied.innerText = "Room link copied!";
     }
 }

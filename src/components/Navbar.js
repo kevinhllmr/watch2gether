@@ -124,6 +124,21 @@ function Navbar() {
     }
   }
 
+  //copies room name
+  const copyRoomName = async () => {
+          navigator.clipboard.writeText('http://localhost:3000/watch2gether#/' + document.getElementById("roomname").innerText);     
+          showSnackBar();  
+  }
+
+  function showSnackBar() {
+    var sb = document.getElementById("snackbar");
+  
+    //this is where the class name will be added & removed to activate the css
+    sb.className = "show";
+  
+    setTimeout(()=>{ sb.className = sb.className.replace("show", ""); }, 3000);
+  }
+
   //closes mobile menu;
   //removes user from current room and roomname from local storage;
   //hides leave room button
@@ -164,7 +179,7 @@ function Navbar() {
           {location.pathname !== "/watch2gether/" && location.pathname !== "/watch2gether" &&
             <ul className={click ? 'nav-menu active' : 'nav-menu'}>
               <li className='nav-item' onClick={closeMobileMenu}>
-                <div id='roomname'>
+                <div id='roomname' onClick={() => copyRoomName()}>
                 </div>
               </li>
 
@@ -228,6 +243,9 @@ function Navbar() {
             </span>
 
         </div>
+
+        <span id="snackbar"></span>
+
       </nav>
     </>
   )

@@ -97,6 +97,7 @@ function HeroSection() {
       localStorage.removeItem("username");
       localStorage.removeItem("userID");
       localStorage.removeItem("roomname");
+      localStorage.removeItem("lang");
       document.getElementById("logoutbtn").style.display = "none";
       alert("logged out!");
     }

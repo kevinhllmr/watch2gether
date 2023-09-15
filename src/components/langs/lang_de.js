@@ -5,9 +5,10 @@ export function lang_de() {
     const roomElement = document.getElementById('rooms');
     const usernameLabel = document.getElementById('usernameLabel');
     const userInput = document.getElementById('userInput');
+    const copied = document.getElementById('snackbar');
 
     if (welcomeElement) {
-        welcomeElement.innerHTML = "Erstelle oder trete einem<br> Raum bei, um zu starten!";
+        welcomeElement.innerHTML = "Erstelle oder trete einem<br> Raum bei, um loszulegen!";
     }
 
     if (noticeElement) {
@@ -28,5 +29,9 @@ export function lang_de() {
 
     if (userInput) {
         userInput.placeholder = "Gib deinen Namen hier ein";
+    }
+
+    if (copied) {
+        copied.innerText = "Raumlink kopiert!";
     }
 }

@@ -21,6 +21,7 @@ img {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+    user-select: none;
 }
 
 h2 {
