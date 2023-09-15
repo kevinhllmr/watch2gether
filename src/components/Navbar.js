@@ -126,7 +126,7 @@ function Navbar() {
 
   //copies room name
   const copyRoomName = async () => {
-          navigator.clipboard.writeText('http://localhost:3000/watch2gether#/' + document.getElementById("roomname").innerText);     
+          navigator.clipboard.writeText('https://kevinhllmr.github.io/watch2gether/#/' + document.getElementById("roomname").innerText);     
           showSnackBar();  
   }
 
