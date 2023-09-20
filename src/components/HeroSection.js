@@ -5,13 +5,39 @@ import { Button } from './Button'
 import './HeroSection.css'
 import Axios from 'axios';
 import AddUserPopup from './AddUserPopup';
+import { lang_de } from './langs/lang_de.js';
+import { lang_en } from './langs/lang_en.js';
 
 //hero section component for home page
 function HeroSection() {
 
   //as soon as site loads, check if username local storage is null,
   //if not null, show log out button, otherwise hide it
+  //sets language
   useEffect(() => {
+    let userLang = navigator.language || navigator.userLanguage;
+
+    if(document.getElementById("imglng") !== null) {
+      if(localStorage.getItem("lang") === "de") {
+        lang_de();
+        document.getElementById("imglng").src = process.env.PUBLIC_URL + '/images/de.svg';
+    
+      } else if(localStorage.getItem("lang") === "en") {
+        lang_en();
+        document.getElementById("imglng").src = process.env.PUBLIC_URL + '/images/gb.svg';
+
+      } else if(userLang === "de") {
+        lang_de();
+        document.getElementById("imglng").src = process.env.PUBLIC_URL + '/images/de.svg';
+        localStorage.setItem("lang", "de");
+
+      } else  {
+          // lang_en();
+          document.getElementById("imglng").src = process.env.PUBLIC_URL + '/images/gb.svg';
+          localStorage.setItem("lang", "en");
+      }
+    }
+
     if (document.getElementById("logoutbtn") != null && localStorage.getItem("username") != null) {
       document.getElementById("logoutbtn").style.display = 'block';
 
@@ -126,7 +152,7 @@ function HeroSection() {
           buttonSize='btn--large'
           onClick={() => joinCreatedRoom()}
         >
-          <p id='joinbtn'></p>
+          <p id='createbtnhp'></p>
         </Button><br /><br />
 
         <Link

@@ -217,8 +217,8 @@ function Navbar() {
                 <Link
                   className='nav-links-mobile'
                   onClick={joinCreatedRoom}
+                  id='createlink'
                 >
-                  Create Room
                 </Link>
               </li>}
             </ul>}
@@ -235,7 +235,7 @@ function Navbar() {
             <Button 
               buttonStyle='btn--create'
               onClick={joinCreatedRoom}>
-              <p id='joinbtn'></p>
+              <p id='createbtn'></p>
             </Button>}
 
             <span className="flags" id="btn_lng">

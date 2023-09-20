@@ -7,7 +7,9 @@ export function lang_en() {
     const userInput = document.getElementById('userInput');
     const copied = document.getElementById('copyroom-notif');
     const leavebtn = document.getElementById('leavebtn');
-    const joinbtn = document.getElementById('joinbtn');
+    const createbtn = document.getElementById('createbtn');
+    const createlink = document.getElementById('createlink');
+    const createbtnhp = document.getElementById('createbtnhp');
     const logout = document.getElementById('logout');
 
     if (welcomeElement) {
@@ -42,8 +44,16 @@ export function lang_en() {
         leavebtn.textContent = "Leave Room";
     }
 
-    if (joinbtn) {
-        joinbtn.textContent = "Create Room";
+    if (createbtn) {
+        createbtn.textContent = "Create Room";
+    }
+
+    if (createbtnhp) {
+        createbtnhp.textContent = "Create Room";
+    }
+
+    if (createlink) {
+        createlink.textContent = "Create Room";
     }
 
     if (logout) {
