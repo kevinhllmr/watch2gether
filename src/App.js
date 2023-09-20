@@ -3,7 +3,8 @@ import Navbar from "./components/Navbar";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Axios from 'axios';
-import Home from './components/pages/Home';
+// import Home from './components/pages/Home';
+import HeroSection from './components/HeroSection';
 import RoomList from './components/pages/RoomList';
 import Room from './components/pages/Room';
 
@@ -47,8 +48,8 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
-          <Route path='' exact Component={Home} />
-          <Route path='/home/' exact Component={Home} />
+          <Route path='' exact Component={HeroSection} />
+          <Route path='/home/' exact Component={HeroSection} />
           <Route path='/room-list/' exact Component={RoomList} />
           <Route path='/:roomname/' exact Component={Room} />
         </Routes>

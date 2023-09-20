@@ -11,10 +11,18 @@ import { lang_en } from './langs/lang_en.js';
 //hero section component for home page
 function HeroSection() {
 
+  //variables for current location and react routing
+  const location = useLocation();
+  let navigate = useNavigate();
+
   //as soon as site loads, check if username local storage is null,
   //if not null, show log out button, otherwise hide it
   //sets language
   useEffect(() => {
+    if(location.pathname !== "/home/") {
+        navigate(`/home/`);
+    }
+
     let userLang = navigator.language || navigator.userLanguage;
 
     if(document.getElementById("imglng") !== null) {
@@ -55,10 +63,6 @@ function HeroSection() {
       }
     }
   }, []);
-
-  //variables for current location and react routing
-  const location = useLocation();
-  let navigate = useNavigate();
 
   //posts new room into API
   const createRoom = async () => {
