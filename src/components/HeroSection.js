@@ -109,14 +109,14 @@ function HeroSection() {
         id='logoutbtn'
         onClick={() => logOutUser()}
       >
-        Log out
+        <p id='logout'></p>
       </button>
 
       <img src={process.env.PUBLIC_URL + '/images/homebg.jpg'} alt='background home projector cinema' />
 
       <AddUserPopup trigger={buttonPopup} setTrigger={setButtonPopup}></AddUserPopup>
 
-      <h2 id='welcome'>Create or join a room to get started!</h2>
+      <h2 id='welcome'></h2>
 
       <div className='hero-btns'>
         <Button
@@ -126,7 +126,7 @@ function HeroSection() {
           buttonSize='btn--large'
           onClick={() => joinCreatedRoom()}
         >
-          Create Room
+          <p id='joinbtn'></p>
         </Button><br /><br />
 
         <Link

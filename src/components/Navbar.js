@@ -227,7 +227,7 @@ function Navbar() {
             <div id='leaveroombtn'>
               <Button buttonStyle='btn--leave'
                 onClick={leaveRoom}>
-                Leave Room
+                <p id='leavebtn'></p>
               </Button>
             </div>}
 
@@ -235,7 +235,7 @@ function Navbar() {
             <Button 
               buttonStyle='btn--create'
               onClick={joinCreatedRoom}>
-              Create Room
+              <p id='joinbtn'></p>
             </Button>}
 
             <span className="flags" id="btn_lng">
@@ -244,7 +244,7 @@ function Navbar() {
 
         </div>
 
-        <span id="snackbar"></span>
+        <span id="copyroom-notif"></span>
 
       </nav>
     </>

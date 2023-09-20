@@ -5,7 +5,10 @@ export function lang_en() {
     const roomElement = document.getElementById('rooms');
     const usernameLabel = document.getElementById('usernameLabel');
     const userInput = document.getElementById('userInput');
-    const copied = document.getElementById('snackbar');
+    const copied = document.getElementById('copyroom-notif');
+    const leavebtn = document.getElementById('leavebtn');
+    const joinbtn = document.getElementById('joinbtn');
+    const logout = document.getElementById('logout');
 
     if (welcomeElement) {
         welcomeElement.innerHTML = "Create or join a room<br> to get started!";
@@ -33,5 +36,17 @@ export function lang_en() {
 
     if (copied) {
         copied.innerText = "Room link copied!";
+    }
+
+    if (leavebtn) {
+        leavebtn.textContent = "Leave Room";
+    }
+
+    if (joinbtn) {
+        joinbtn.textContent = "Create Room";
+    }
+
+    if (logout) {
+        logout.textContent = "Logout";
     }
 }
