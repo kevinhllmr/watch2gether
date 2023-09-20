@@ -5,6 +5,7 @@ import './Room.css';
 import Axios from 'axios';
 import PlayerControls from '../PlayerControls';
 import screenfull from 'screenfull';
+import { useNavigate } from "react-router-dom";
 
 //count variable for UI fade out
 let count = 0;
@@ -31,9 +32,11 @@ const format = (seconds) => {
 function Room() {
 
     //use state for URL, status and position
+    //as well as user create popup if user has not set a name yet
     const [videoURL, setVideoURL] = useState('');
     const [videoPlaying, setVideoPlaying] = useState(false);
     const [videoPosition, setVideoPosition] = useState(0.0);
+    const [buttonPopup, setButtonPopup] = useState(false);
 
     //multiple states for synchronize handling
     const [state, setState] = useState({
@@ -255,10 +258,20 @@ function Room() {
             setVideoPlaying(false);
         }
     };
+
+    //sets variable for react routing
+    let navigate = useNavigate(); 
+
     //as soon as site loads, roomname and username in navbar will be set according to local storage value;
     //shows join/leave room buttons
     //calls getCurrentURL, longPolling and synchronizeVideoPosition function
+    //if username is null, navigate to room list (and open user create popup)
     useEffect(() => {
+
+        if(localStorage.getItem("username") === null) {
+            setButtonPopup(true);  
+            navigate(`/room-list/`);
+        }        
 
         if (document.getElementById("username")) {
             document.getElementById("roomname").innerHTML = localStorage.getItem("roomname");
@@ -390,7 +403,7 @@ function Room() {
                             videoStatus={videoPlaying ? "playing" : "paused"}
                         />
                     </div>
-                </div>
+                </div>    
             </div>
         </>
     );

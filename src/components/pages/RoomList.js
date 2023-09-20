@@ -14,7 +14,12 @@ function RoomList() {
     //as soon as site loads, roomname and username in navbar will be set according to local storage value;
     //join room button gets removed;
     //sets roomname element in navbar to localstorage value and shows/hide leave room button
+    //if username is null, open user create popup
     useEffect(() => {
+
+        if(localStorage.getItem("username") === null) {
+            setButtonPopup(true); 
+        }
 
         if(document.getElementById("joinroombtn")) {
             document.getElementById("joinroombtn").style.display = 'none';
@@ -39,7 +44,6 @@ function RoomList() {
 
     //gets rooms from API and creates button for each room;
     //each button gets onClick event which either joins room if username not null
-    //or opens create user popup
     const loadRooms = async () => {
 
         try {
@@ -74,10 +78,10 @@ function RoomList() {
                                 return e;
                             }
                         }
-
-                    } else {
-                        setButtonPopup(true);  
-                    }    
+                    }
+                    // } else {
+                    //     setButtonPopup(true);  
+                    // }    
                 }));          
         }
 
