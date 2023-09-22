@@ -171,12 +171,12 @@ function Navbar() {
             <i className="far fa-play-circle"></i>
           </Link>
 
-          {location.pathname !== "/home/" && location.pathname !== "/home" && location.pathname !== "/404/" && location.pathname !== "/404" && location.pathname !== "/help/" && location.pathname !== "/help" &&
+          {location.pathname !== "/home/" && location.pathname !== "/home" && location.pathname !== "/404/" && location.pathname !== "/404" && 
             <div className='menu-icon' onClick={handleClick} aria-label="open menu">
               <i className={click ? 'fas fa-caret-up' : 'fas fa-caret-down'} />
             </div>}
 
-          {location.pathname !== "/home/" && location.pathname !== "/home" && location.pathname !== "/404/" && location.pathname !== "/404" && location.pathname !== "/help/" && location.pathname !== "/help" &&
+          {location.pathname !== "/home/" && location.pathname !== "/home" && location.pathname !== "/404/" && location.pathname !== "/404" && 
             <ul className={click ? 'nav-menu active' : 'nav-menu'}>
               <li className='nav-item' onClick={closeMobileMenu}>
                 <div id='roomname' onClick={() => copyRoomName()} aria-label="copy room name">
@@ -188,7 +188,7 @@ function Navbar() {
                 </div>
               </li>
 
-              {location.pathname !=="/room-list/" && location.pathname !=="/room-list" && location.pathname !== "/404/" && location.pathname !== "/404" && location.pathname !== "/help/" && location.pathname !== "/help" &&
+              {location.pathname !=="/room-list/" && location.pathname !=="/room-list" && location.pathname !== "/404/" && location.pathname !== "/404" && 
               <li className='nav-item'>
                 <Link
                   to='/room-list/'
@@ -201,7 +201,7 @@ function Navbar() {
                 </Link>
               </li>}
 
-              {window.innerWidth <= 1400 && localStorage.getItem('roomname') !== null && location.pathname !== "/404/" && location.pathname !== "/404" && location.pathname !== "/help/" && location.pathname !== "/help" &&
+              {window.innerWidth <= 1400 && localStorage.getItem('roomname') !== null && location.pathname !== "/404/" && location.pathname !== "/404" && 
               <li className='nav-item'>
                 <Link
                   // to='/room-list/'
@@ -214,7 +214,7 @@ function Navbar() {
                 </Link>
               </li>}
 
-              {location.pathname!== '/' + localStorage.getItem('roomname') + '/' && location.pathname !== "/404/" && location.pathname !== "/404" && location.pathname !== "/help/" && location.pathname !== "/help" &&
+              {location.pathname!== '/' + localStorage.getItem('roomname') + '/' && location.pathname !== "/404/" && location.pathname !== "/404" && 
               <li>
                 <Link
                   className='nav-links-mobile'
@@ -226,7 +226,7 @@ function Navbar() {
               </li>}
             </ul>}
 
-          {location.pathname !== "/home/" && location.pathname !== "/home" && button && localStorage.getItem("roomname") !== null && location.pathname !== "/404/" && location.pathname !== "/404" && location.pathname !== "/help/" && location.pathname !== "/help" &&
+          {location.pathname !== "/home/" && location.pathname !== "/home" && button && localStorage.getItem("roomname") !== null && location.pathname !== "/404/" && location.pathname !== "/404" && 
             <div id='leaveroombtn'>
               <Button buttonStyle='btn--leave'
                 onClick={leaveRoom} 
@@ -235,7 +235,7 @@ function Navbar() {
               </Button>
             </div>}
 
-          {location.pathname !== "/home/" && location.pathname !== "/home" && button && location.pathname !== '/' + localStorage.getItem('roomname') + '/' && location.pathname !== "/404/" && location.pathname !== "/404" && location.pathname !== "/help/" && location.pathname !== "/help" &&
+          {location.pathname !== "/home/" && location.pathname !== "/home" && button && location.pathname !== '/' + localStorage.getItem('roomname') + '/' && location.pathname !== "/404/" && location.pathname !== "/404" &&
             <Button 
               buttonStyle='btn--create'
               onClick={joinCreatedRoom} 
