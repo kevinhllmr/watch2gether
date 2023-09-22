@@ -142,6 +142,13 @@ function HeroSection() {
         <p id='logout'></p>
       </button>
 
+      <button
+        id='helpbtn'
+        onClick={() => navigate('/help/')}
+      >
+        <p id='helpp'>Help</p>
+      </button>
+
       <img src={process.env.PUBLIC_URL + '/images/homebg.jpg'} alt='background home projector cinema' />
 
       <AddUserPopup trigger={buttonPopup} setTrigger={setButtonPopup}></AddUserPopup>

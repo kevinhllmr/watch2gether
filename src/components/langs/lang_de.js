@@ -73,7 +73,7 @@ export function lang_de() {
     }
 
     if (help) {
-        help.innerHTML = "1) Erstelle einen Raum oder trete einem bei<br />2) Teile die Raum-URL, indem du auf den Raumnamen klickst<br /> 3) Watch2Gether!<br /><br />Tastenkombination:";
+        help.innerHTML = "1) Erstelle einen Raum oder trete einem bei<br />2) Teile die Raum-URL, indem du auf den Raumnamen klickst<br /> 3) Watch2Gether!<br /><br />Tastenkombinationen:";
     }
 
     if (controls) {

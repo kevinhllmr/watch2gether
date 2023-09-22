@@ -347,14 +347,13 @@ function Room() {
 
         doesRoomExist();
 
-        document.addEventListener('keydown', keydownListener);
-
         try {
             if (localStorage.getItem("username") === null) {
-                setButtonPopup(true);
                 navigate(`/room-list/`);
             }
         } catch { }
+
+        document.addEventListener('keydown', keydownListener);
 
         if (document.getElementById("username")) {
             document.getElementById("roomname").innerHTML = localStorage.getItem("roomname");
@@ -373,7 +372,7 @@ function Room() {
         getCurrentURL();
         longPolling(); 
         // // setState((prevState) => ({ ...prevState, duration: 0 }));
-        // synchronizeVideoPosition();
+        synchronizeVideoPosition();
 
         return () => {
             window.removeEventListener('keydown', keydownListener);
@@ -393,6 +392,7 @@ function Room() {
             res.data.rooms.forEach(async room => {
                 if (room.name === roomname) {
                     stringFound = true;
+                    localStorage.setItem("roomname", roomname);
                 }
             });
 
