@@ -268,12 +268,14 @@ function Room() {
     //if username is null, navigate to room list (and open user create popup)
     useEffect(() => {
 
-        if(localStorage.getItem("username") === null) {
-            setButtonPopup(true);  
-            navigate(`/room-list/`);
-        }    
-        
         doesRoomExist();
+
+        try {
+            if(localStorage.getItem("username") === null) {
+                setButtonPopup(true);  
+                navigate(`/room-list/`);
+            }    
+        } catch { }
 
         if (document.getElementById("username")) {
             document.getElementById("roomname").innerHTML = localStorage.getItem("roomname");

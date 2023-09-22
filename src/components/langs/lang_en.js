@@ -1,7 +1,8 @@
 export function lang_en() {
-    const welcomeElement = document.getElementById('welcome');
-    const noticeElement = document.getElementById('notice');
-    const joinRoomBtnElement = document.getElementById('joinroombtn');
+    const welcome = document.getElementById('welcome');
+    const notice = document.getElementById('notice');
+    const joinRoomBtn = document.getElementById('joinroombtn');
+    const joinRoomBtn404 = document.getElementById('joinroombtn404');
     const roomElement = document.getElementById('rooms');
     const usernameLabel = document.getElementById('usernameLabel');
     const userInput = document.getElementById('userInput');
@@ -13,16 +14,20 @@ export function lang_en() {
     const logout = document.getElementById('logout');
     const roomnotfound = document.getElementById('roomnotfound');
 
-    if (welcomeElement) {
-        welcomeElement.innerHTML = "Create or join a room<br> to get started!";
+    if (welcome) {
+        welcome.innerHTML = "Create or join a room<br> to get started!";
     }
 
-    if (noticeElement) {
-        noticeElement.innerHTML = "The project was created at HS Anhalt and under the supervision of Toni Barth.";
+    if (notice) {
+        notice.innerHTML = "The project was created at HS Anhalt and under the supervision of Toni Barth.";
     }
 
-    if (joinRoomBtnElement) {
-        joinRoomBtnElement.innerText = "Join Room";
+    if (joinRoomBtn) {
+        joinRoomBtn.innerText = "Join Room";
+    }
+
+    if (joinRoomBtn404) {
+        joinRoomBtn404.innerText = "Join Room";
     }
 
     if (roomElement) {

@@ -9,7 +9,7 @@ function NotFound() {
       <img src={process.env.PUBLIC_URL + '/images/homebg.jpg'} alt='background home projector cinema' />
 
       <h2 id='roomnotfound'></h2>
-      
+
         <Link
           to='/room-list/'
           id='joinroombtn404'

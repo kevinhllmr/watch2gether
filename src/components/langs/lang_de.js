@@ -1,7 +1,8 @@
 export function lang_de() {
-    const welcomeElement = document.getElementById('welcome');
-    const noticeElement = document.getElementById('notice');
-    const joinRoomBtnElement = document.getElementById('joinroombtn');
+    const welcome = document.getElementById('welcome');
+    const notice = document.getElementById('notice');
+    const joinRoomBtn = document.getElementById('joinroombtn');
+    const joinRoomBtn404 = document.getElementById('joinroombtn404');
     const roomElement = document.getElementById('rooms');
     const usernameLabel = document.getElementById('usernameLabel');
     const userInput = document.getElementById('userInput');
@@ -13,16 +14,20 @@ export function lang_de() {
     const logout = document.getElementById('logout');
     const roomnotfound = document.getElementById('roomnotfound');
 
-    if (welcomeElement) {
-        welcomeElement.innerHTML = "Erstelle oder trete einem<br> Raum bei, um loszulegen!";
+    if (welcome) {
+        welcome.innerHTML = "Erstelle oder trete einem<br> Raum bei, um loszulegen!";
     }
 
-    if (noticeElement) {
-        noticeElement.innerHTML = "Das Projekt ist an der HS Anhalt und unter der Aufsicht von Toni Barth entstanden.";
+    if (notice) {
+        notice.innerHTML = "Das Projekt ist an der HS Anhalt und unter der Aufsicht von Toni Barth entstanden.";
     }
 
-    if (joinRoomBtnElement) {
-        joinRoomBtnElement.innerText = "Raum beitreten";
+    if (joinRoomBtn) {
+        joinRoomBtn.innerText = "Raum beitreten";
+    }
+
+    if (joinRoomBtn404) {
+        joinRoomBtn404.innerText = "Raum beitreten";
     }
 
     if (roomElement) {

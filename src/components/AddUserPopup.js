@@ -101,7 +101,7 @@ function AddUserPopup(props) {
         }
     }
 
-    //closes popup
+    //closes popup, reload site
     //if roomname in navbar is not null, its innerHTML will get removed
     function closePopup() {
         props.setTrigger(false);
@@ -114,7 +114,7 @@ function AddUserPopup(props) {
     return (props.trigger) ? (
         <div className='popup'>
             <div className='popup-inner'>
-                <button className='closebtn' onClick={() => closePopup()}>&times;</button>
+                {/* <button className='closebtn' onClick={() => closePopup()}>&times;</button> */}
 
                 {props.children}
 

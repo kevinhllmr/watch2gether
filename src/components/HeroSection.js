@@ -46,7 +46,7 @@ function HeroSection() {
       }
     }
 
-    if (document.getElementById("logoutbtn") != null && localStorage.getItem("username") != null) {
+    if (document.getElementById("logoutbtn") != null && localStorage.getItem("username") != null || localStorage.getItem("roomname") != null) {
       document.getElementById("logoutbtn").style.display = 'block';
 
     } else {
