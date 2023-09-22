@@ -7,6 +7,7 @@ import Axios from 'axios';
 import HeroSection from './components/HeroSection';
 import RoomList from './components/pages/RoomList';
 import Room from './components/pages/Room';
+import NotFound from './components/pages/NotFound';
 
 function App() {
 
@@ -51,6 +52,7 @@ function App() {
           <Route path='' exact Component={HeroSection} />
           <Route path='/home/' exact Component={HeroSection} />
           <Route path='/room-list/' exact Component={RoomList} />
+          <Route path='/404/' exact Component={NotFound} />
           <Route path='/:roomname/' exact Component={Room} />
         </Routes>
       </Router>

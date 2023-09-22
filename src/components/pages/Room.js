@@ -36,7 +36,7 @@ function Room() {
     const [videoURL, setVideoURL] = useState('');
     const [videoPlaying, setVideoPlaying] = useState(false);
     const [videoPosition, setVideoPosition] = useState(0.0);
-    const [buttonPopup, setButtonPopup] = useState(false);
+    const [setButtonPopup] = useState(false);
 
     //multiple states for synchronize handling
     const [state, setState] = useState({
@@ -271,7 +271,9 @@ function Room() {
         if(localStorage.getItem("username") === null) {
             setButtonPopup(true);  
             navigate(`/room-list/`);
-        }        
+        }    
+        
+        doesRoomExist();
 
         if (document.getElementById("username")) {
             document.getElementById("roomname").innerHTML = localStorage.getItem("roomname");
@@ -293,6 +295,30 @@ function Room() {
         synchronizeVideoPosition();
 
     }, [videoURL]);
+
+    //check if room exists from copied room link. if not, show 404 page
+    async function doesRoomExist() {
+        const url = window.location + '';
+        const parts = url.split('/');
+        const roomname = parts[parts.length - 2];
+        let stringFound = false;
+
+        try {
+            const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms`);
+            res.data.rooms.forEach(async room => {
+                if (room.name === roomname) {
+                    stringFound = true;
+                  }
+            });
+
+            if(stringFound === false) {
+                navigate(`/404/`);
+            }
+      
+          } catch (e) {
+            return e;
+          }
+    }
 
     //reads URL value from API
     //if no URL is saved, default URL will be set

@@ -252,7 +252,6 @@
     }
 }
 
-
 #copyroom-notif {
     visibility: hidden;
     color: rgb(36, 36, 36);
@@ -269,7 +268,7 @@
   }
   
   /* This will be activated when the snackbar's class is 'show' which will be added through JS */
-  #snackbar.show {
+  #copyroom-notif.show {
     visibility: visible;
     -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
     animation: fadein 0.5s, fadeout 0.5s 2.5s;

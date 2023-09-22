@@ -11,6 +11,7 @@ export function lang_en() {
     const createlink = document.getElementById('createlink');
     const createbtnhp = document.getElementById('createbtnhp');
     const logout = document.getElementById('logout');
+    const roomnotfound = document.getElementById('roomnotfound');
 
     if (welcomeElement) {
         welcomeElement.innerHTML = "Create or join a room<br> to get started!";
@@ -58,5 +59,9 @@ export function lang_en() {
 
     if (logout) {
         logout.textContent = "Logout";
+    }
+
+    if (roomnotfound) {
+        roomnotfound.textContent = "Room not found!";
     }
 }

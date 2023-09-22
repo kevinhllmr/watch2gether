@@ -1,0 +1,61 @@
+.hero-container {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
+    object-fit: cover;
+    overflow: hidden;
+    position: fixed;
+}
+
+img {
+    overflow: hidden;
+    position: fixed;
+    min-width: 100%;
+    z-index: -1;
+    filter: brightness(30%);
+    background: no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    user-select: none;
+}
+
+#roomnotfound {
+    font-size: 40px;
+    color: #fff;
+    margin-top: 300px;
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+#joinroombtn404 {
+    color: #fff;
+    font-size: 22px;
+    margin-top: 0px;
+}
+
+#notice {
+    margin: 40px;
+    margin-bottom: 0;
+    position: fixed;
+    bottom: 40px;
+    color: #ffffff30;
+    font-size: smaller;
+    text-align: center;
+}
+
+@media screen and (max-width: 960px) {
+    #roomnotfound {
+        font-size: 40px;
+        color: #fff;
+        margin-top: 40px;
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+}
