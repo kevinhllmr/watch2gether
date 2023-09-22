@@ -30,6 +30,18 @@ img {
     text-align: left;
 }
 
+#home {
+    font-size: 20px;
+    background-color: transparent;
+    color: rgb(78, 78, 78);
+    border: 0px solid transparent;
+    padding-left: 95%;
+    cursor: pointer;
+    white-space: nowrap;
+    margin-right: 10px;
+    margin-top: 5px;
+}
+
 h3 {
     font-size: 30px;
     color: #ffffffb6;

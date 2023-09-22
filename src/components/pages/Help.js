@@ -1,12 +1,21 @@
 import '../../App.css';
 import './Help.css';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Help() {
+  let navigate = useNavigate();
+
     return (
         <div className='hero-container'>
 
       <img src={process.env.PUBLIC_URL + '/images/homebg.jpg'} alt='background home projector cinema' />
+
+      <button
+        id='helpbtn'
+        onClick={() => navigate('/home/')}
+      >
+        <p>Home</p>
+      </button>
 
       <h2 id='help'></h2>
       <br />

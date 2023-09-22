@@ -15,6 +15,7 @@ export function lang_en() {
     const roomnotfound = document.getElementById('roomnotfound');
     const help = document.getElementById('help');
     const controls = document.getElementById('controls');
+    const helpp = document.getElementById('helpp');
 
     if (welcome) {
         welcome.innerHTML = "Create or join a room<br> to get started!";
@@ -78,5 +79,9 @@ export function lang_en() {
 
     if (controls) {
         controls.innerHTML = "Play/Pause Video - Spacebar or K<br />Fullscreen - F<br />Rewind - Arrow Left<br /> Fast Forward - Arrow Right<br /> Volume Down - Arrow Down<br /> Volume Up - Arrow Up<br /> Mute - M<br /> ";
+    }
+
+    if (helpp) {
+        helpp.innerHTML = "Help";
     }
 }

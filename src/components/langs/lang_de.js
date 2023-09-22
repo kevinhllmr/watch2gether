@@ -15,6 +15,7 @@ export function lang_de() {
     const roomnotfound = document.getElementById('roomnotfound');
     const help = document.getElementById('help');
     const controls = document.getElementById('controls');
+    const helpp = document.getElementById('helpp');
 
     if (welcome) {
         welcome.innerHTML = "Erstelle oder trete einem<br> Raum bei, um loszulegen!";
@@ -78,5 +79,9 @@ export function lang_de() {
 
     if (controls) {
         controls.innerHTML = "Video Start/Stopp - Leertaste oder K<br />Fullscreen - F<br />Rewind - Pfeiltaste Links<br /> Fast Forward - Pfeiltaste Rechts<br /> Volume Down - Pfeiltaste Unten<br /> Volume Up - Pfeiltaste Oben<br /> Stummschalten - M<br /> ";
+    }
+
+    if (helpp) {
+        helpp.innerHTML = "Hilfe";
     }
 }

@@ -94,7 +94,7 @@ function Navbar() {
   //closes mobile menu
   //open user create popup if local storage value of username is null, if not null:
   //creates new room if local storage value of roomname is null and navigates user to it,
-  //otherwise alert user that they've already joined a room  
+  //otherwise join room which is in local storage 
   const joinCreatedRoom = async () => {
 
     closeMobileMenu();
@@ -119,7 +119,8 @@ function Navbar() {
         }
 
       } else {
-        alert("You already joined a room: " + localStorage.getItem("roomname"));
+        // alert("You already joined a room: " + localStorage.getItem("roomname"));
+        navigate(`/` + localStorage.getItem("roomname") + `/`);
       }
     }
   }
