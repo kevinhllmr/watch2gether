@@ -166,20 +166,20 @@ function Navbar() {
         <div className='navbar-container'>
           <AddUserPopup trigger={buttonPopup} setTrigger={setButtonPopup}></AddUserPopup>
 
-          <Link to="/home/" className="navbar-logo">
+          <Link to="/home/" className="navbar-logo" aria-label="back to home page">
             Watch2Gether
             <i className="far fa-play-circle"></i>
           </Link>
 
-          {location.pathname !== "/home/" && location.pathname !== "/home" && location.pathname !== "/404/" && location.pathname !== "/404" &&
-            <div className='menu-icon' onClick={handleClick}>
+          {location.pathname !== "/home/" && location.pathname !== "/home" && location.pathname !== "/404/" && location.pathname !== "/404" && location.pathname !== "/help/" && location.pathname !== "/help" &&
+            <div className='menu-icon' onClick={handleClick} aria-label="open menu">
               <i className={click ? 'fas fa-caret-up' : 'fas fa-caret-down'} />
             </div>}
 
-          {location.pathname !== "/home/" && location.pathname !== "/home" && location.pathname !== "/404/" && location.pathname !== "/404" &&
+          {location.pathname !== "/home/" && location.pathname !== "/home" && location.pathname !== "/404/" && location.pathname !== "/404" && location.pathname !== "/help/" && location.pathname !== "/help" &&
             <ul className={click ? 'nav-menu active' : 'nav-menu'}>
               <li className='nav-item' onClick={closeMobileMenu}>
-                <div id='roomname' onClick={() => copyRoomName()}>
+                <div id='roomname' onClick={() => copyRoomName()} aria-label="copy room name">
                 </div>
               </li>
 
@@ -188,63 +188,68 @@ function Navbar() {
                 </div>
               </li>
 
-              {location.pathname !=="/room-list/" && location.pathname !=="/room-list" && location.pathname !== "/404/" && location.pathname !== "/404" &&
+              {location.pathname !=="/room-list/" && location.pathname !=="/room-list" && location.pathname !== "/404/" && location.pathname !== "/404" && location.pathname !== "/help/" && location.pathname !== "/help" &&
               <li className='nav-item'>
                 <Link
                   to='/room-list/'
                   id='joinroombtn'
                   className='nav-links'
                   onClick={closeMobileMenu}
+                  aria-label="join room"
                 >
                   Join Room
                 </Link>
               </li>}
 
-              {window.innerWidth <= 1400 && localStorage.getItem('roomname') !== null && location.pathname !== "/404/" && location.pathname !== "/404" &&
+              {window.innerWidth <= 1400 && localStorage.getItem('roomname') !== null && location.pathname !== "/404/" && location.pathname !== "/404" && location.pathname !== "/help/" && location.pathname !== "/help" &&
               <li className='nav-item'>
                 <Link
                   // to='/room-list/'
                   id='leaveroombtn'
                   className='nav-links'
                   onClick={leaveRoom}
+                  aria-label="leave room"
                 >
                   Leave Room
                 </Link>
               </li>}
 
-              {location.pathname!== '/' + localStorage.getItem('roomname') + '/' && location.pathname !== "/404/" && location.pathname !== "/404" &&
+              {location.pathname!== '/' + localStorage.getItem('roomname') + '/' && location.pathname !== "/404/" && location.pathname !== "/404" && location.pathname !== "/help/" && location.pathname !== "/help" &&
               <li>
                 <Link
                   className='nav-links-mobile'
                   onClick={joinCreatedRoom}
                   id='createlink'
+                  aria-label="create room"
                 >
                 </Link>
               </li>}
             </ul>}
 
-          {location.pathname !== "/home/" && location.pathname !== "/home" && button && localStorage.getItem("roomname") !== null && location.pathname !== "/404/" && location.pathname !== "/404" &&
+          {location.pathname !== "/home/" && location.pathname !== "/home" && button && localStorage.getItem("roomname") !== null && location.pathname !== "/404/" && location.pathname !== "/404" && location.pathname !== "/help/" && location.pathname !== "/help" &&
             <div id='leaveroombtn'>
               <Button buttonStyle='btn--leave'
-                onClick={leaveRoom}>
+                onClick={leaveRoom} 
+                aria-label="leave room">
                 <p id='leavebtn'></p>
               </Button>
             </div>}
 
-          {location.pathname !== "/home/" && location.pathname !== "/home" && button && location.pathname !== '/' + localStorage.getItem('roomname') + '/' && location.pathname !== "/404/" && location.pathname !== "/404" &&
+          {location.pathname !== "/home/" && location.pathname !== "/home" && button && location.pathname !== '/' + localStorage.getItem('roomname') + '/' && location.pathname !== "/404/" && location.pathname !== "/404" && location.pathname !== "/help/" && location.pathname !== "/help" &&
             <Button 
               buttonStyle='btn--create'
-              onClick={joinCreatedRoom}>
+              onClick={joinCreatedRoom} 
+              aria-label="create room">
               <p id='createbtn'></p>
             </Button>}
 
-            <span className="flags" id="btn_lng">
+            <span className="flags" id="btn_lng" aria-label="switch language">
               <img id='imglng' alt="Language Button"></img>
             </span>
 
         </div>
 
-        <span id="copyroom-notif"></span>
+        <span id="copyroom-notif">Room link copied!</span>
 
       </nav>
     </>

@@ -36,7 +36,7 @@
 }
 
 .volumeSlider {
-    width: 100;
+    width: 100%;
 }
 
 #rewindff {
@@ -54,5 +54,9 @@
 
     .posSlider {
         left: 0%;
+    }
+
+    #volumeicon, #volumeslider {
+        visibility: hidden;
     }
 }

@@ -7,6 +7,8 @@ import { Grid, Typography } from '@material-ui/core';
 import IconButton from "@material-ui/core/IconButton";
 import FastRewindIcon from "@material-ui/icons/FastRewind";
 import FastForwardIcon from "@material-ui/icons/FastForward";
+import VolumeUpIcon from "@material-ui/icons/VolumeUp";
+import VolumeOffIcon from "@material-ui/icons/VolumeOff";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
 import Slider from "@material-ui/core/Slider";
@@ -57,11 +59,36 @@ const PrettoSlider = withStyles({
     },
 })(Slider);
 
+const CustomSlider = withStyles({
+    root: {
+        color: "#4ed451",
+        height: 3,
+        padding: "13px 0",
+    },
+    track: {
+        height: 3,
+        borderRadius: 50,
+    },
+    thumb: {
+        height: 10,
+        width: 10,
+        backgroundColor: "#fff",
+        marginTop: -4,
+        marginLeft: -4,
+        color: "#fff",
+    },
+})(Slider);
+
 //export references to room class
 export default forwardRef(({
     onPlayPause,
     onRewind,
     onFastForward,
+    muted,
+    onMute,
+    onVolumeChange,
+    onVolumeSeekDown,
+    volume,
     onToggleFullScreen,
     fullscreen,
     played,
@@ -96,7 +123,7 @@ export default forwardRef(({
                 alignItems="center"
                 style={{ padding: 10 }}
             >
-                <IconButton onClick={onPlayPause} className="control-icons" aria-label="play">
+                <IconButton onClick={onPlayPause} className="control-icons" aria-label="play or pause">
                     {videoStatus === "playing" ? (
                         <PauseIcon fontSize="inherit" />
                     ) : (
@@ -112,7 +139,7 @@ export default forwardRef(({
                     <Typography>{elapsedTime}/{totalDuration}</Typography>
                 </Button>
 
-                <Grid item xs={7} style={{ marginLeft: 50 }}  >
+                <Grid item xs={6} style={{ marginLeft: 50 }}  >
                     <PrettoSlider
                         className='posSlider'
                         min={0}
@@ -127,25 +154,28 @@ export default forwardRef(({
                     />
                 </Grid>
 
-                {/* <Grid item>
-                                    <Grid container alignItems="center" direction="row">
-                                        <IconButton className='classes.bottomIcons'>
+                <Grid item xs={1}>
+                                    <Grid container alignItems="center" direction="column">
+                                        {/* <IconButton className='classes.bottomIcons'>
                                             <PlayArrowIcon fontSize="large" />
+                                        </IconButton> */}
+
+                                        <IconButton onClick={onMute} id='volumeicon' className='control-icons' aria-label='volume button'>
+                                            {muted ? (<VolumeOffIcon fontSize="large" />):(<VolumeUpIcon fontSize="large" />)}
                                         </IconButton>
 
-                                        <IconButton className='classes.bottomIcons'>
-                                            <VolumeUpIcon fontSize="large" />
-                                        </IconButton>
-
-                                        <Slider
+                                        <CustomSlider
                                             min={0}
                                             max={100}
-                                            defaultValue={50}
+                                            value={volume * 100}
                                             className='classes.volumeSlider'
+                                            color='rgba(255, 255, 255, 0.75)'
+                                            onChange={onVolumeChange}
+                                            onChangeCommitted={onVolumeSeekDown}
+                                            id='volumeslider'
                                         />
                                     </Grid>
-                                </Grid> */}
-
+                                </Grid>
                 <Grid item>
                     {/* <Button
                                         onClick={handlePopover}
@@ -179,7 +209,7 @@ export default forwardRef(({
                                     </Popover> */}
 
                     <IconButton onClick={onToggleFullScreen} className='classes.bottomIcons'>
-                        {fullscreen ? <FullscreenExitIcon fontSize="large" style={{ color: "#fff", marginRight: 20 }} /> : <FullScreenIcon fontSize="large" style={{ color: "#fff", marginRight: 20 }} />}
+                        {fullscreen ? (<FullscreenExitIcon fontSize="large" style={{ color: "#fff", marginRight: 20 }} aria-label='exit fullscreen' />) : (<FullScreenIcon fontSize="large" style={{ color: "#fff", marginRight: 20 }} aria-label='enter fullscreen'/>)}
 
                     </IconButton>
                 </Grid>

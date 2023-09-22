@@ -155,6 +155,7 @@ function HeroSection() {
           buttonStyle='btn--create'
           buttonSize='btn--large'
           onClick={() => joinCreatedRoom()}
+          aria-label="create new room"
         >
           <p id='createbtnhp'></p>
         </Button><br /><br />
@@ -163,6 +164,7 @@ function HeroSection() {
           to='/room-list/'
           id='joinroombtn'
           className='join-room'
+          aria-label="join room"
         >
           Join Room
         </Link><br /><br />

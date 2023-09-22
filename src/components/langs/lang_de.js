@@ -13,6 +13,8 @@ export function lang_de() {
     const createbtnhp = document.getElementById('createbtnhp');
     const logout = document.getElementById('logout');
     const roomnotfound = document.getElementById('roomnotfound');
+    const help = document.getElementById('help');
+    const controls = document.getElementById('controls');
 
     if (welcome) {
         welcome.innerHTML = "Erstelle oder trete einem<br> Raum bei, um loszulegen!";
@@ -68,5 +70,13 @@ export function lang_de() {
 
     if (roomnotfound) {
         roomnotfound.textContent = "Raum nicht gefunden!";
+    }
+
+    if (help) {
+        help.innerHTML = "1) Erstelle einen Raum oder trete einem bei<br />2) Teile die Raum-URL, indem du auf den Raumnamen klickst<br /> 3) Watch2Gether!<br /><br />Tastenkombination:";
+    }
+
+    if (controls) {
+        controls.innerHTML = "Video Start/Stopp - Leertaste oder K<br />Fullscreen - F<br />Rewind - Pfeiltaste Links<br /> Fast Forward - Pfeiltaste Rechts<br /> Volume Down - Pfeiltaste Unten<br /> Volume Up - Pfeiltaste Oben<br /> Stummschalten - M<br /> ";
     }
 }

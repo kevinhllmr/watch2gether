@@ -33,6 +33,7 @@
     height: 66.667vh;
     border-radius: 25px;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .player-wrapper {

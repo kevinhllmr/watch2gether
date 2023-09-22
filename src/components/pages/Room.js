@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
 import ReactPlayer from 'react-player';
 import '../../App.css';
 import './Room.css';
@@ -42,18 +42,19 @@ function Room() {
     const [state, setState] = useState({
         playing: false,
         muted: false,
+        volume: 0.5,
         played: 0,
         seeking: false,
         fullscreen: false,
         duration: 0,
     });
 
-    const { playing, muted, played, seeking, fullscreen } = state;
+    const { playing, muted, played, seeking, fullscreen, volume } = state;
 
     const playerRef = useRef(null);
     const playerContainerRef = useRef(null);
     const controlsRef = useRef(null);
-
+    const inputRef = useRef(null);
 
     //update status and position on play/pause
     const handlePlayPause = async () => {
@@ -103,7 +104,19 @@ function Room() {
         const currentTime = playerRef.current.getCurrentTime();
         playerRef.current.seekTo(currentTime + 5);
         updateVideoPosition(currentTime + 5);
-    }
+    };
+
+    const handleMute = () => {
+        setState({ ...state, muted: !state.muted});
+    };
+
+    const handleVolumeChange = (e, newValue) => {
+       setState({ ...state, volume: parseFloat(newValue/100), muted: newValue === 0 ? true : false})
+    };
+
+    const handleVolumeSeekDown = (e, newValue) => {
+        setState({ ...state, volume: parseFloat(newValue/100), muted: newValue === 0 ? true : false})
+     };
 
     //updates position in API
     const updateVideoPosition = async (position) => {
@@ -123,8 +136,25 @@ function Room() {
 
     //toggle fullscreen
     const onToggleFullScreen = () => {
-        screenfull.toggle(playerContainerRef.current);
-        setState({ ...state, fullscreen: !state.fullscreen });
+        // screenfull.toggle(playerContainerRef.current);
+        // setState({ ...state, fullscreen: !state.fullscreen });
+        if (screenfull.isEnabled) {
+            if (!screenfull.isFullscreen) {
+                // Request fullscreen permission and enter fullscreen
+                screenfull.request(playerContainerRef.current).then(() => {
+                    setState({ ...state, fullscreen: true });
+                }).catch((error) => {
+                    console.error('Fullscreen request failed:', error);
+                });
+            } else {
+                // Exit fullscreen
+                screenfull.exit().then(() => {
+                    setState({ ...state, fullscreen: false });
+                }).catch((error) => {
+                    console.error('Fullscreen exit failed:', error);
+                });
+            }
+        }
     }
 
     //handle for fading UI out after 3 seconds
@@ -260,7 +290,54 @@ function Room() {
     };
 
     //sets variable for react routing
-    let navigate = useNavigate(); 
+    let navigate = useNavigate();
+
+    //shortcuts for video player
+    const url = window.location + '';
+    const parts = url.split('/');
+    const roomname = parts[parts.length - 2];
+    const keydownListener = (event) => {
+        if (roomname === localStorage.getItem('roomname')) {
+            switch (event.key) {
+                case " ":
+                case "MediaPlayPause":
+                case "k":
+                    handlePlayPause();
+                    break;
+                case "ArrowLeft":
+                    handleRewind();
+                    break;
+                case "ArrowRight":
+                    handleFastForward();
+                    break;
+                case "f":
+                    onToggleFullScreen();
+                    handlePlayPause();
+                    break;
+                case "m":
+                    setState((prevState) => {
+                        const newMutedState = !prevState.muted;
+                        return { ...prevState, muted: newMutedState };
+                    });
+                    break;
+                case "ArrowDown":
+                    setState((prevState) => {
+                        const newVolume = Math.max(0, prevState.volume - 0.05);
+                        return { ...prevState, volume: newVolume, muted: newVolume === 0 };
+                    });
+                    break;
+                case "ArrowUp":
+                    setState((prevState) => {
+                        const newVolume = Math.min(1, prevState.volume + 0.05);
+                        return { ...prevState, volume: newVolume, muted: newVolume === 0 };
+                    });
+                    break;
+                default:
+                    break;
+            }
+            // console.log(`Key: ${event.key} has been pressed`);
+        }
+    };
 
     //as soon as site loads, roomname and username in navbar will be set according to local storage value;
     //shows join/leave room buttons
@@ -270,11 +347,13 @@ function Room() {
 
         doesRoomExist();
 
+        document.addEventListener('keydown', keydownListener);
+
         try {
-            if(localStorage.getItem("username") === null) {
-                setButtonPopup(true);  
+            if (localStorage.getItem("username") === null) {
+                setButtonPopup(true);
                 navigate(`/room-list/`);
-            }    
+            }
         } catch { }
 
         if (document.getElementById("username")) {
@@ -292,9 +371,13 @@ function Room() {
         }
 
         getCurrentURL();
-        longPolling();
-        // setState((prevState) => ({ ...prevState, duration: 0 }));
-        synchronizeVideoPosition();
+        longPolling(); 
+        // // setState((prevState) => ({ ...prevState, duration: 0 }));
+        // synchronizeVideoPosition();
+
+        return () => {
+            window.removeEventListener('keydown', keydownListener);
+        };
 
     }, [videoURL]);
 
@@ -310,16 +393,16 @@ function Room() {
             res.data.rooms.forEach(async room => {
                 if (room.name === roomname) {
                     stringFound = true;
-                  }
+                }
             });
 
-            if(stringFound === false) {
+            if (stringFound === false) {
                 navigate(`/404/`);
             }
-      
-          } catch (e) {
+
+        } catch (e) {
             return e;
-          }
+        }
     }
 
     //reads URL value from API
@@ -349,8 +432,16 @@ function Room() {
             getInput();
         }
         if (event.key === 'Escape') {
-            alert(true);
+            if(document.getElementById("urlinput")) {
+                document.getElementById("urlinput").blur(); 
+            }
         }
+
+        if (inputRef.current === document.activeElement) {
+            if (['k', 'f', 'm', ' ', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'ArrowDown'].includes(event.key)) {
+            event.stopPropagation();
+        }
+  }
     };
 
     //gets input url and puts it into API
@@ -379,14 +470,17 @@ function Room() {
         <>
             <div className='container'>
                 <input
+                    ref={inputRef}
                     id='urlinput'
                     placeholder='youtu.be/watch?v=dQw4w9WgXcQ'
                     onKeyDown={handleKeyDown}
+                    aria-label="url input field"
                 ></input>
 
                 <button
                     id='submitbtn'
                     onClick={() => getInput()}
+                    aria-label="video url submit button"
                 >
                     <i class="fas fa-search"></i>
                 </button>
@@ -396,6 +490,8 @@ function Room() {
                         ref={playerContainerRef}
                         className='player-wrapper'
                         onMouseMove={handleMouseMove}
+                        tabIndex="0"
+                        onKeyDown={keydownListener}
                     >
                         <ReactPlayer
                             ref={playerRef}
@@ -405,6 +501,7 @@ function Room() {
                             height='100%'
                             playing={playing}
                             muted={muted}
+                            volume={volume}
                             onProgress={handleProgress}
                             onDuration={handleDuration}
                             style={{ pointerEvents: 'none' }}
@@ -420,6 +517,11 @@ function Room() {
                             playing={playing}
                             onRewind={handleRewind}
                             onFastForward={handleFastForward}
+                            muted={muted}
+                            onMute={handleMute}
+                            onVolumeChange={handleVolumeChange}
+                            onVolumeSeekDown={handleVolumeSeekDown}
+                            volume={volume}
                             onToggleFullScreen={onToggleFullScreen}
                             fullscreen={fullscreen}
                             played={played}
@@ -431,7 +533,7 @@ function Room() {
                             videoStatus={videoPlaying ? "playing" : "paused"}
                         />
                     </div>
-                </div>    
+                </div>
             </div>
         </>
     );

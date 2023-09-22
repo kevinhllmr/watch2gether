@@ -128,7 +128,7 @@ function AddUserPopup(props) {
                 >
                 </input>
 
-                <i id='confirm' className="fas fa-check" onClick={() => getInput()}></i>
+                <i id='confirm' className="fas fa-check" onClick={() => getInput()} aria-label="confirm username"></i>
             </div>
         </div>
     ) : "";

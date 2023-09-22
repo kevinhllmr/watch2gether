@@ -13,6 +13,8 @@ export function lang_en() {
     const createbtnhp = document.getElementById('createbtnhp');
     const logout = document.getElementById('logout');
     const roomnotfound = document.getElementById('roomnotfound');
+    const help = document.getElementById('help');
+    const controls = document.getElementById('controls');
 
     if (welcome) {
         welcome.innerHTML = "Create or join a room<br> to get started!";
@@ -68,5 +70,13 @@ export function lang_en() {
 
     if (roomnotfound) {
         roomnotfound.textContent = "Room not found!";
+    }
+
+    if (help) {
+        help.innerHTML = "1) Create a new room or join an existing one<br />2) Share the room URL by clicking on the room name<br /> 3) Watch2Gether!<br /><br />Shortcuts:";
+    }
+
+    if (controls) {
+        controls.innerHTML = "Play/Pause Video - Spacebar or K<br />Fullscreen - F<br />Rewind - Arrow Left<br /> Fast Forward - Arrow Right<br /> Volume Down - Arrow Down<br /> Volume Up - Arrow Up<br /> Mute - M<br /> ";
     }
 }
