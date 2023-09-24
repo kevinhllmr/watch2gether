@@ -7,6 +7,7 @@ import PlayerControls from '../PlayerControls';
 import screenfull from 'screenfull';
 import { useNavigate } from "react-router-dom";
 
+
 //count variable for UI fade out
 let count = 0;
 
@@ -466,6 +467,34 @@ function Room() {
         }
     }
 
+    async function sendMessage() {
+
+        const userInput = document.getElementById("user-input");
+        const chatBox = document.getElementById("chat-box");
+    
+        const message = userInput.value;
+        if (message.trim() === "") return;
+
+        let roomname = localStorage.getItem("roomname");
+
+        const messageElement = document.createElement("div");
+        messageElement.classList.add("chat-message");
+        messageElement.textContent = message;
+    
+        chatBox.appendChild(messageElement);
+    
+        chatBox.scrollTop = chatBox.scrollHeight;
+    
+        userInput.value = "";
+
+        try{
+            await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + roomname + `/chat`, { "user": localStorage.getItem("userID") , "message": String(message) });
+
+        } catch (e) {
+            return e;
+        }
+    }
+
     return (
         <>
             <div className='container'>
@@ -534,6 +563,19 @@ function Room() {
                         />
                     </div>
                 </div>
+
+                <div className = 'chatContainer'>
+                    <div class="chat-box" id="chat-box">
+                        <div class="chat-message">Willkommen im Chat!</div>
+                    </div>
+                        
+                    <div class="input-container">
+                        <input type="text" id="user-input" placeholder="Nachricht eingeben"/>
+                        <button onClick={() => sendMessage()}>Senden</button>
+                    </div>
+                </div>
+
+
             </div>
         </>
     );
