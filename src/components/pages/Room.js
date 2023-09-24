@@ -6,6 +6,8 @@ import Axios from 'axios';
 import PlayerControls from '../PlayerControls';
 import screenfull from 'screenfull';
 import { useNavigate } from "react-router-dom";
+import { async } from 'q';
+import { element } from 'prop-types';
 
 
 //count variable for UI fade out
@@ -470,30 +472,53 @@ function Room() {
     async function sendMessage() {
 
         const userInput = document.getElementById("user-input");
-        const chatBox = document.getElementById("chat-box");
     
         const message = userInput.value;
         if (message.trim() === "") return;
 
         let roomname = localStorage.getItem("roomname");
-
-        const messageElement = document.createElement("div");
-        messageElement.classList.add("chat-message");
-        messageElement.textContent = message;
     
-        chatBox.appendChild(messageElement);
-    
-        chatBox.scrollTop = chatBox.scrollHeight;
-    
-        userInput.value = "";
-
         try{
             await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + roomname + `/chat`, { "user": localStorage.getItem("userID") , "message": String(message) });
 
+            updateChatRoom();
+            userInput.value = "";
+
+            
         } catch (e) {
             return e;
         }
-    }
+    };
+
+    async function updateChatRoom(){
+
+        let roomname = localStorage.getItem("roomname");
+
+        const messageElement = document.createElement("div");
+        const chatBox = document.getElementById("chat-box");
+
+        try {
+
+            const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/chat`);
+            const allMessages = res.data.messages;
+            
+
+            for(let i = 0; allMessages.length; i++){
+                 
+        
+                 messageElement.classList.add("chat-message");
+                 messageElement.textContent = allMessages[i].text;
+                 console.log(allMessages[i].text);
+
+                 chatBox.appendChild(messageElement);
+        
+                 chatBox.scrollTop = chatBox.scrollHeight;
+
+            }                 
+        } catch (e) {
+            return e;
+        }
+    };
 
     return (
         <>
@@ -563,19 +588,17 @@ function Room() {
                         />
                     </div>
                 </div>
+            </div>
 
-                <div className = 'chatContainer'>
+            <div className = 'chatContainer'>
                     <div class="chat-box" id="chat-box">
                         <div class="chat-message">Willkommen im Chat!</div>
                     </div>
                         
-                    <div class="input-container">
-                        <input type="text" id="user-input" placeholder="Nachricht eingeben"/>
-                        <button onClick={() => sendMessage()}>Senden</button>
-                    </div>
-                </div>
-
-
+                <div class="input-container">
+                    <input type="text" id="chat-input" placeholder="Nachricht eingeben"/>
+                    <button id = "chat-button" onClick={() => sendMessage()}>Senden</button>
+                 </div>
             </div>
         </>
     );

@@ -1,6 +1,8 @@
 .container {
     background-color: rgb(36, 36, 36);
     height: 91vh;
+    width: 70%;
+    float: left;
 }
 
 #urlinput {
@@ -29,12 +31,10 @@
     background-color: black;
     margin: 20px;
     margin-top: 0;
-    width: 60%;
-    height: 66.667vh;
+    height: 76.667vh;
     border-radius: 25px;
     overflow: hidden;
     cursor: pointer;
-    float: left;
 }
 
 .player-wrapper {
@@ -44,23 +44,23 @@
 }
 
 .chatContainer {
+    background-color: rgb(30, 30, 30);
     position: relative;
-    padding-right: 32px;
-    padding-left: 32px;
-    background: rgb(40, 38, 38);
-    width: 25%;
-    height: 66.667vh;
+    width: 30%;
+    height: 91vh;
     float: right;
 }
 
 .chat-box {
-    border: 1px solid #ccc;
-    padding: 10px;
-    max-height: 200px;
+    height: 78vh;
+    max-height: 78vh;
+    padding-left: 10px;
+    padding-right: 10px;
     overflow-y: auto;
 }
 
 .chat-message {
+    color: whitesmoke;
     margin: 5px 0;
 }
 
@@ -69,17 +69,24 @@
     margin-top: 10px;
 }
 
-input[type="text"] {
+#chat-input[type="text"] {
     flex: 1;
     padding: 5px;
+    margin: 20px;
+    font-size: 20px;
+    text-align: left;
+    
+    
 }
 
-button {
+#chat-button {
     background-color: #4ed451;
     color: #fff;
+    margin: 20px;
+    font-size: 20px;
     border: none;
-    padding: 5px 10px;
     cursor: pointer;
+    width: 80px
 }
 
 @media screen and (max-width: 1400px) {
