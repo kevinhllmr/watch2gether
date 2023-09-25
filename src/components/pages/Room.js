@@ -580,9 +580,11 @@ function Room() {
                     textElement.style.color = '#FFF';
                     textElement.textContent = allMessages[i].text;
                     chatBox.appendChild(textElement);
-
-                    setLastMessage();
                 }
+
+                setLastMessage();
+
+                console.log("messages Updated");
                
                 // Delay between polling requests
                 await new Promise((resolve) => setTimeout(resolve, 1000));
