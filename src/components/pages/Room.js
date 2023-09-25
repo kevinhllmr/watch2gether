@@ -475,13 +475,11 @@ function Room() {
             let roomname = localStorage.getItem("roomname");
             const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/chat`); 
             const allMessages = res.data.messages;  
-            console.log(allMessages.length);
 
             if(allMessages.length > 0){
                 localStorage.setItem("last-message-index", allMessages.length);
             } else {
 
-                console.log(allMessages.length);
 
                 localStorage.setItem("last-message-index", 0);
 
@@ -566,25 +564,33 @@ function Room() {
     const updateChatMessages = async () => {
         try {
             let roomname = localStorage.getItem('roomname');
-            let lastMessageIndex = localStorage.getItem('last-message-index');
 
             const chatBox = document.getElementById("chat-box");
 
 
             while (true) {
+                let lastMessageIndex = localStorage.getItem('last-message-index');
                 const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/chat`);
                 const allMessages = res.data.messages;
 
-                for(let i = lastMessageIndex; i <= allMessages[allMessages.length]; i++){
+                const users = await Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/users`)
+
+
+                console.log("LastMessageIndex" + lastMessageIndex);
+                console.log("NewMessageIndex" + allMessages.length);
+
+                for(let i = lastMessageIndex; i <= allMessages.length - 1; i++){
                     const textElement = document.createElement('p');
                     textElement.style.color = '#FFF';
                     textElement.textContent = allMessages[i].text;
                     chatBox.appendChild(textElement);
+
+                    console.log("messages Updated");
+
                 }
 
                 setLastMessage();
 
-                console.log("messages Updated");
                
                 // Delay between polling requests
                 await new Promise((resolve) => setTimeout(resolve, 1000));
