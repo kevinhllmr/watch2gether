@@ -368,7 +368,7 @@ function Room() {
             document.getElementById("roomname").style.display = "block";
             document.getElementById("leaveroombtn").style.display = "block";
         }
-
+    
         setLastMessage();
         updateChatMessages();
         // loadChatRoom();
@@ -472,15 +472,19 @@ function Room() {
 
     async function setLastMessage() {       
         try {
+            let roomname = localStorage.getItem("roomname");
             const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/chat`); 
             const allMessages = res.data.messages;  
+            console.log(allMessages.length);
 
-            if(allMessages.length !== 0){
-                localStorage.setItem("last-message-time", allMessages[allMessages.length - 1].time);
+            if(allMessages.length > 0){
                 localStorage.setItem("last-message-index", allMessages.length);
             } else {
-                localStorage.setItem("last-message-time", 0);
+
+                console.log(allMessages.length);
+
                 localStorage.setItem("last-message-index", 0);
+
             }
 
         } catch (e) {
@@ -505,6 +509,7 @@ function Room() {
         }
 
         updateChatRoom();
+        setLastMessage();
         userInput.value = "";
     };
 
@@ -561,7 +566,6 @@ function Room() {
     const updateChatMessages = async () => {
         try {
             let roomname = localStorage.getItem('roomname');
-            let lastMessageTime = localStorage.getItem('last-message-time');
             let lastMessageIndex = localStorage.getItem('last-message-index');
 
             const chatBox = document.getElementById("chat-box");
@@ -571,14 +575,14 @@ function Room() {
                 const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/chat`);
                 const allMessages = res.data.messages;
 
-                for(let i = lastMessageIndex; i <= allMessages[allMessages.length - 1]; i++){
+                for(let i = lastMessageIndex; i <= allMessages[allMessages.length]; i++){
                     const textElement = document.createElement('p');
                     textElement.style.color = '#FFF';
                     textElement.textContent = allMessages[i].text;
                     chatBox.appendChild(textElement);
+
+                    setLastMessage();
                 }
-                
-                setLastMessage();
                
                 // Delay between polling requests
                 await new Promise((resolve) => setTimeout(resolve, 1000));
