@@ -17,6 +17,10 @@ export function lang_en() {
     const controls = document.getElementById('controls');
     const helpp = document.getElementById('helpp');
 
+    const chatwelcomemessage = document.getElementById('chatwelcome');
+    const chatInput = document.getElementById('chat-input');
+    const chatButton = document.getElementById('chat-button');
+
     if (welcome) {
         welcome.innerHTML = "Create or join a room<br> to get started!";
     }
@@ -83,5 +87,17 @@ export function lang_en() {
 
     if (helpp) {
         helpp.innerHTML = "Help";
+    }
+
+    if (chatwelcomemessage){
+        chatwelcomemessage.textContent = "Welcome to the Chat Room!";
+    }
+
+    if (chatInput){
+        chatInput.placeholder = "Type message";
+    }
+
+    if (chatButton){
+        chatButton.innerText = "Send";
     }
 }

@@ -471,7 +471,7 @@ function Room() {
 
     async function sendMessage() {
 
-        const userInput = document.getElementById("user-input");
+        const userInput = document.getElementById("chat-input");
     
         const message = userInput.value;
         if (message.trim() === "") return;
@@ -494,7 +494,7 @@ function Room() {
 
         let roomname = localStorage.getItem("roomname");
 
-        const messageElement = document.createElement("div");
+        let messageElement = document.createElement("div");
         const chatBox = document.getElementById("chat-box");
 
         try {
@@ -503,7 +503,7 @@ function Room() {
             const allMessages = res.data.messages;
             
 
-            for(let i = 0; allMessages.length; i++){
+            /*for(let i = 0; allMessages.length; i++){
                  
         
                  messageElement.classList.add("chat-message");
@@ -514,7 +514,15 @@ function Room() {
         
                  chatBox.scrollTop = chatBox.scrollHeight;
 
-            }                 
+            } */
+            messageElement.classList.add("chat-message");
+            messageElement.textContent = localStorage.getItem("username") + ": " + allMessages[allMessages.length - 1].text;
+            console.log(allMessages[allMessages.length - 1].text);
+            console.log(messageElement.textContent);
+
+            chatBox.appendChild(messageElement);
+        
+            chatBox.scrollTop = chatBox.scrollHeight;
         } catch (e) {
             return e;
         }
@@ -592,12 +600,12 @@ function Room() {
 
             <div className = 'chatContainer'>
                     <div class="chat-box" id="chat-box">
-                        <div class="chat-message">Willkommen im Chat!</div>
+                        <div class="chat-message"><p id = "chatwelcome"></p></div>
                     </div>
                         
                 <div class="input-container">
-                    <input type="text" id="chat-input" placeholder="Nachricht eingeben"/>
-                    <button id = "chat-button" onClick={() => sendMessage()}>Senden</button>
+                    <input type="text" id="chat-input"/>
+                    <button id = "chat-button" onClick={() => sendMessage()}></button>
                  </div>
             </div>
         </>

@@ -1,3 +1,4 @@
+
 export function lang_de() {
     const welcome = document.getElementById('welcome');
     const notice = document.getElementById('notice');
@@ -16,6 +17,10 @@ export function lang_de() {
     const help = document.getElementById('help');
     const controls = document.getElementById('controls');
     const helpp = document.getElementById('helpp');
+    
+    const chatwelcomemessage = document.getElementById('chatwelcome');
+    const chatInput = document.getElementById('chat-input');
+    const chatButton = document.getElementById('chat-button');
 
     if (welcome) {
         welcome.innerHTML = "Erstelle oder trete einem<br> Raum bei, um loszulegen!";
@@ -83,5 +88,17 @@ export function lang_de() {
 
     if (helpp) {
         helpp.innerHTML = "Hilfe";
+    }
+
+    if (chatwelcomemessage){
+        chatwelcomemessage.textContent = "Willkommen im Chat!";
+    }
+
+    if (chatInput){
+        chatInput.placeholder = "Nachricht schreiben";
+    }
+
+    if (chatButton){
+        chatButton.innerText = "Senden";
     }
 }

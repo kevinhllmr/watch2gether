@@ -62,6 +62,7 @@
 .chat-message {
     color: whitesmoke;
     margin: 5px 0;
+    overflow-wrap: break-word;
 }
 
 .input-container {
@@ -70,13 +71,14 @@
 }
 
 #chat-input[type="text"] {
-    flex: 1;
+    flex: 3;
     padding: 5px;
-    margin: 20px;
-    font-size: 20px;
+    margin: 25px;
+    font-size: 18px;
     text-align: left;
-    
-    
+    color: rgb(230, 230, 230);
+    background-color: rgb(10, 10, 10);
+
 }
 
 #chat-button {
