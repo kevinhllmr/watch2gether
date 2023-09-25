@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import ReactPlayer from 'react-player';
 import '../../App.css';
 import './Room.css';
-import Axios from 'axios';
+import Axios, { all } from 'axios';
 import PlayerControls from '../PlayerControls';
 import screenfull from 'screenfull';
 import { useNavigate } from "react-router-dom";
@@ -369,7 +369,8 @@ function Room() {
             document.getElementById("leaveroombtn").style.display = "block";
         }
 
-        setChatTime();
+        setLastMessage();
+        updateChatMessages();
         // loadChatRoom();
 
         getCurrentURL();
@@ -469,11 +470,18 @@ function Room() {
         }
     }
 
-    async function setChatTime() {       
+    async function setLastMessage() {       
         try {
             const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/chat`); 
             const allMessages = res.data.messages;  
-            localStorage.setItem("chat-time", allMessages[allMessages.length - 1].time);
+
+            if(allMessages.length !== 0){
+                localStorage.setItem("last-message-time", allMessages[allMessages.length - 1].time);
+                localStorage.setItem("last-message-index", allMessages.length);
+            } else {
+                localStorage.setItem("last-message-time", 0);
+                localStorage.setItem("last-message-index", 0);
+            }
 
         } catch (e) {
             return e;
@@ -501,7 +509,7 @@ function Room() {
     };
 
     //load all chat messages
-    async function loadChatRoom() {
+    /*async function loadChatRoom() {
         
         const chatBox = document.getElementById("chat-box");
 
@@ -521,7 +529,7 @@ function Room() {
 
         chatBox.scrollTop = chatBox.scrollHeight;
 
-    }
+    }*/
 
     async function updateChatRoom() {
 
@@ -548,6 +556,38 @@ function Room() {
         }
     };
 
+
+    //polling for new URL, position and status
+    const updateChatMessages = async () => {
+        try {
+            let roomname = localStorage.getItem('roomname');
+            let lastMessageTime = localStorage.getItem('last-message-time');
+            let lastMessageIndex = localStorage.getItem('last-message-index');
+
+            const chatBox = document.getElementById("chat-box");
+
+
+            while (true) {
+                const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/chat`);
+                const allMessages = res.data.messages;
+
+                for(let i = lastMessageIndex; i <= allMessages[allMessages.length - 1]; i++){
+                    const textElement = document.createElement('p');
+                    textElement.style.color = '#FFF';
+                    textElement.textContent = allMessages[i].text;
+                    chatBox.appendChild(textElement);
+                }
+                
+                setLastMessage();
+               
+                // Delay between polling requests
+                await new Promise((resolve) => setTimeout(resolve, 1000));
+            }
+        } catch (error) {
+            console.error('Long polling error:', error);
+        }
+    };
+
     const handleChatInput = (event) => {
 
         if (event.key === "k" || "f" || "m" || "ArrowUp" || "ArrowLeft" || "ArrowRight" || "ArrowDown") {
@@ -557,8 +597,6 @@ function Room() {
             sendMessage();
         }
     }
-
-
 
     return (
         <div id='room'>
@@ -635,9 +673,9 @@ function Room() {
                     <div class="chat-message"><p id="chatwelcome"></p></div>
                 </div>
 
-                <div class="input-container">
+                <div class="input-container" aria-label='chat input' >
                     <input type="text" id="chat-input" onKeyDown={handleChatInput} />
-                    <button id="chat-button" onClick={() => sendMessage()}></button>
+                    <button id="chat-button" onClick={() => sendMessage()} aria-label='send message'></button>
                 </div>
             </div>
         </div>
