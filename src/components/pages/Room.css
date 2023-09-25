@@ -58,14 +58,30 @@
 .chat-box {
     height: 78vh;
     max-height: 78vh;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 20px;
+    padding-right: 30px;
     overflow-x: hidden;
-    /* overflow-y: hidden; */
 }
 
+::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: rgb(30, 30, 30); 
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgb(125, 125, 125); 
+    border-radius: 20px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(36, 36, 36); 
+  }
+
 .chat-message {
-    color: whitesmoke;
+    color: rgb(255, 255, 255);
     margin: 5px 0;
     overflow-wrap: break-word;
 }
@@ -78,22 +94,34 @@
 #chat-input[type="text"] {
     flex: 3;
     padding: 5px;
-    margin: 25px;
+    margin: 20px;
+    margin-right: 0px;
     font-size: 18px;
     text-align: left;
-    color: rgb(230, 230, 230);
-    background-color: rgb(10, 10, 10);
+    color: #ffffff;
+    background-color: rgb(26, 23, 23);
+    border-radius: 25px;
+    padding-left: 15px;
+}
 
+::placeholder {
+    color: rgb(125, 125, 125);
 }
 
 #chat-button {
     background-color: #4ed451;
-    color: #fff;
+    color: rgb(26, 23, 23);
     margin: 20px;
-    font-size: 20px;
+    font-size: 17px;
     border: none;
     cursor: pointer;
-    width: 80px
+    width: 80px;
+    border-radius: 25px;
+}
+
+#chatwelcome {
+    color: rgb(125, 125, 125);
+    text-align: center;
 }
 
 @media screen and (max-width: 1400px) {

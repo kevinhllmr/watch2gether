@@ -50,19 +50,21 @@ function AddUserPopup(props) {
 
             let roomname = localStorage.getItem("roomname");
 
-            if (roomname != null) {
+            if (roomname != null && roomname !== "inCreation") {
                 navigate(`/` + roomname + `/`);
 
                 try {
                     await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + roomname + `/users`, { "user": localStorage.getItem("userID") });
 
                 } catch (e) {
-                    alert(false);
                     return e;
                 }
 
-            } else {
+            } else if(localStorage.getItem("roomname") === "inCreation") {
                 joinCreatedRoom();
+
+            } else {
+                navigate(`/room-list/`);
             }
         }
     }

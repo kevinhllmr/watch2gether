@@ -688,7 +688,7 @@ function Room() {
                     <div class="chat-message"><p id="chatwelcome"></p></div>
                 </div>
 
-                <div class="input-container" aria-label='chat input' >
+                <div class="input-container" aria-label='chat input'>
                     <input type="text" id="chat-input" onKeyDown={handleChatInput} />
                     <button id="chat-button" onClick={() => sendMessage()} aria-label='send message'></button>
                 </div>

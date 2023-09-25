@@ -97,13 +97,14 @@ function Navbar() {
   //otherwise join room which is in local storage 
   const joinCreatedRoom = async () => {
 
+    localStorage.setItem("roomname", "inCreation");
     closeMobileMenu();
 
     if (localStorage.getItem("username") == null) {
       setButtonPopup(true);
 
     } else {
-      if (localStorage.getItem("roomname") == null) {
+      if (localStorage.getItem("roomname") === "inCreation") {
         createRoom();
 
         try {

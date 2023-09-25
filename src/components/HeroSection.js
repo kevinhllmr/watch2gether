@@ -46,7 +46,7 @@ function HeroSection() {
       }
     }
 
-    if (document.getElementById("logoutbtn") != null && localStorage.getItem("username") != null || localStorage.getItem("roomname") != null) {
+    if (document.getElementById("logoutbtn") != null && (localStorage.getItem("username") != null || (localStorage.getItem("roomname") != null))) {
       document.getElementById("logoutbtn").style.display = 'block';
 
     } else {
@@ -83,11 +83,13 @@ function HeroSection() {
   //otherwise join room which is in local storage
   const joinCreatedRoom = async () => {
 
+    localStorage.setItem("roomname", "inCreation");
+
     if (localStorage.getItem("username") == null) {
       setButtonPopup(true);
 
     } else {
-      if (localStorage.getItem("roomname") == null) {
+      if (localStorage.getItem("roomname") === "inCreation") {
         createRoom();
 
         try {
@@ -129,6 +131,7 @@ function HeroSection() {
       localStorage.removeItem("userID");
       localStorage.removeItem("roomname");
       localStorage.removeItem("lang");
+      localStorage.removeItem("last-message-index");
       document.getElementById("logoutbtn").style.display = "none";
       alert("logged out!");
     }
