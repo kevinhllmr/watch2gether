@@ -1,3 +1,7 @@
+#room {
+    overflow-y: hidden;
+}
+
 .container {
     background-color: rgb(36, 36, 36);
     height: 91vh;
@@ -56,7 +60,8 @@
     max-height: 78vh;
     padding-left: 10px;
     padding-right: 10px;
-    overflow-y: auto;
+    overflow-x: hidden;
+    /* overflow-y: hidden; */
 }
 
 .chat-message {

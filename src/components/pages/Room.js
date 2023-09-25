@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import ReactPlayer from 'react-player';
 import '../../App.css';
 import './Room.css';
@@ -6,9 +6,6 @@ import Axios from 'axios';
 import PlayerControls from '../PlayerControls';
 import screenfull from 'screenfull';
 import { useNavigate } from "react-router-dom";
-import { async } from 'q';
-import { element } from 'prop-types';
-
 
 //count variable for UI fade out
 let count = 0;
@@ -110,16 +107,16 @@ function Room() {
     };
 
     const handleMute = () => {
-        setState({ ...state, muted: !state.muted});
+        setState({ ...state, muted: !state.muted });
     };
 
     const handleVolumeChange = (e, newValue) => {
-       setState({ ...state, volume: parseFloat(newValue/100), muted: newValue === 0 ? true : false})
+        setState({ ...state, volume: parseFloat(newValue / 100), muted: newValue === 0 ? true : false })
     };
 
     const handleVolumeSeekDown = (e, newValue) => {
-        setState({ ...state, volume: parseFloat(newValue/100), muted: newValue === 0 ? true : false})
-     };
+        setState({ ...state, volume: parseFloat(newValue / 100), muted: newValue === 0 ? true : false })
+    };
 
     //updates position in API
     const updateVideoPosition = async (position) => {
@@ -372,8 +369,11 @@ function Room() {
             document.getElementById("leaveroombtn").style.display = "block";
         }
 
+        setChatTime();
+        // loadChatRoom();
+
         getCurrentURL();
-        longPolling(); 
+        longPolling();
         // // setState((prevState) => ({ ...prevState, duration: 0 }));
         synchronizeVideoPosition();
 
@@ -435,16 +435,16 @@ function Room() {
             getInput();
         }
         if (event.key === 'Escape') {
-            if(document.getElementById("urlinput")) {
-                document.getElementById("urlinput").blur(); 
+            if (document.getElementById("urlinput")) {
+                document.getElementById("urlinput").blur();
             }
         }
 
         if (inputRef.current === document.activeElement) {
             if (['k', 'f', 'm', ' ', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'ArrowDown'].includes(event.key)) {
-            event.stopPropagation();
+                event.stopPropagation();
+            }
         }
-  }
     };
 
     //gets input url and puts it into API
@@ -469,28 +469,61 @@ function Room() {
         }
     }
 
+    async function setChatTime() {       
+        try {
+            const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/chat`); 
+            const allMessages = res.data.messages;  
+            localStorage.setItem("chat-time", allMessages[allMessages.length - 1].time);
+
+        } catch (e) {
+            return e;
+        }
+    }
+
     async function sendMessage() {
 
         const userInput = document.getElementById("chat-input");
-    
+
         const message = userInput.value;
         if (message.trim() === "") return;
 
         let roomname = localStorage.getItem("roomname");
-    
-        try{
-            await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + roomname + `/chat`, { "user": localStorage.getItem("userID") , "message": String(message) });
 
-            updateChatRoom();
-            userInput.value = "";
+        try {
+            await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + roomname + `/chat`, { "user": localStorage.getItem("userID"), "message": String(message) });
 
-            
         } catch (e) {
             return e;
         }
+
+        updateChatRoom();
+        userInput.value = "";
     };
 
-    async function updateChatRoom(){
+    //load all chat messages
+    async function loadChatRoom() {
+        
+        const chatBox = document.getElementById("chat-box");
+
+        try {
+            const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/chat`);
+
+            res.data.messages.forEach(async message => {
+                const textElement = document.createElement('p');
+                textElement.style.color = '#FFF';
+                textElement.textContent = message.text;
+                chatBox.appendChild(textElement);
+            });
+
+        } catch (e) {
+            return e;
+        }
+
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+    }
+
+    async function updateChatRoom() {
 
         let roomname = localStorage.getItem("roomname");
 
@@ -498,31 +531,18 @@ function Room() {
         const chatBox = document.getElementById("chat-box");
 
         try {
-
             const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/chat`);
             const allMessages = res.data.messages;
-            
 
-            /*for(let i = 0; allMessages.length; i++){
-                 
-        
-                 messageElement.classList.add("chat-message");
-                 messageElement.textContent = allMessages[i].text;
-                 console.log(allMessages[i].text);
-
-                 chatBox.appendChild(messageElement);
-        
-                 chatBox.scrollTop = chatBox.scrollHeight;
-
-            } */
             messageElement.classList.add("chat-message");
             messageElement.textContent = localStorage.getItem("username") + ": " + allMessages[allMessages.length - 1].text;
             console.log(allMessages[allMessages.length - 1].text);
             console.log(messageElement.textContent);
 
             chatBox.appendChild(messageElement);
-        
+
             chatBox.scrollTop = chatBox.scrollHeight;
+
         } catch (e) {
             return e;
         }
@@ -530,18 +550,18 @@ function Room() {
 
     const handleChatInput = (event) => {
 
-        if(event.key === "k"|| "f"|| "m" || "ArrowUp" || "ArrowLeft" || "ArrowRight" || "ArrowDown"){
+        if (event.key === "k" || "f" || "m" || "ArrowUp" || "ArrowLeft" || "ArrowRight" || "ArrowDown") {
             event.stopPropagation();
         }
-        if(event.key === "Enter"){
+        if (event.key === "Enter") {
             sendMessage();
         }
     }
-    
+
 
 
     return (
-        <>
+        <div id='room'>
             <div className='container'>
                 <input
                     ref={inputRef}
@@ -610,17 +630,17 @@ function Room() {
                 </div>
             </div>
 
-            <div className = 'chatContainer'>
-                    <div class="chat-box" id="chat-box">
-                        <div class="chat-message"><p id = "chatwelcome"></p></div>
-                    </div>
-                        
+            <div className='chatContainer'>
+                <div class="chat-box" id="chat-box">
+                    <div class="chat-message"><p id="chatwelcome"></p></div>
+                </div>
+
                 <div class="input-container">
-                    <input type="text" id="chat-input" onKeyDown={handleChatInput}/>
-                    <button id = "chat-button" onClick={() => sendMessage()}></button>
-                 </div>
+                    <input type="text" id="chat-input" onKeyDown={handleChatInput} />
+                    <button id="chat-button" onClick={() => sendMessage()}></button>
+                </div>
             </div>
-        </>
+        </div>
     );
 }
 
