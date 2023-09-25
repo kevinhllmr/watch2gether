@@ -528,6 +528,18 @@ function Room() {
         }
     };
 
+    const handleChatInput = (event) => {
+
+        if(event.key === "k"|| "f"|| "m" || "ArrowUp" || "ArrowLeft" || "ArrowRight" || "ArrowDown"){
+            event.stopPropagation();
+        }
+        if(event.key === "Enter"){
+            sendMessage();
+        }
+    }
+    
+
+
     return (
         <>
             <div className='container'>
@@ -604,7 +616,7 @@ function Room() {
                     </div>
                         
                 <div class="input-container">
-                    <input type="text" id="chat-input"/>
+                    <input type="text" id="chat-input" onKeyDown={handleChatInput}/>
                     <button id = "chat-button" onClick={() => sendMessage()}></button>
                  </div>
             </div>
