@@ -71,12 +71,12 @@ function RoomList() {
                                 await Axios.delete(`https://gruppe8.toni-barth.com/rooms/` + localStorage.getItem("roomname") + `/users`, {data:{"user": localStorage.getItem("userID")}});
                             } catch {}
 
-                            try {
-                                await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + button.innerText + `/users`, {"user": localStorage.getItem("userID")});                               
+                            // try {
+                            //     await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + button.innerText + `/users`, {"user": localStorage.getItem("userID")});                               
 
-                            } catch (e) {
-                                return e;
-                            }
+                            // } catch (e) {
+                            //     return e;
+                            // }
                         }
                     }
                     // } else {

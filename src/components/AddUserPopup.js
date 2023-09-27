@@ -53,12 +53,12 @@ function AddUserPopup(props) {
             if (roomname != null && roomname !== "inCreation") {
                 navigate(`/` + roomname + `/`);
 
-                try {
-                    await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + roomname + `/users`, { "user": localStorage.getItem("userID") });
+                // try {
+                //     await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + roomname + `/users`, { "user": localStorage.getItem("userID") });
 
-                } catch (e) {
-                    return e;
-                }
+                // } catch (e) {
+                //     return e;
+                // }
 
             } else if(localStorage.getItem("roomname") === "inCreation") {
                 joinCreatedRoom();
@@ -91,12 +91,12 @@ function AddUserPopup(props) {
             localStorage.setItem("roomname", lastRoomName);
             navigate(`/` + lastRoomName + `/`);
 
-            try {
-                await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + lastRoomName + `/users`, { "user": localStorage.getItem("userID") });
+            // try {
+            //     await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + lastRoomName + `/users`, { "user": localStorage.getItem("userID") });
 
-            } catch (e) {
-                return e;
-            }
+            // } catch (e) {
+            //     return e;
+            // }
 
         } catch (e) {
             return e;

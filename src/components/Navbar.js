@@ -107,17 +107,17 @@ function Navbar() {
       if (localStorage.getItem("roomname") === "inCreation") {
         createRoom();
 
-        try {
+        // try {
           const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms`);
           const lastRoomName = res.data.rooms[res.data.rooms.length - 1].name;
-          await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + lastRoomName + `/users`, { "user": localStorage.getItem("userID") });
+        //   await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + lastRoomName + `/users`, { "user": localStorage.getItem("userID") });
           localStorage.setItem("roomname", lastRoomName);
 
           navigate(`/` + lastRoomName + `/`);
 
-        } catch (e) {
-          return e;
-        }
+        // } catch (e) {
+        //   return e;
+        // }
 
       } else {
         // alert("You already joined a room: " + localStorage.getItem("roomname"));

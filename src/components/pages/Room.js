@@ -353,6 +353,8 @@ function Room() {
             }
         } catch { }
 
+        putUserInRoom();
+
         document.addEventListener('keydown', keydownListener);
 
         if (document.getElementById("username")) {
@@ -403,6 +405,15 @@ function Room() {
             if (stringFound === false) {
                 navigate(`/404/`);
             }
+
+        } catch (e) {
+            return e;
+        }
+    }
+
+    async function putUserInRoom() {
+        try {
+            await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + localStorage.getItem("roomname") + `/users`, { "user": localStorage.getItem("userID") });
 
         } catch (e) {
             return e;
