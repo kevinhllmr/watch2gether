@@ -640,7 +640,6 @@ function Room() {
                     id='submitbtn'
                     onClick={() => getInput()}
                     aria-label="video url submit"
-                    aria-label="video url submit"
                 >
                     <i class="fas fa-search"></i>
                 </button>
