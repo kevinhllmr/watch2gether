@@ -18,7 +18,9 @@ function Help() {
       </button>
 
       <h2 id='help' tabindex="0"></h2>
+      <h2 id='help' tabindex="0"></h2>
       <br />
+      <h3 id='controls' tabindex="0"></h3>
       <h3 id='controls' tabindex="0"></h3>
 
       <p id='notice' tabindex="0"></p>

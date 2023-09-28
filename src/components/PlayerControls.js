@@ -124,6 +124,7 @@ export default forwardRef(({
                 style={{ padding: 10 }}
             >
                 <IconButton onClick={onPlayPause} className="control-icons" tabindex="-1">
+                <IconButton onClick={onPlayPause} className="control-icons" tabindex="-1">
                     {videoStatus === "playing" ? (
                         <PauseIcon fontSize="inherit" />
                     ) : (
