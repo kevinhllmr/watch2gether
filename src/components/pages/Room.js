@@ -5,11 +5,12 @@ import './Room.css';
 import Axios from 'axios';
 import PlayerControls from '../PlayerControls';
 import screenfull from 'screenfull';
-import { useNavigate } from "react-router-dom";
+import { Await, useNavigate } from "react-router-dom";
 import ChatRoom from './ChatRoom.jsx';
 
 //count variable for UI fade out
 let count = 0;
+let time = 0;
 
 
 //formats the time of the video into hours, minutes and seconds and returns string
@@ -53,7 +54,7 @@ function Room() {
 
     const { playing, muted, played, seeking, fullscreen, volume } = state;
 
-    const playerRef = useRef(null);
+    let playerRef = useRef(null);
     const playerContainerRef = useRef(null);
     const controlsRef = useRef(null);
     const inputRef = useRef(null);
@@ -61,12 +62,15 @@ function Room() {
     //update status and position on play/pause
     const handlePlayPause = async () => {
 
-        const newPlayingState = !state.playing;
+        state.playing = !state.playing
+        
+        const newPlayingState = state.playing;
 
         try {
             let roomname = localStorage.getItem('roomname');
             const user = localStorage.getItem('userID');
             const status = newPlayingState ? 'playing' : 'paused';
+
             const position = playerRef.current.getCurrentTime();
 
             await Promise.all([
@@ -103,6 +107,7 @@ function Room() {
 
     //seeks to new positon and updates video position in API
     const handleFastForward = async () => {
+        
         const currentTime = playerRef.current.getCurrentTime();
         playerRef.current.seekTo(currentTime + 5);
         updateVideoPosition(currentTime + 5);
@@ -138,6 +143,7 @@ function Room() {
 
     //toggle fullscreen
     const onToggleFullScreen = () => {
+        
         // screenfull.toggle(playerContainerRef.current);
         // setState({ ...state, fullscreen: !state.fullscreen });
         if (screenfull.isEnabled) {
@@ -209,52 +215,16 @@ function Room() {
     const totalDuration = format(duration);
 
     //polling for new URL, position and status
-    /*const longPolling = async () => {
+    const longPolling = async () => {
         try {
-            let roomname = localStorage.getItem('roomname');
-            let lastStatus = '';
-            let lastPosition = 0;
-            let lastURL = '';
 
-            while (true) {
-                const [statusResponse, positionResponse, urlResponse] = await Promise.all([
-                    Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/status`),
-                    Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/position`),
-                    Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/video`),
-                ]);
 
-                const currentStatus = statusResponse.data.status;
-                const currentPosition = positionResponse.data.position;
-                const currentURL = urlResponse.data.url;
 
-                if (currentStatus !== lastStatus) {
-                    setVideoPlaying(currentStatus === 'playing');
-                    lastStatus = currentStatus;
-
-                    if (currentStatus === 'playing') {
-                        playerRef.current.play(); // Start playing the video
-                    } else {
-                        playerRef.current.pause(); // Pause the video
-                    }
-                }
-
-                if (currentURL !== lastURL) {
-                    setVideoURL(currentURL);
-                    lastURL = currentURL;
-                }
-
-                if (playerRef.current && currentPosition !== lastPosition) {
-                    playerRef.current.seekTo(currentPosition);
-                    lastPosition = currentPosition;
-                }
-
-                // Delay between polling requests
-                await new Promise((resolve) => setTimeout(resolve, 100));
-            }
-        } catch (error) {
+        }
+        catch (error) {
             console.error('Long polling error:', error);
         }
-    };*/
+    };
 
     //every second, video synchronizes additionally to polling function in case of lags/stuttering
     /*const synchronizeVideoPosition = async () => {
@@ -302,7 +272,6 @@ function Room() {
         if (roomname === localStorage.getItem('roomname')) {
             switch (event.key) {
                 case " ":
-                case "MediaPlayPause":
                 case "k":
                     handlePlayPause();
                     break;
@@ -314,7 +283,6 @@ function Room() {
                     break;
                 case "f":
                     onToggleFullScreen();
-                    handlePlayPause();
                     break;
                 case "m":
                     setState((prevState) => {
@@ -373,8 +341,6 @@ function Room() {
             document.getElementById("leaveroombtn").style.display = "block";
         }
     
-        setLastMessage();
-        updateChatMessages();
         // loadChatRoom();
 
         getCurrentURL();
@@ -384,7 +350,7 @@ function Room() {
             window.removeEventListener('keydown', keydownListener);
         };
 
-    }, );
+    }, [] );
 
     //check if room exists from copied room link. if not, show 404 page
     async function doesRoomExist() {
@@ -482,148 +448,6 @@ function Room() {
         }
     }
 
-    async function setLastMessage() {
-        try {
-            let roomname = localStorage.getItem("roomname");
-            const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/chat`);
-            const allMessages = res.data.messages;
-
-            if (allMessages.length > 0) {
-                localStorage.setItem("last-message-index", allMessages.length);
-            } else {
-
-
-                localStorage.setItem("last-message-index", 0);
-
-            }
-
-        } catch (e) {
-            return e;
-        }
-    }
-
-    async function sendMessage() {
-
-        const userInput = document.getElementById("chat-input");
-
-        const message = userInput.value;
-        if (message.trim() === "") return;
-
-        let roomname = localStorage.getItem("roomname");
-
-        try {
-            await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + roomname + `/chat`, { "user": localStorage.getItem("userID"), "message": String(message) });
-
-        } catch (e) {
-            return e;
-        }
-
-        updateChatRoom();
-        setLastMessage();
-        userInput.value = "";
-    };
-
-    //load all chat messages
-    /*async function loadChatRoom() {
-        
-        const chatBox = document.getElementById("chat-box");
-
-        try {
-            const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/chat`);
-
-            res.data.messages.forEach(async message => {
-                const textElement = document.createElement('p');
-                textElement.style.color = '#FFF';
-                textElement.textContent = message.text;
-                chatBox.appendChild(textElement);
-            });
-
-        } catch (e) {
-            return e;
-        }
-
-        chatBox.scrollTop = chatBox.scrollHeight;
-
-    }*/
-
-    async function updateChatRoom() {
-
-        let roomname = localStorage.getItem("roomname");
-
-        let messageElement = document.createElement("div");
-        const chatBox = document.getElementById("chat-box");
-
-        try {
-            const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/chat`);
-            const allMessages = res.data.messages;
-
-            messageElement.classList.add("chat-message");
-            messageElement.textContent = localStorage.getItem("username") + ": " + allMessages[allMessages.length - 1].text;
-
-            chatBox.appendChild(messageElement);
-
-            chatBox.scrollTop = chatBox.scrollHeight;
-
-        } catch (e) {
-            return e;
-        }
-    };
-
-    const updateChatMessages = async () => {
-        try {
-            let roomname = localStorage.getItem('roomname');
-
-            const chatBox = document.getElementById("chat-box");
-
-
-            while (true) {
-
-                let lastMessageIndex = localStorage.getItem('last-message-index');
-
-                const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/chat`);
-                const allMessages = res.data.messages;
-
-                const users = await Axios.get(`https://gruppe8.toni-barth.com/users`);
-                const allUsers = users.data.users;
-
-                for(let i = lastMessageIndex; i <= allMessages.length - 1; i++){
-
-                    for(let j = 0; j <= allUsers.length - 1; j++){
-                        console.log("UserID " + allUsers[j].id);
-                        console.log("MessageUserID " + allMessages[i].userId);
-
-
-                        if(allUsers[j].id === allMessages[i].userId){
-
-                            const textElement = document.createElement('p');
-                            textElement.style.color = '#FFF';
-                            textElement.textContent = allUsers[j].name + ": " + allMessages[i].text;
-                            chatBox.appendChild(textElement);
-                        }   
-                    }
-                }
-
-                setLastMessage();
-               
-                // Delay between polling requests
-                await new Promise((resolve) => setTimeout(resolve, 1000));
-            }
-        } catch (error) {
-            console.error('Long polling error:', error);
-        }
-    };
-
- 
-
-    const handleChatInput = (event) => {
-
-        if (event.key === "k" || "f" || "m" || "ArrowUp" || "ArrowLeft" || "ArrowRight" || "ArrowDown") {
-            event.stopPropagation();
-        }
-        if (event.key === "Enter") {
-            sendMessage();
-        }
-    }
 
     return (
         <div id='room'>
@@ -632,7 +456,7 @@ function Room() {
                     ref={inputRef}
                     id='urlinput'
                     placeholder='youtu.be/watch?v=dQw4w9WgXcQ'
-                    onKeyDown={handleKeyDown}
+                    onKeyUp={handleKeyDown}
                     aria-label="url input field"
                 ></input>
 
@@ -650,7 +474,7 @@ function Room() {
                         className='player-wrapper'
                         onMouseMove={handleMouseMove}
                         tabIndex="0"
-                        onKeyDown={keydownListener}
+                        onKeyUp={keydownListener}
                     >
                         <ReactPlayer
                             ref={playerRef}
