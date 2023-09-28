@@ -10,7 +10,8 @@ import ChatRoom from './ChatRoom.jsx';
 
 //count variable for UI fade out
 let count = 0;
-let time = 0;
+
+let lastPosition = 0;
 
 
 //formats the time of the video into hours, minutes and seconds and returns string
@@ -217,17 +218,56 @@ function Room() {
     //polling for new URL, position and status
     const longPolling = async () => {
         try {
+            let roomname = localStorage.getItem('roomname');
+            let lastStatus = '';
+            let lastPosition = 0;
+            let lastURL = '';
+
+            while (true) {
+                const [statusResponse, positionResponse, urlResponse] = await Promise.all([
+                    Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/status`),
+                    Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/position`),
+                    Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/video`),
+                ]);
+
+                const currentStatus = statusResponse.data.status;
+                const currentPosition = positionResponse.data.position;
+                const currentURL = urlResponse.data.url;
 
 
+                if (currentStatus !== lastStatus) {
+                    setVideoPlaying(currentStatus === 'playing');
+                    lastStatus = currentStatus;
+                    state.playing = !state.playing;
 
-        }
-        catch (error) {
+                    if (currentStatus === 'playing') {
+                        playerRef.current.play(); // Start playing the video
+
+                    } else {
+                        playerRef.current.pause(); // Pause the video
+                    }
+                }
+
+                if (currentURL !== lastURL) {
+                    setVideoURL(currentURL);
+                    lastURL = currentURL;
+                }
+
+                if (playerRef.current && currentPosition !== lastPosition) {
+                    playerRef.current.seekTo(currentPosition);
+                    lastPosition = currentPosition;
+                }
+
+                // Delay between polling requests
+                await new Promise((resolve) => setTimeout(resolve, 3000));
+            }
+        } catch (error) {
             console.error('Long polling error:', error);
         }
     };
 
     //every second, video synchronizes additionally to polling function in case of lags/stuttering
-    /*const synchronizeVideoPosition = async () => {
+    const synchronizeVideoPosition = async () => {
         try {
             let roomname = localStorage.getItem("roomname");
             let lastPosition = videoPosition;
@@ -250,7 +290,8 @@ function Room() {
         } catch (error) {
             console.error("Video position synchronization error:", error);
         }
-    };*/
+    };
+
 
     //handle for when video is ready
     const handleReady = () => {
@@ -341,10 +382,10 @@ function Room() {
             document.getElementById("leaveroombtn").style.display = "block";
         }
     
-        // loadChatRoom();
-
         getCurrentURL();
         // // setState((prevState) => ({ ...prevState, duration: 0 }));
+        longPolling();
+        synchronizeVideoPosition();
 
         return () => {
             window.removeEventListener('keydown', keydownListener);
