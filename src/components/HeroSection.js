@@ -62,7 +62,7 @@ function HeroSection() {
         document.getElementById("leaveroombtn").style.display = 'none';
       }
     }
-  }, []);
+  }, );
 
   //posts new room into API
   const createRoom = async () => {
@@ -156,8 +156,6 @@ function HeroSection() {
       <img src={process.env.PUBLIC_URL + '/images/homebg.jpg'} alt='background home projector cinema' />
 
       <AddUserPopup trigger={buttonPopup} setTrigger={setButtonPopup}></AddUserPopup>
-
-      <h2 id='welcome'></h2>
 
       <div className='hero-btns'>
         <Button
