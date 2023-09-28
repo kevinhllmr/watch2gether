@@ -17,20 +17,20 @@ function RoomList() {
     //if username is null, open user create popup
     useEffect(() => {
 
-        if(localStorage.getItem("username") === null) {
-            setButtonPopup(true); 
+        if (localStorage.getItem("username") === null) {
+            setButtonPopup(true);
         }
 
-        if(document.getElementById("joinroombtn")) {
+        if (document.getElementById("joinroombtn")) {
             document.getElementById("joinroombtn").style.display = 'none';
         }
 
-        if(document.getElementById("username")) {
+        if (document.getElementById("username")) {
             document.getElementById("roomname").innerHTML = localStorage.getItem("roomname");
             document.getElementById("username").innerHTML = localStorage.getItem("username");
         }
 
-        if(document.getElementById("leaveroombtn")) {
+        if (document.getElementById("leaveroombtn")) {
             if (document.getElementById("roomname").innerHTML != null) {
                 document.getElementById("leaveroombtn").style.display = 'block';
             } else {
@@ -40,7 +40,7 @@ function RoomList() {
     }, []);
 
     //sets variable for react routing
-    let navigate = useNavigate(); 
+    let navigate = useNavigate();
 
     //gets rooms from API and creates button for each room;
     //each button gets onClick event which either joins room if username not null
@@ -59,31 +59,21 @@ function RoomList() {
                 }
 
                 const buttons = document.querySelectorAll(".roombtns");
-                buttons.forEach(button => button.addEventListener("click", async function() {
+                buttons.forEach(button => button.addEventListener("click", async function () {
                     localStorage.setItem("roomname", button.innerText);
 
-                    if(localStorage.getItem("username") != null) {
+                    if (localStorage.getItem("username") != null) {
                         navigate(`/` + button.innerText + `/`);
                         document.getElementById("roomname").innerHTML = button.innerText;
 
-                        if(button.innerText !== localStorage.getItem("roomname")) {
+                        if (button.innerText !== localStorage.getItem("roomname")) {
                             try {
-                                await Axios.delete(`https://gruppe8.toni-barth.com/rooms/` + localStorage.getItem("roomname") + `/users`, {data:{"user": localStorage.getItem("userID")}});
-                            } catch {}
-
-                            // try {
-                            //     await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + button.innerText + `/users`, {"user": localStorage.getItem("userID")});                               
-
-                            // } catch (e) {
-                            //     return e;
-                            // }
+                                await Axios.delete(`https://gruppe8.toni-barth.com/rooms/` + localStorage.getItem("roomname") + `/users`, { data: { "user": localStorage.getItem("userID") } });
+                            } catch { }
                         }
                     }
-                    // } else {
-                    //     setButtonPopup(true);  
-                    // }    
-                }));          
-        }
+                }));
+            }
 
         } catch (e) {
             return e;
@@ -95,7 +85,7 @@ function RoomList() {
 
     return (
         <div className='roomlist-container'>
-            <h2 id="rooms">All available rooms:</h2>
+            <h2 id="rooms" tabindex="0">All available rooms:</h2>
             <center>
                 <div id="btns">
                 </div>

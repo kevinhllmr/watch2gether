@@ -19,30 +19,30 @@ function HeroSection() {
   //if not null, show log out button, otherwise hide it
   //sets language
   useEffect(() => {
-    if(location.pathname !== "/home/") {
-        navigate(`/home/`);
+    if (location.pathname !== "/home/") {
+      navigate(`/home/`);
     }
 
     let userLang = navigator.language || navigator.userLanguage;
 
-    if(document.getElementById("imglng") !== null) {
-      if(localStorage.getItem("lang") === "de") {
+    if (document.getElementById("imglng") !== null) {
+      if (localStorage.getItem("lang") === "de") {
         lang_de();
         document.getElementById("imglng").src = process.env.PUBLIC_URL + '/images/de.svg';
-    
-      } else if(localStorage.getItem("lang") === "en") {
+
+      } else if (localStorage.getItem("lang") === "en") {
         lang_en();
         document.getElementById("imglng").src = process.env.PUBLIC_URL + '/images/gb.svg';
 
-      } else if(userLang === "de") {
+      } else if (userLang === "de") {
         lang_de();
         document.getElementById("imglng").src = process.env.PUBLIC_URL + '/images/de.svg';
         localStorage.setItem("lang", "de");
 
-      } else  {
-          // lang_en();
-          document.getElementById("imglng").src = process.env.PUBLIC_URL + '/images/gb.svg';
-          localStorage.setItem("lang", "en");
+      } else {
+        // lang_en();
+        document.getElementById("imglng").src = process.env.PUBLIC_URL + '/images/gb.svg';
+        localStorage.setItem("lang", "en");
       }
     }
 
@@ -92,17 +92,11 @@ function HeroSection() {
       if (localStorage.getItem("roomname") === "inCreation") {
         createRoom();
 
-        // try {
-          const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms`);
-          const lastRoomName = res.data.rooms[res.data.rooms.length - 1].name;
-        //   await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + lastRoomName + `/users`, { "user": localStorage.getItem("userID") });
-          localStorage.setItem("roomname", lastRoomName);
+        const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms`);
+        const lastRoomName = res.data.rooms[res.data.rooms.length - 1].name;
+        localStorage.setItem("roomname", lastRoomName);
 
-          navigate(`/` + lastRoomName + `/`);
-
-        // } catch (e) {
-        //   return e;
-        // }
+        navigate(`/` + lastRoomName + `/`);
 
       } else {
         // alert("You already joined a room: " + localStorage.getItem("roomname"));
@@ -117,7 +111,7 @@ function HeroSection() {
   async function logOutUser() {
 
     try {
-      if(localStorage.getItem("roomname") != null) {
+      if (localStorage.getItem("roomname") != null) {
         await Axios.delete(`https://gruppe8.toni-barth.com/rooms/` + localStorage.getItem("roomname") + `/users`, { data: { "user": localStorage.getItem("userID") } });
       }
 
@@ -157,7 +151,7 @@ function HeroSection() {
 
       <AddUserPopup trigger={buttonPopup} setTrigger={setButtonPopup}></AddUserPopup>
 
-      <h2 id='welcome'></h2>
+      <h2 id='welcome' tabindex="0"></h2>
 
       <div className='hero-btns'>
         <Button
@@ -182,7 +176,7 @@ function HeroSection() {
       </div>
 
       {(location.pathname === "/home/" || location.pathname !== "/home") &&
-        <p id='notice'>Das Projekt ist an der HS Anhalt und unter der Aufsicht von Toni Barth entstanden.</p>
+        <p id='notice' tabindex="0">Das Projekt ist an der HS Anhalt und unter der Aufsicht von Toni Barth entstanden.</p>
       }
 
     </div>

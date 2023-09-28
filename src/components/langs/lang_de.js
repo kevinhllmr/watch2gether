@@ -17,7 +17,7 @@ export function lang_de() {
     const help = document.getElementById('help');
     const controls = document.getElementById('controls');
     const helpp = document.getElementById('helpp');
-    
+
     const chatwelcomemessage = document.getElementById('chatwelcome');
     const chatInput = document.getElementById('chat-input');
     const chatButton = document.getElementById('chat-button');
@@ -90,15 +90,15 @@ export function lang_de() {
         helpp.innerHTML = "Hilfe";
     }
 
-    if (chatwelcomemessage){
+    if (chatwelcomemessage) {
         chatwelcomemessage.textContent = "Willkommen im Chat!";
     }
 
-    if (chatInput){
+    if (chatInput) {
         chatInput.placeholder = "Nachricht schreiben";
     }
 
-    if (chatButton){
+    if (chatButton) {
         chatButton.innerText = "Senden";
     }
 }

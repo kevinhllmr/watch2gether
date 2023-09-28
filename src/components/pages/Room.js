@@ -370,7 +370,7 @@ function Room() {
             document.getElementById("roomname").style.display = "block";
             document.getElementById("leaveroombtn").style.display = "block";
         }
-    
+
         setLastMessage();
         updateChatMessages();
         // loadChatRoom();
@@ -411,6 +411,7 @@ function Room() {
         }
     }
 
+    //puts user into API
     async function putUserInRoom() {
         try {
             await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + localStorage.getItem("roomname") + `/users`, { "user": localStorage.getItem("userID") });
@@ -481,13 +482,13 @@ function Room() {
         }
     }
 
-    async function setLastMessage() {       
+    async function setLastMessage() {
         try {
             let roomname = localStorage.getItem("roomname");
-            const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/chat`); 
-            const allMessages = res.data.messages;  
+            const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/chat`);
+            const allMessages = res.data.messages;
 
-            if(allMessages.length > 0){
+            if (allMessages.length > 0) {
                 localStorage.setItem("last-message-index", allMessages.length);
             } else {
 
@@ -585,25 +586,25 @@ function Room() {
                 const users = await Axios.get(`https://gruppe8.toni-barth.com/users`);
                 const allUsers = users.data.users;
 
-                for(let i = lastMessageIndex; i <= allMessages.length - 1; i++){
+                for (let i = lastMessageIndex; i <= allMessages.length - 1; i++) {
 
-                    for(let j = 0; j <= allUsers.length - 1; j++){
+                    for (let j = 0; j <= allUsers.length - 1; j++) {
                         console.log("UserID " + allUsers[j].id);
                         console.log("MessageUserID " + allMessages[i].userId);
 
 
-                        if(allUsers[j].id === allMessages[i].userId){
+                        if (allUsers[j].id === allMessages[i].userId) {
 
                             const textElement = document.createElement('p');
                             textElement.style.color = '#FFF';
                             textElement.textContent = allUsers[j].name + ": " + allMessages[i].text;
                             chatBox.appendChild(textElement);
-                        }   
+                        }
                     }
                 }
 
                 setLastMessage();
-               
+
                 // Delay between polling requests
                 await new Promise((resolve) => setTimeout(resolve, 1000));
             }
@@ -612,7 +613,7 @@ function Room() {
         }
     };
 
- 
+
 
     const handleChatInput = (event) => {
 
@@ -638,7 +639,7 @@ function Room() {
                 <button
                     id='submitbtn'
                     onClick={() => getInput()}
-                    aria-label="video url submit button"
+                    aria-label="video url submit"
                 >
                     <i class="fas fa-search"></i>
                 </button>
@@ -667,6 +668,7 @@ function Room() {
                             controls={false}
                             onReady={handleReady}
                             preload="auto"
+                            config={{ attributes: { tabIndex: '-1' } }}
                         />
 
                         <PlayerControls
