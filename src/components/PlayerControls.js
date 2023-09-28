@@ -107,11 +107,11 @@ export default forwardRef(({
             </Grid>
 
             <Grid container direction='row' alignItems='center' justifyContent='center'>
-                <IconButton onClick={onRewind} id='rewindff' className='control-icons' aria-label='rewind'>
-                    <FastRewindIcon fontSize='inherit' />
+                <IconButton onClick={onRewind} id='rewindff' className='control-icons' tabindex="-1">
+                    <FastRewindIcon fontSize='inherit'/>
                 </IconButton>
 
-                <IconButton onClick={onFastForward} className='control-icons' aria-label='forward'>
+                <IconButton onClick={onFastForward} className='control-icons' tabindex="-1">
                     <FastForwardIcon fontSize='inherit' />
                 </IconButton>
             </Grid>
@@ -123,7 +123,7 @@ export default forwardRef(({
                 alignItems="center"
                 style={{ padding: 10 }}
             >
-                <IconButton onClick={onPlayPause} className="control-icons" aria-label="play or pause">
+                <IconButton onClick={onPlayPause} className="control-icons" tabindex="-1">
                     {videoStatus === "playing" ? (
                         <PauseIcon fontSize="inherit" />
                     ) : (
@@ -135,7 +135,7 @@ export default forwardRef(({
                                     <PauseIcon fontSize='inherit' />
                                 </IconButton> */}
 
-                <Button variant="text" style={{ color: "#fff", marginLeft: -20 }}>
+                <Button variant="text" tabIndex="-1" style={{ color: "#fff", marginLeft: -20 }}>
                     <Typography>{elapsedTime}/{totalDuration}</Typography>
                 </Button>
 
@@ -160,7 +160,7 @@ export default forwardRef(({
                                             <PlayArrowIcon fontSize="large" />
                                         </IconButton> */}
 
-                                        <IconButton onClick={onMute} id='volumeicon' className='control-icons' aria-label='volume button'>
+                                        <IconButton onClick={onMute} id='volumeicon' className='control-icons' tabindex="-1">
                                             {muted ? (<VolumeOffIcon fontSize="large" />):(<VolumeUpIcon fontSize="large" />)}
                                         </IconButton>
 
@@ -208,8 +208,8 @@ export default forwardRef(({
                                         </Grid>
                                     </Popover> */}
 
-                    <IconButton onClick={onToggleFullScreen} className='classes.bottomIcons'>
-                        {fullscreen ? (<FullscreenExitIcon fontSize="large" style={{ color: "#fff", marginRight: 20 }} aria-label='exit fullscreen' />) : (<FullScreenIcon fontSize="large" style={{ color: "#fff", marginRight: 20 }} aria-label='enter fullscreen'/>)}
+                    <IconButton onClick={onToggleFullScreen} className='classes.bottomIcons' tabIndex="-1">
+                        {fullscreen ? (<FullscreenExitIcon fontSize="large" style={{ color: "#fff", marginRight: 20 }}/>) : (<FullScreenIcon fontSize="large" style={{ color: "#fff", marginRight: 20 }}/>)}
 
                     </IconButton>
                 </Grid>

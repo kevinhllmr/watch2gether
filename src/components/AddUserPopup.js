@@ -28,7 +28,6 @@ function AddUserPopup(props) {
     //sets variable for react routing
     let navigate = useNavigate();
 
-    //gets username input and puts it together with userID into API
     //creates room if popup is called on create room instead of join room
     //navigates user to the room
     async function getInput() {

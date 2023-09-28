@@ -17,11 +17,11 @@ function Help() {
         <p>Home</p>
       </button>
 
-      <h2 id='help'></h2>
+      <h2 id='help' tabindex="0"></h2>
       <br />
-      <h3 id='controls'></h3>
+      <h3 id='controls' tabindex="0"></h3>
 
-    <p id='notice'></p>
+    <p id='notice' tabindex="0"></p>
 
     </div>
     );

@@ -95,7 +95,7 @@ function RoomList() {
 
     return (
         <div className='roomlist-container'>
-            <h2 id="rooms">All available rooms:</h2>
+            <h2 id="rooms" tabindex="0">All available rooms:</h2>
             <center>
                 <div id="btns">
                 </div>

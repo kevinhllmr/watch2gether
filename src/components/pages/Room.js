@@ -411,6 +411,7 @@ function Room() {
         }
     }
 
+     //puts user into API
     async function putUserInRoom() {
         try {
             await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + localStorage.getItem("roomname") + `/users`, { "user": localStorage.getItem("userID") });
@@ -638,7 +639,7 @@ function Room() {
                 <button
                     id='submitbtn'
                     onClick={() => getInput()}
-                    aria-label="video url submit button"
+                    aria-label="video url submit"
                 >
                     <i class="fas fa-search"></i>
                 </button>
@@ -667,6 +668,7 @@ function Room() {
                             controls={false}
                             onReady={handleReady}
                             preload="auto"
+                            config={{ attributes: { tabIndex: '-1' }}}
                         />
 
                         <PlayerControls
