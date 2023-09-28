@@ -37,7 +37,7 @@ function Navbar() {
     showButton();
     let userLang = navigator.language || navigator.userLanguage;
 
-    if(document.getElementById("imglng") !== null) {
+    if(document.getElementById("btn_lng") !== null) {
       if(localStorage.getItem("lang") === "de") {
         lang_de();
         document.getElementById("imglng").src = process.env.PUBLIC_URL + '/images/de.svg';
@@ -58,20 +58,48 @@ function Navbar() {
       }
     }
 
-     //event listener for language button
-      document.getElementById("btn_lng").addEventListener("click", function (e) {
-        if(localStorage.getItem("lang") === "de") {      
-          lang_en();
-          localStorage.setItem("lang", "en");
-          document.getElementById("imglng").src = process.env.PUBLIC_URL + '/images/gb.svg';
+    //back to main menu
+    document.getElementById("navhomepage").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        navigate(`/home/`);
+      }
+    })
 
-        } else {
-          lang_de();
-          localStorage.setItem("lang", "de");
-          document.getElementById("imglng").src = process.env.PUBLIC_URL + '/images/de.svg';
-        }
-      });
+    //switch language
+    document.getElementById("btn_lng").addEventListener("click", toggleLanguage);
+    document.getElementById("btn_lng").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        toggleLanguage();
+      }
+    });
+
+    //copy roomname
+    if(document.getElementById("roomname")) {
+    document.getElementById("roomname").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        copyRoomName();
+      }
+    })};
   }, []);
+
+  async function toggleLanguage() {
+  if (localStorage.getItem("lang") === "de") {
+    lang_en();
+    localStorage.setItem("lang", "en");
+    document.getElementById("imglng").src = process.env.PUBLIC_URL + '/images/gb.svg';
+    document.getElementById("btn_lng").setAttribute("aria-label", "site now in english");
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+    document.getElementById("btn_lng").setAttribute("aria-label", "switch language");
+
+  } else {
+    lang_de();
+    localStorage.setItem("lang", "de");
+    document.getElementById("imglng").src = process.env.PUBLIC_URL + '/images/de.svg';
+    document.getElementById("btn_lng").setAttribute("aria-label", "site now in german");
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+    document.getElementById("btn_lng").setAttribute("aria-label", "switch language");
+  }
+}
 
   //calls showButton() function on window resize
   window.addEventListener('resize', showButton);
@@ -107,20 +135,13 @@ function Navbar() {
       if (localStorage.getItem("roomname") === "inCreation") {
         createRoom();
 
-        // try {
           const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms`);
           const lastRoomName = res.data.rooms[res.data.rooms.length - 1].name;
-        //   await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + lastRoomName + `/users`, { "user": localStorage.getItem("userID") });
           localStorage.setItem("roomname", lastRoomName);
 
           navigate(`/` + lastRoomName + `/`);
 
-        // } catch (e) {
-        //   return e;
-        // }
-
       } else {
-        // alert("You already joined a room: " + localStorage.getItem("roomname"));
         navigate(`/` + localStorage.getItem("roomname") + `/`);
       }
     }
@@ -130,12 +151,15 @@ function Navbar() {
   const copyRoomName = async () => {
           navigator.clipboard.writeText('https://kevinhllmr.github.io/watch2gether/#/' + document.getElementById("roomname").innerText + '/');     
           showSnackBar();  
+
+          document.getElementById("roomname").setAttribute("aria-label", "room link copied");
+          await new Promise((resolve) => setTimeout(resolve, 5000));
+          document.getElementById("roomname").setAttribute("aria-label", "press enter to copy room link");
   }
 
   function showSnackBar() {
     var sb = document.getElementById("copyroom-notif");
-  
-    //this is where the class name will be added & removed to activate the css
+
     sb.className = "show";
   
     setTimeout(()=>{ sb.className = sb.className.replace("show", ""); }, 3000);
@@ -168,7 +192,7 @@ function Navbar() {
         <div className='navbar-container'>
           <AddUserPopup trigger={buttonPopup} setTrigger={setButtonPopup}></AddUserPopup>
 
-          <Link to="/home/" className="navbar-logo" aria-label="back to home page">
+          <Link to="/home/" className="navbar-logo" id='navhomepage' aria-label="back to home page">
             Watch2Gether
             <i className="far fa-play-circle"></i>
           </Link>
@@ -181,12 +205,12 @@ function Navbar() {
           {location.pathname !== "/home/" && location.pathname !== "/home" && location.pathname !== "/404/" && location.pathname !== "/404" && 
             <ul className={click ? 'nav-menu active' : 'nav-menu'}>
               <li className='nav-item' onClick={closeMobileMenu}>
-                <div id='roomname' onClick={() => copyRoomName()} aria-label="copy room name">
+                <div id='roomname' onClick={() => copyRoomName()} aria-label="press enter to copy room link" tabindex="0">
                 </div>
               </li>
 
               <li className='nav-item' onClick={closeMobileMenu}>
-                <div id='username'>
+                <div id='username' aria-label='username'>
                 </div>
               </li>
 
@@ -206,7 +230,6 @@ function Navbar() {
               {window.innerWidth <= 1400 && localStorage.getItem('roomname') !== null && location.pathname !== "/404/" && location.pathname !== "/404" && 
               <li className='nav-item'>
                 <Link
-                  // to='/room-list/'
                   id='leaveroombtn'
                   className='nav-links'
                   onClick={leaveRoom}
@@ -245,7 +268,7 @@ function Navbar() {
               <p id='createbtn'></p>
             </Button>}
 
-            <span className="flags" id="btn_lng" aria-label="switch language">
+            <span className="flags" id="btn_lng" aria-label="switch language" tabindex="0">
               <img id='imglng' alt="Language Button"></img>
             </span>
 

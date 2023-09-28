@@ -9,13 +9,15 @@ import { lang_en } from './langs/lang_en.js';
 function AddUserPopup(props) {
 
     useEffect(() => {
-        if(localStorage.getItem("lang") === "de") {
+        if (localStorage.getItem("lang") === "de") {
             lang_de();
-        
         } else {
             lang_en();
+        }
 
-        } 
+        if (document.getElementById("userInput")) {
+            document.getElementById("userInput").focus();
+        }
     });
 
     //gets input if enter key is pressed
@@ -28,7 +30,6 @@ function AddUserPopup(props) {
     //sets variable for react routing
     let navigate = useNavigate();
 
-    //gets username input and puts it together with userID into API
     //creates room if popup is called on create room instead of join room
     //navigates user to the room
     async function getInput() {
@@ -53,14 +54,7 @@ function AddUserPopup(props) {
             if (roomname != null && roomname !== "inCreation") {
                 navigate(`/` + roomname + `/`);
 
-                // try {
-                //     await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + roomname + `/users`, { "user": localStorage.getItem("userID") });
-
-                // } catch (e) {
-                //     return e;
-                // }
-
-            } else if(localStorage.getItem("roomname") === "inCreation") {
+            } else if (localStorage.getItem("roomname") === "inCreation") {
                 joinCreatedRoom();
 
             } else {
@@ -91,13 +85,6 @@ function AddUserPopup(props) {
             localStorage.setItem("roomname", lastRoomName);
             navigate(`/` + lastRoomName + `/`);
 
-            // try {
-            //     await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + lastRoomName + `/users`, { "user": localStorage.getItem("userID") });
-
-            // } catch (e) {
-            //     return e;
-            // }
-
         } catch (e) {
             return e;
         }
@@ -127,10 +114,11 @@ function AddUserPopup(props) {
                     placeholder='Enter your name here'
                     maxLength="24"
                     onKeyDown={handleKeyDown}
+                    tabIndex="0"
                 >
                 </input>
 
-                <i id='confirm' className="fas fa-check" onClick={() => getInput()} aria-label="confirm username"></i>
+                <i id='confirm' className="fas fa-check" onClick={() => getInput()} tabIndex="0" aria-label="confirm username"></i>
             </div>
         </div>
     ) : "";

@@ -373,6 +373,10 @@ function Room() {
             document.getElementById("leaveroombtn").style.display = "block";
         }
     
+        setLastMessage();
+        updateChatMessages();
+        // loadChatRoom();
+
         getCurrentURL();
         // // setState((prevState) => ({ ...prevState, duration: 0 }));
 
@@ -407,6 +411,7 @@ function Room() {
         }
     }
 
+    //puts user into API
     async function putUserInRoom() {
         try {
             await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + localStorage.getItem("roomname") + `/users`, { "user": localStorage.getItem("userID") });
@@ -477,13 +482,13 @@ function Room() {
         }
     }
 
-    async function setLastMessage() {       
+    async function setLastMessage() {
         try {
             let roomname = localStorage.getItem("roomname");
-            const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/chat`); 
-            const allMessages = res.data.messages;  
+            const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/chat`);
+            const allMessages = res.data.messages;
 
-            if(allMessages.length > 0){
+            if (allMessages.length > 0) {
                 localStorage.setItem("last-message-index", allMessages.length);
             } else {
 
@@ -497,8 +502,128 @@ function Room() {
         }
     }
 
+    async function sendMessage() {
+
+        const userInput = document.getElementById("chat-input");
+
+        const message = userInput.value;
+        if (message.trim() === "") return;
+
+        let roomname = localStorage.getItem("roomname");
+
+        try {
+            await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + roomname + `/chat`, { "user": localStorage.getItem("userID"), "message": String(message) });
+
+        } catch (e) {
+            return e;
+        }
+
+        updateChatRoom();
+        setLastMessage();
+        userInput.value = "";
+    };
+
+    //load all chat messages
+    /*async function loadChatRoom() {
+        
+        const chatBox = document.getElementById("chat-box");
+
+        try {
+            const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/chat`);
+
+            res.data.messages.forEach(async message => {
+                const textElement = document.createElement('p');
+                textElement.style.color = '#FFF';
+                textElement.textContent = message.text;
+                chatBox.appendChild(textElement);
+            });
+
+        } catch (e) {
+            return e;
+        }
+
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+    }*/
+
+    async function updateChatRoom() {
+
+        let roomname = localStorage.getItem("roomname");
+
+        let messageElement = document.createElement("div");
+        const chatBox = document.getElementById("chat-box");
+
+        try {
+            const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/chat`);
+            const allMessages = res.data.messages;
+
+            messageElement.classList.add("chat-message");
+            messageElement.textContent = localStorage.getItem("username") + ": " + allMessages[allMessages.length - 1].text;
+
+            chatBox.appendChild(messageElement);
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+        } catch (e) {
+            return e;
+        }
+    };
+
+    const updateChatMessages = async () => {
+        try {
+            let roomname = localStorage.getItem('roomname');
+
+            const chatBox = document.getElementById("chat-box");
 
 
+            while (true) {
+
+                let lastMessageIndex = localStorage.getItem('last-message-index');
+
+                const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/chat`);
+                const allMessages = res.data.messages;
+
+                const users = await Axios.get(`https://gruppe8.toni-barth.com/users`);
+                const allUsers = users.data.users;
+
+                for(let i = lastMessageIndex; i <= allMessages.length - 1; i++){
+
+                    for(let j = 0; j <= allUsers.length - 1; j++){
+                        console.log("UserID " + allUsers[j].id);
+                        console.log("MessageUserID " + allMessages[i].userId);
+
+
+                        if(allUsers[j].id === allMessages[i].userId){
+
+                            const textElement = document.createElement('p');
+                            textElement.style.color = '#FFF';
+                            textElement.textContent = allUsers[j].name + ": " + allMessages[i].text;
+                            chatBox.appendChild(textElement);
+                        }   
+                    }
+                }
+
+                setLastMessage();
+               
+                // Delay between polling requests
+                await new Promise((resolve) => setTimeout(resolve, 1000));
+            }
+        } catch (error) {
+            console.error('Long polling error:', error);
+        }
+    };
+
+ 
+
+    const handleChatInput = (event) => {
+
+        if (event.key === "k" || "f" || "m" || "ArrowUp" || "ArrowLeft" || "ArrowRight" || "ArrowDown") {
+            event.stopPropagation();
+        }
+        if (event.key === "Enter") {
+            sendMessage();
+        }
+    }
 
     return (
         <div id='room'>
@@ -514,7 +639,7 @@ function Room() {
                 <button
                     id='submitbtn'
                     onClick={() => getInput()}
-                    aria-label="video url submit button"
+                    aria-label="video url submit"
                 >
                     <i class="fas fa-search"></i>
                 </button>
@@ -543,6 +668,7 @@ function Room() {
                             controls={false}
                             onReady={handleReady}
                             preload="auto"
+                            config={{ attributes: { tabIndex: '-1' } }}
                         />
 
                         <PlayerControls

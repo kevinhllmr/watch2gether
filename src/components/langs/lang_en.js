@@ -89,15 +89,15 @@ export function lang_en() {
         helpp.innerHTML = "Help";
     }
 
-    if (chatwelcomemessage){
+    if (chatwelcomemessage) {
         chatwelcomemessage.textContent = "Welcome to the Chat Room!";
     }
 
-    if (chatInput){
+    if (chatInput) {
         chatInput.placeholder = "Type message";
     }
 
-    if (chatButton){
+    if (chatButton) {
         chatButton.innerText = "Send";
     }
 }
