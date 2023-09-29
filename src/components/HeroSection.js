@@ -151,7 +151,7 @@ function HeroSection() {
 
       <AddUserPopup trigger={buttonPopup} setTrigger={setButtonPopup}></AddUserPopup>
 
-      <h2 id='welcome' tabindex="0"></h2>
+      <h2 id='welcome' tabIndex="0"></h2>
 
       <div className='hero-btns'>
         <Button
@@ -176,7 +176,7 @@ function HeroSection() {
       </div>
 
       {(location.pathname === "/home/" || location.pathname !== "/home") &&
-        <p id='notice' tabindex="0">Das Projekt ist an der HS Anhalt und unter der Aufsicht von Toni Barth entstanden.</p>
+        <p id='notice' tabIndex="0">Das Projekt ist an der HS Anhalt und unter der Aufsicht von Toni Barth entstanden.</p>
       }
 
     </div>

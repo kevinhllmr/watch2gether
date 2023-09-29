@@ -205,7 +205,7 @@ function Navbar() {
           {location.pathname !== "/home/" && location.pathname !== "/home" && location.pathname !== "/404/" && location.pathname !== "/404" && 
             <ul className={click ? 'nav-menu active' : 'nav-menu'}>
               <li className='nav-item' onClick={closeMobileMenu}>
-                <div id='roomname' onClick={() => copyRoomName()} aria-label="press enter to copy room link" tabindex="0">
+                <div id='roomname' onClick={() => copyRoomName()} aria-label="press enter to copy room link" tabIndex="0">
                 </div>
               </li>
 
@@ -268,7 +268,7 @@ function Navbar() {
               <p id='createbtn'></p>
             </Button>}
 
-            <span className="flags" id="btn_lng" aria-label="switch language" tabindex="0">
+            <span className="flags" id="btn_lng" aria-label="switch language" tabIndex="0">
               <img id='imglng' alt="Language Button"></img>
             </span>
 

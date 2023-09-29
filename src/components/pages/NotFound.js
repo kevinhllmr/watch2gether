@@ -17,7 +17,7 @@ function NotFound() {
         Join Room
       </Link><br /><br />
 
-      <p id='notice'>Das Projekt ist an der HS Anhalt und unter der Aufsicht von Toni Barth entstanden.</p>
+      <p id='notice' tabIndex="0">Das Projekt ist an der HS Anhalt und unter der Aufsicht von Toni Barth entstanden.</p>
 
     </div>
   );
