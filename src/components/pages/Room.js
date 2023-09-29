@@ -228,6 +228,7 @@ function Room() {
 
                     if (currentStatus === 'playing') {
                         setVideoPlaying(false);
+                        
                     } else {
                         setVideoPlaying(true);
                     }
@@ -372,7 +373,7 @@ function Room() {
 
         getCurrentURL();
         longPolling();
-        synchronizeVideoPosition();
+        // synchronizeVideoPosition();
 
         return () => {
             window.removeEventListener('keydown', keydownListener);
