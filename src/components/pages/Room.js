@@ -5,14 +5,10 @@ import './Room.css';
 import Axios from 'axios';
 import PlayerControls from '../PlayerControls';
 import screenfull from 'screenfull';
-import { Await, useNavigate } from "react-router-dom";
-import ChatRoom from './ChatRoom.jsx';
+import { useNavigate } from "react-router-dom";
 
 //count variable for UI fade out
 let count = 0;
-
-let lastPosition = 0;
-
 
 //formats the time of the video into hours, minutes and seconds and returns string
 const format = (seconds) => {
@@ -40,7 +36,6 @@ function Room() {
     const [videoURL, setVideoURL] = useState('');
     const [videoPlaying, setVideoPlaying] = useState(false);
     const [videoPosition, setVideoPosition] = useState(0.0);
-    const [setButtonPopup] = useState(false);
 
     //multiple states for synchronize handling
     const [state, setState] = useState({
@@ -55,7 +50,7 @@ function Room() {
 
     const { playing, muted, played, seeking, fullscreen, volume } = state;
 
-    let playerRef = useRef(null);
+    const playerRef = useRef(null);
     const playerContainerRef = useRef(null);
     const controlsRef = useRef(null);
     const inputRef = useRef(null);
@@ -63,15 +58,12 @@ function Room() {
     //update status and position on play/pause
     const handlePlayPause = async () => {
 
-        state.playing = !state.playing
-        
-        const newPlayingState = state.playing;
+        const newPlayingState = !state.playing;
 
         try {
             let roomname = localStorage.getItem('roomname');
             const user = localStorage.getItem('userID');
             const status = newPlayingState ? 'playing' : 'paused';
-
             const position = playerRef.current.getCurrentTime();
 
             await Promise.all([
@@ -88,12 +80,11 @@ function Room() {
             setState((prevState) => ({ ...prevState, playing: newPlayingState }));
             setVideoPlaying(newPlayingState);
 
-            // Auto-start video on URL change with a delay
-            if (videoURL !== playerRef.current.props.url) {
-                setTimeout(() => {
-                    setVideoPlaying(true);
-                }, 3000); // Adjust the delay as needed
-            }
+            // if (videoURL !== playerRef.current.props.url) {
+            //     setTimeout(() => {
+            //         setVideoPlaying(true);
+            //     }, 3000);
+            // }
         } catch (error) {
             console.error('Error:', error);
         }
@@ -108,7 +99,6 @@ function Room() {
 
     //seeks to new positon and updates video position in API
     const handleFastForward = async () => {
-        
         const currentTime = playerRef.current.getCurrentTime();
         playerRef.current.seekTo(currentTime + 5);
         updateVideoPosition(currentTime + 5);
@@ -144,11 +134,9 @@ function Room() {
 
     //toggle fullscreen
     const onToggleFullScreen = () => {
-        
-        // screenfull.toggle(playerContainerRef.current);
-        // setState({ ...state, fullscreen: !state.fullscreen });
         if (screenfull.isEnabled) {
             if (!screenfull.isFullscreen) {
+
                 // Request fullscreen permission and enter fullscreen
                 screenfull.request(playerContainerRef.current).then(() => {
                     setState({ ...state, fullscreen: true });
@@ -156,6 +144,7 @@ function Room() {
                     console.error('Fullscreen request failed:', error);
                 });
             } else {
+
                 // Exit fullscreen
                 screenfull.exit().then(() => {
                     setState({ ...state, fullscreen: false });
@@ -184,7 +173,6 @@ function Room() {
     }
 
     //multiple events for seek bar and mouse movement
-
     const handleSeekChange = (e, newValue) => {
         setState({ ...state, played: parseFloat(newValue / 100) });
     }
@@ -234,17 +222,14 @@ function Room() {
                 const currentPosition = positionResponse.data.position;
                 const currentURL = urlResponse.data.url;
 
-
                 if (currentStatus !== lastStatus) {
-                    setVideoPlaying(currentStatus === 'playing');
+                    // setVideoPlaying(currentStatus === 'playing');
                     lastStatus = currentStatus;
-                    state.playing = !state.playing;
 
                     if (currentStatus === 'playing') {
-                        playerRef.current.play(); // Start playing the video
-
+                        setVideoPlaying(false);
                     } else {
-                        playerRef.current.pause(); // Pause the video
+                        setVideoPlaying(true);
                     }
                 }
 
@@ -259,7 +244,7 @@ function Room() {
                 }
 
                 // Delay between polling requests
-                await new Promise((resolve) => setTimeout(resolve, 3000));
+                await new Promise((resolve) => setTimeout(resolve, 500));
             }
         } catch (error) {
             console.error('Long polling error:', error);
@@ -292,7 +277,6 @@ function Room() {
         }
     };
 
-
     //handle for when video is ready
     const handleReady = () => {
         if (videoPlaying) {
@@ -313,6 +297,7 @@ function Room() {
         if (roomname === localStorage.getItem('roomname')) {
             switch (event.key) {
                 case " ":
+                case "MediaPlayPause":
                 case "k":
                     handlePlayPause();
                     break;
@@ -324,6 +309,7 @@ function Room() {
                     break;
                 case "f":
                     onToggleFullScreen();
+                    handlePlayPause();
                     break;
                 case "m":
                     setState((prevState) => {
@@ -346,7 +332,6 @@ function Room() {
                 default:
                     break;
             }
-            // console.log(`Key: ${event.key} has been pressed`);
         }
     };
 
@@ -381,9 +366,11 @@ function Room() {
             document.getElementById("roomname").style.display = "block";
             document.getElementById("leaveroombtn").style.display = "block";
         }
-    
+
+        setLastMessage();
+        updateChatMessages();
+
         getCurrentURL();
-        // // setState((prevState) => ({ ...prevState, duration: 0 }));
         longPolling();
         synchronizeVideoPosition();
 
@@ -391,7 +378,7 @@ function Room() {
             window.removeEventListener('keydown', keydownListener);
         };
 
-    }, [] );
+    }, [videoURL]);
 
     //check if room exists from copied room link. if not, show 404 page
     async function doesRoomExist() {
@@ -441,9 +428,11 @@ function Room() {
                 setVideoURL(url);
                 setVideoPosition(position);
                 document.getElementById("urlinput").placeholder = url;
+
             } else {
                 setVideoURL("https://www.dailymotion.com/video/x82hnx2");
             }
+
         } catch (e) {
             console.error("Error:", e);
         }
@@ -489,6 +478,125 @@ function Room() {
         }
     }
 
+    async function setLastMessage() {
+        try {
+            let roomname = localStorage.getItem("roomname");
+            if(roomname !== null) {
+                const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/chat`);
+                const allMessages = res.data.messages;
+
+                if (allMessages.length > 0) {
+                    localStorage.setItem("last-message-index", allMessages.length);
+
+                } else {
+                    localStorage.setItem("last-message-index", 0);
+                }
+            }
+
+        } catch (e) {
+            return e;
+        }
+    }
+
+    async function sendMessage() {
+
+        const userInput = document.getElementById("chat-input");
+
+        const message = userInput.value;
+        if (message.trim() === "") return;
+
+        let roomname = localStorage.getItem("roomname");
+        if(roomname !== null) {
+            try {
+                await Axios.put(`https://gruppe8.toni-barth.com/rooms/` + roomname + `/chat`, { "user": localStorage.getItem("userID"), "message": String(message) });
+
+            } catch (e) {
+                return e;
+            }
+        }
+
+        updateChatRoom();
+        setLastMessage();
+        userInput.value = "";
+    };
+
+    async function updateChatRoom() {
+
+        let roomname = localStorage.getItem("roomname");
+
+        if(roomname !== null) {
+            let messageElement = document.createElement("div");
+            const chatBox = document.getElementById("chat-box");
+
+            try {
+                const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/chat`);
+                const allMessages = res.data.messages;
+
+                messageElement.classList.add("chat-message");
+                messageElement.textContent = localStorage.getItem("username") + ": " + allMessages[allMessages.length - 1].text;
+
+                chatBox.appendChild(messageElement);
+
+                chatBox.scrollTop = chatBox.scrollHeight;
+
+            } catch (e) {
+                return e;
+            }
+        }
+    };
+
+    const updateChatMessages = async () => {
+        try {
+            let roomname = localStorage.getItem('roomname');
+            const chatBox = document.getElementById("chat-box");
+
+                while (true) {
+                    if(roomname !== null) {
+                        let lastMessageIndex = localStorage.getItem('last-message-index');
+
+                        const res = await Axios.get(`https://gruppe8.toni-barth.com/rooms/${roomname}/chat`);
+                        const allMessages = res.data.messages;
+
+                        const users = await Axios.get(`https://gruppe8.toni-barth.com/users`);
+                        const allUsers = users.data.users;
+
+                        for (let i = lastMessageIndex; i <= allMessages.length - 1; i++) {
+
+                            for (let j = 0; j <= allUsers.length - 1; j++) {
+                                if (allUsers[j].id === allMessages[i].userId) {
+
+                                    const textElement = document.createElement('p');
+                                    textElement.style.color = '#FFF';
+                                    textElement.textContent = allUsers[j].name + ": " + allMessages[i].text;
+                                    chatBox.appendChild(textElement);
+                                }
+                            }
+                        }
+
+                        setLastMessage();
+
+                        // Delay between polling requests
+                        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+                    } else {
+                        return;
+                    }
+                }
+        } catch (error) {
+            console.error('Long polling error:', error);
+        }
+    };
+
+
+
+    const handleChatInput = (event) => {
+        if (event.key === "k" || "f" || "m" || "ArrowUp" || "ArrowLeft" || "ArrowRight" || "ArrowDown") {
+            event.stopPropagation();
+        }
+        if (event.key === "Enter") {
+            sendMessage();
+        }
+    }
 
     return (
         <div id='room'>
@@ -497,7 +605,7 @@ function Room() {
                     ref={inputRef}
                     id='urlinput'
                     placeholder='youtu.be/watch?v=dQw4w9WgXcQ'
-                    onKeyUp={handleKeyDown}
+                    onKeyDown={handleKeyDown}
                     aria-label="url input field"
                 ></input>
 
@@ -515,7 +623,7 @@ function Room() {
                         className='player-wrapper'
                         onMouseMove={handleMouseMove}
                         tabIndex="0"
-                        onKeyUp={keydownListener}
+                        onKeyDown={keydownListener}
                     >
                         <ReactPlayer
                             ref={playerRef}
@@ -534,6 +642,7 @@ function Room() {
                             onReady={handleReady}
                             preload="auto"
                             config={{ attributes: { tabIndex: '-1' } }}
+                            playsinline
                         />
 
                         <PlayerControls
@@ -560,7 +669,17 @@ function Room() {
                     </div>
                 </div>
             </div>
-            <ChatRoom/>
+
+            <div className='chatContainer'>
+                <div class="chat-box" id="chat-box">
+                    <div class="chat-message"><p id="chatwelcome"></p></div>
+                </div>
+
+                <div class="input-container" aria-label='chat input'>
+                    <input type="text" id="chat-input" onKeyDown={handleChatInput} />
+                    <button id="chat-button" onClick={() => sendMessage()} aria-label='send message'></button>
+                </div>
+            </div>
         </div>
     );
 }

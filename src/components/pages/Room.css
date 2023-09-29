@@ -4,7 +4,7 @@
 
 .container {
     background-color: rgb(36, 36, 36);
-    height: 90vh;
+    height: 91vh;
     width: 70%;
     float: left;
 }
@@ -44,31 +44,106 @@
 .player-wrapper {
     width: 100%;
     height: 100%;
-    display: block;
-    margin-left: auto;
-    margin-right: auto 
+    position: relative;
 }
 
+.chatContainer {
+    background-color: rgb(30, 30, 30);
+    position: relative;
+    width: 30%;
+    height: 91vh;
+    float: right;
+}
+
+.chat-box {
+    height: 78vh;
+    max-height: 78vh;
+    padding-left: 20px;
+    padding-right: 30px;
+    overflow-x: hidden;
+}
 
 ::-webkit-scrollbar {
     width: 5px;
-  }
-  
-  ::-webkit-scrollbar-track {
-    background: rgb(30, 30, 30); 
-  }
+}
 
-  ::-webkit-scrollbar-thumb {
-    background: rgb(125, 125, 125); 
+::-webkit-scrollbar-track {
+    background: rgb(30, 30, 30);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(125, 125, 125);
     border-radius: 20px;
-  }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    background: rgb(36, 36, 36); 
-  }
+}
 
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(36, 36, 36);
+}
 
-@media screen and (orientation: portrait) and (max-width: 450px){
+.chat-message {
+    color: rgb(255, 255, 255);
+    margin: 5px 0;
+    overflow-wrap: break-word;
+}
+
+.input-container {
+    display: flex;
+    margin-top: 10px;
+}
+
+#chat-input[type="text"] {
+    flex: 3;
+    padding: 5px;
+    margin: 20px;
+    margin-right: 0px;
+    font-size: 18px;
+    text-align: left;
+    color: #ffffff;
+    background-color: rgb(26, 23, 23);
+    border-radius: 25px;
+    padding-left: 15px;
+}
+
+::placeholder {
+    color: rgb(125, 125, 125);
+}
+
+#chat-button {
+    background-color: #4ed451;
+    color: rgb(26, 23, 23);
+    margin: 20px;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+    width: 80px;
+    border-radius: 25px;
+}
+
+#chatwelcome {
+    color: rgb(125, 125, 125);
+    text-align: center;
+}
+
+@media screen and (orientation: portrait) and (max-width:450px) {
+    .chatContainer {
+        background-color: rgb(30, 30, 30);
+        position: relative;
+        height: 50%;
+        width: 100%;
+    }
+
+    .chat-box {
+        height: 20vh;
+        max-height: 20vh;
+        padding-left: 20px;
+        padding-right: 20px;
+        overflow-x: hidden;
+    }
+
+    .input-container {
+        display: flex;
+    }
+
     #urlinput {
         width: 75%;
         font-size: 15px;
@@ -83,7 +158,7 @@
         cursor: pointer;
     }
 
-    .container{
+    .container {
         float: flex;
         width: 100%;
         height: 60vh;
@@ -98,8 +173,26 @@
     }
 }
 
+@media screen and (orientation: portrait) and (max-width:800px) {
+    .chatContainer {
+        background-color: rgb(30, 30, 30);
+        position: relative;
+        height: 50%;
+        width: 100%;
+    }
 
-@media screen and (orientation: portrait) and (max-width: 800px){
+    .chat-box {
+        height: 20vh;
+        max-height: 20vh;
+        padding-left: 20px;
+        padding-right: 20px;
+        overflow-x: hidden;
+    }
+
+    .input-container {
+        display: flex;
+    }
+
     #urlinput {
         width: 75%;
         font-size: 15px;
@@ -114,7 +207,7 @@
         cursor: pointer;
     }
 
-    .container{
+    .container {
         float: flex;
         width: 100%;
         height: 60vh;
@@ -129,7 +222,26 @@
     }
 }
 
-@media screen and (orientation: landscape) and (max-width: 1050px){
+@media screen and (orientation: landscape) and (max-width:1050px) {
+    .chatContainer {
+        background-color: rgb(30, 30, 30);
+        position: relative;
+        height: 50%;
+        width: 100%;
+    }
+
+    .chat-box {
+        height: 20vh;
+        max-height: 20vh;
+        padding-left: 20px;
+        padding-right: 20px;
+        overflow-x: hidden;
+    }
+
+    .input-container {
+        display: flex;
+    }
+
     #urlinput {
         width: 75%;
         font-size: 15px;
@@ -144,7 +256,7 @@
         cursor: pointer;
     }
 
-    .container{
+    .container {
         float: flex;
         width: 100%;
         height: 60vh;
@@ -160,6 +272,36 @@
 }
 
 @media screen and (orientation: landscape) and (max-width: 800px) {
+
+    .chatContainer {
+        float: right;
+        background-color: rgb(30, 30, 30);
+        position: relative;
+        height: 82.5vh;
+        width: 25%;
+    }
+
+    .chat-box {
+        height: 50vh;
+        max-height: 50vh;
+        padding-left: 20px;
+        padding-right: 20px;
+        overflow-x: hidden;
+    }
+
+    #chat-button {
+
+        margin: 12px;
+        height: 30px;
+        width: 50px;
+        border-radius: 10px;
+    }
+
+    #chat-input[type="text"] {
+        flex: 3;
+        padding: 5px;
+        margin: 8px;
+    }
 
     #urlinput {
         width: 74%;
@@ -187,7 +329,7 @@
         float: flex;
     }
 
-    .container{
+    .container {
         float: left;
         width: 75%;
         height: 82.5vh;
@@ -203,8 +345,4 @@
     .player-wrapper {
         position: relative;
     }
-
-
-
 }
-

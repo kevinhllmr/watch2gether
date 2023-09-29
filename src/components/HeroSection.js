@@ -40,7 +40,7 @@ function HeroSection() {
         localStorage.setItem("lang", "de");
 
       } else {
-        // lang_en();
+        lang_en();
         document.getElementById("imglng").src = process.env.PUBLIC_URL + '/images/gb.svg';
         localStorage.setItem("lang", "en");
       }
@@ -62,7 +62,7 @@ function HeroSection() {
         document.getElementById("leaveroombtn").style.display = 'none';
       }
     }
-  }, );
+  }, []);
 
   //posts new room into API
   const createRoom = async () => {

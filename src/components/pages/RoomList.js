@@ -80,7 +80,6 @@ function RoomList() {
         }
     }
 
-    //calls loadRooms() function
     loadRooms();
 
     return (

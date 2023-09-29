@@ -16,7 +16,7 @@ img {
     min-width: 100%;
     z-index: -1;
     filter: brightness(30%);
-    background: no-repeat center center fixed; 
+    background: no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -53,7 +53,8 @@ h2 {
     margin-top: -25px;
 }
 
-#logoutbtn, #helpbtn {
+#logoutbtn,
+#helpbtn {
     font-size: 20px;
     background-color: transparent;
     color: rgb(78, 78, 78);
@@ -84,7 +85,8 @@ h2 {
         margin-right: 40px;
     }
 
-    #logoutbtn, #helpbtn {
+    #logoutbtn,
+    #helpbtn {
         padding-left: 80%;
     }
 }

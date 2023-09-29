@@ -16,7 +16,7 @@ img {
     min-width: 100%;
     z-index: -1;
     filter: brightness(30%);
-    background: no-repeat center center fixed; 
+    background: no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -66,7 +66,7 @@ h3 {
         margin-top: 10vw;
         font-size: 25px;
     }
-    
+
     h3 {
         font-size: 20px;
         margin-left: 30px;
@@ -78,7 +78,7 @@ h3 {
         margin-top: 2vw;
         font-size: 20px;
     }
-    
+
     h3 {
         font-size: 15px;
         margin-left: -150px;

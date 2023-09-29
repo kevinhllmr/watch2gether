@@ -14,7 +14,7 @@ function App() {
   //empty room gets deleted after 10 minutes
   window.setInterval(function () {
     checkRoomEmpty();
-  }, 100000);
+  }, 60000);
 
   const checkRoomEmpty = async () => {
     try {
