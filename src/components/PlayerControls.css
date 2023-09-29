@@ -1,8 +1,8 @@
 #controls-wrapper {
     position: absolute;
-    top: 0;
+    top: 100px;
     left: 0;
-    right: 0;
+    right: 440px;
     bottom: 0;
     background: rgba(0, 0, 0, 0.75);
     display: flex;
@@ -59,4 +59,55 @@
     #volumeicon, #volumeslider {
         visibility: hidden;
     }
+}
+
+@media screen and (orientation: portrait) and (max-width: 450px){
+    #controls-wrapper {
+        position: absolute;
+        top: 170px;
+        left: 0;
+        right: 0;
+        bottom: 250px;
+        background: rgba(0, 0, 0, 0.75);
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: space-between;
+        z-index: 1;
+        transition: background-color 0.2s ease;
+    }
+
+}
+
+@media screen and (orientation: portrait) and (max-width: 800px){
+    #controls-wrapper {
+        position: absolute;
+        top: 240px;
+        left: 0;
+        right: 0;
+        bottom: 300px;
+        background: rgba(0, 0, 0, 0.75);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        z-index: 1;
+        transition: background-color 0.2s ease;
+    }
+
+}
+
+@media screen and (orientation: landscape) and (max-width: 1050px){
+    #controls-wrapper {
+        position: absolute;
+        top: 200px;
+        left: 0;
+        right: 0;
+        bottom: 200px;
+        background: rgba(0, 0, 0, 0.75);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        z-index: 1;
+        transition: background-color 0.2s ease;
+    }
+
 }
